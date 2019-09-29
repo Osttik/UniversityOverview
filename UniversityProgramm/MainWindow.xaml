@@ -19,7 +19,6 @@
 
         <Border x:Name="Results" Grid.Column="1" Grid.ColumnSpan="2">
             <controls:Map x:Name="CurrentMap">
-                
             </controls:Map>
         </Border>
 
