@@ -4,13 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wpf="clr-namespace:Xamarin.Forms.Platform.WPF;assembly=Xamarin.Forms.Platform.WPF"
-        xmlns:local="clr-namespace:UniversityProgramm"
+        xmlns:local="clr-namespace:UniversityProgramm.Helpers"
         xmlns:dmx="http://schemas.devexpress.com/winfx/2008/xaml/map"
         mc:Ignorable="d"
         Height="450" Width="800"
         xmlns:controls="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         >
-    <Grid>
+    <Window.DataContext>
+        <local:ApplicationModel>
+
+        </local:ApplicationModel>
+    </Window.DataContext>
+    <Grid x:Name="MainGrid" DataContext="Application">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="0*"/>
@@ -18,18 +23,21 @@
         </Grid.ColumnDefinitions>
 
         <Border x:Name="Results" Grid.Column="1" Grid.ColumnSpan="2">
-            <controls:Map x:Name="CurrentMap">
-            </controls:Map>
+            <!--<controls:Map x:Name="CurrentMap">
+            </controls:Map>-->
+            <InkCanvas Background="Azure" EditingMode="None" Name="Map">
+                <Image Source="Images/1.1.jpg" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </InkCanvas>
         </Border>
 
         <Border x:Name="LeftPanel" Grid.Column="0">
-            <Button 
-                Content="-->" 
+            <!--<Button 
+                Content="->" 
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
                 Width="36" 
                 Click="Expander_Button_click" 
-                />
+                />-->
         </Border>
 
         <Border 
@@ -39,12 +47,16 @@
             Visibility="Visible" 
             Background="Blue" 
             >
-            <DockPanel LastChildFill="False" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="205">
-                <Button DockPanel.Dock="Top" Content="(--" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Click="Expander_Button_click" Margin="160, 0, 0, 0"/>
-                <Image DockPanel.Dock="Top" Height="128" Source="jojo.jpg" Margin="5,0,10,0"/>
+            <DockPanel LastChildFill="False" 
+                       HorizontalAlignment="Left" 
+                       Height="419" 
+                       VerticalAlignment="Top" 
+            >
+                <!--<Button DockPanel.Dock="Top" Content="(-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Click="Expander_Button_click" Margin="160, 0, 0, 0"/>-->
+                <Image DockPanel.Dock="Top" Source="jojo.jpg" Margin="5,0,10,0"/>
                 <Button DockPanel.Dock="Top" Content="To map" Height="30" Margin="5,0,10,0"/>
-                <Button DockPanel.Dock="Top" Content="Find" Height="30" Margin="5,0,10,0"/>
-                <Button DockPanel.Dock="Top" Content="Exit" Height="28" Margin="5,0,10,0"/>
+                <Button DockPanel.Dock="Top" Content="Find" Height="30" Margin="5,0,10,0" Click="Find"/>
+                <Button DockPanel.Dock="Top" Content="Exit" Height="28" Margin="5,0,10,0" Click="Exit"/>
             </DockPanel>
         </Border>
     </Grid>
