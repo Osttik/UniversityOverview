@@ -26,7 +26,11 @@
             <!--<controls:Map x:Name="CurrentMap">
             </controls:Map>-->
             <InkCanvas Background="Azure" EditingMode="None" Name="Map">
-                <Image Source="Images/1.1.jpg" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Canvas x:Name="canvas"
+                    MouseLeftButtonDown="CanvasMouseLeftButtonDown"
+                    MouseLeftButtonUp="CanvasMouseLeftButtonUp"
+                    MouseMove="CanvasMouseMove">
+                </Canvas>
             </InkCanvas>
         </Border>
 
@@ -49,7 +53,6 @@
             >
             <DockPanel LastChildFill="False" 
                        HorizontalAlignment="Left" 
-                       Height="419" 
                        VerticalAlignment="Top" 
             >
                 <!--<Button DockPanel.Dock="Top" Content="(-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Click="Expander_Button_click" Margin="160, 0, 0, 0"/>-->
