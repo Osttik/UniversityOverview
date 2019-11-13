@@ -30,6 +30,7 @@
                     MouseLeftButtonDown="CanvasMouseLeftButtonDown"
                     MouseLeftButtonUp="CanvasMouseLeftButtonUp"
                     MouseMove="CanvasMouseMove">
+                    <!--<Image Source="Images/1.1.jpg"/>-->
                 </Canvas>
             </InkCanvas>
         </Border>

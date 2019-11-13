@@ -22,7 +22,7 @@ namespace UniversityProgramm
 
             var picturePath = "pack://application:,,,/Images/1.1.jpg";
 
-            AddPictute(picturePath);
+            //AddPictute(picturePath);
         }
 
         //private void Expander_Button_click(object sender, RoutedEventArgs e)
@@ -76,7 +76,6 @@ namespace UniversityProgramm
             var image = new Image() { Source = bitmap };
             Canvas.SetLeft(image, 0);
             Canvas.SetTop(image, 0);
-            var j = canvas.Children;
             canvas.Children.Add(image);
         }
 
@@ -112,6 +111,11 @@ namespace UniversityProgramm
                 var position = e.GetPosition(canvas);
                 var offset = position - mousePosition;
                 mousePosition = position;
+                var senderI = sender as Canvas;
+                Point relativePoint = draggedImage.TransformToAncestor(Application.Current.MainWindow)
+                              .Transform(new Point(0, 0));
+
+                //if ()
                 Canvas.SetLeft(draggedImage, Canvas.GetLeft(draggedImage) + offset.X);
                 Canvas.SetTop(draggedImage, Canvas.GetTop(draggedImage) + offset.Y);
             }
