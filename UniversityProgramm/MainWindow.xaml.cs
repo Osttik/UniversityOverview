@@ -142,12 +142,12 @@ namespace UniversityProgramm
                 double toX = relativePoint.X + offset.X;
                 double toY = relativePoint.Y + offset.Y;
 
-                if (toX <= 0 && -toX + Map.ActualWidth <= draggedImage.ActualWidth)
+                if ((offset.X > 0 && toX <= 0) || (offset.X < 0 && -toX + Map.ActualWidth <= draggedImage.ActualWidth))
                 {
                     Canvas.SetLeft(draggedImage, Canvas.GetLeft(draggedImage) + offset.X);
                 }
 
-                if (toY <= 0 && -toY + Map.ActualHeight <= draggedImage.ActualHeight)
+                if ((offset.Y > 0 && toY <= 0) || (offset.Y < 0 && -toY + Map.ActualHeight <= draggedImage.ActualHeight))
                 {
                     Canvas.SetTop(draggedImage, Canvas.GetTop(draggedImage) + offset.Y);
                 }
