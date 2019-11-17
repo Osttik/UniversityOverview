@@ -15,7 +15,15 @@ namespace UniversityProgramm
     /// </summary>
     public partial class MainWindow : Window
     {
-        public double MaximumHeight { get => Height; } 
+        public double MaximumHeight { get => Height; }
+
+        private int _delta = 120;
+        private float _persantage = 0.1f;
+        private float _maxPersantage = 1.5f;
+        private float _currentPersantage = 1f;
+        private double _normalHeight = 800;
+        private double _normalWidth = 1024;
+        private Image _map;
 
         public MainWindow()
         {
@@ -23,7 +31,7 @@ namespace UniversityProgramm
 
             var picturePath = "pack://application:,,,/Images/1.1.jpg";
 
-            AddPictute(picturePath);
+            AddPicture(picturePath);
         }
 
         //private void Expander_Button_click(object sender, RoutedEventArgs e)
@@ -84,22 +92,30 @@ namespace UniversityProgramm
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
         {
-            var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.Filter =
-                "Image Files (*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Image Files (*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp"
+            };
 
             if ((bool)dialog.ShowDialog())
             {
-                AddPictute(dialog.FileName);
+                AddPicture(dialog.FileName);
             }
         }
 
-        private void AddPictute(string path)
+        private void AddPicture(string path)
         {
             var bitmap = new BitmapImage(new Uri(path));
             var image = new Image() { Source = bitmap };
+
+            image.Name = "MapPicture";
+
+            _normalHeight = bitmap.Height;
+            _normalWidth = bitmap.Width;
+
             Canvas.SetLeft(image, 0);
             Canvas.SetTop(image, 0);
+
             canvas.Children.Add(image);
         }
 
@@ -163,6 +179,23 @@ namespace UniversityProgramm
         private void ToMap(object sender, RoutedEventArgs e)
         {
             ClearAllLines();
+        }
+
+        private void CanvasMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (_map == null)
+            {
+                foreach (var item in canvas.Children)
+                {
+                    Image image = item as Image;
+                    if (image != null && image.Name == "MapPicture")
+                    {
+                        (item as Image).Height += ((e.Delta / _delta) * _persantage * _normalHeight);
+                        (item as Image).Width += ((e.Delta / _delta) * _persantage * _normalWidth);
+                        break;
+                    }
+                }
+            }
         }
     }
 }
