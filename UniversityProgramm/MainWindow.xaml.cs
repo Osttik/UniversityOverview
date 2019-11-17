@@ -112,6 +112,7 @@ namespace UniversityProgramm
 
             if (image != null && canvas.CaptureMouse())
             {
+                Mouse.OverrideCursor = Cursors.ScrollAll;
                 mousePosition = e.GetPosition(canvas);
                 draggedImage = image;
                 Panel.SetZIndex(draggedImage, 1);
@@ -122,6 +123,7 @@ namespace UniversityProgramm
         {
             if (draggedImage != null)
             {
+                Mouse.OverrideCursor = Cursors.Arrow;
                 canvas.ReleaseMouseCapture();
                 Panel.SetZIndex(draggedImage, 0);
                 draggedImage = null;
@@ -137,7 +139,6 @@ namespace UniversityProgramm
                 mousePosition = position;
 
                 Point relativePoint = draggedImage.TransformToAncestor(Map).Transform(new Point(0, 0));
-                //DrawLine(new Point(0, 0), relativePoint);
 
                 double toX = relativePoint.X + offset.X;
                 double toY = relativePoint.Y + offset.Y;
