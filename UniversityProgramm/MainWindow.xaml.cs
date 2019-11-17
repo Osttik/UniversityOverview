@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using System.Collections.Generic;
 
 namespace UniversityProgramm
 {
@@ -22,7 +23,7 @@ namespace UniversityProgramm
 
             var picturePath = "pack://application:,,,/Images/1.1.jpg";
 
-            //AddPictute(picturePath);
+            AddPictute(picturePath);
         }
 
         //private void Expander_Button_click(object sender, RoutedEventArgs e)
@@ -56,8 +57,31 @@ namespace UniversityProgramm
                 StrokeThickness = 2
             };
 
-            MainGrid.Children.Add(line);
+            Map.Children.Add(line);
         }
+
+        public bool ClearAllLines()
+        {
+            bool isCLeared = false;
+
+            List<Line> lines = new List<Line>();
+
+            foreach (var item in Map.Children)
+            {
+                if(item is Line)
+                {
+                    lines.Add(item as Line);
+                }
+            }
+
+            foreach (var item in lines)
+            {
+                Map.Children.Remove(item);
+            }
+
+            return isCLeared;
+        }
+
         private void AddButtonClick(object sender, RoutedEventArgs e)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
@@ -111,19 +135,33 @@ namespace UniversityProgramm
                 var position = e.GetPosition(canvas);
                 var offset = position - mousePosition;
                 mousePosition = position;
-                var senderI = sender as Canvas;
-                Point relativePoint = draggedImage.TransformToAncestor(Application.Current.MainWindow)
-                              .Transform(new Point(0, 0));
 
-                //if ()
-                Canvas.SetLeft(draggedImage, Canvas.GetLeft(draggedImage) + offset.X);
-                Canvas.SetTop(draggedImage, Canvas.GetTop(draggedImage) + offset.Y);
+                Point relativePoint = draggedImage.TransformToAncestor(Map).Transform(new Point(0, 0));
+                //DrawLine(new Point(0, 0), relativePoint);
+
+                double toX = relativePoint.X + offset.X;
+                double toY = relativePoint.Y + offset.Y;
+
+                if (toX <= 0 && -toX + Map.ActualWidth <= draggedImage.ActualWidth)
+                {
+                    Canvas.SetLeft(draggedImage, Canvas.GetLeft(draggedImage) + offset.X);
+                }
+
+                if (toY <= 0 && -toY + Map.ActualHeight <= draggedImage.ActualHeight)
+                {
+                    Canvas.SetTop(draggedImage, Canvas.GetTop(draggedImage) + offset.Y);
+                }
             }
         }
 
         private void Find(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ToMap(object sender, RoutedEventArgs e)
+        {
+            ClearAllLines();
         }
     }
 }
