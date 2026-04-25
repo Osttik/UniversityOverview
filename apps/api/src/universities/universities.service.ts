@@ -4,10 +4,14 @@ import { join } from 'node:path';
 import type {
   CampusLocation,
   CampusMap,
-  RoutePlan,
+  GetCampusMapResponse,
+  GetRouteResponse,
+  GetUniversityResponse,
+  ListUniversitiesResponse,
+  ListUniversityProgramsResponse,
   RouteRequest,
-  University,
-  UniversityProgram
+  SearchCampusLocationsResponse,
+  University
 } from '@university-overview/shared';
 
 export interface UniversitySearchQuery {
@@ -34,7 +38,7 @@ export interface LocationSearchQuery {
 export class UniversitiesService {
   private readonly dataPath = join(process.cwd(), 'apps', 'api', 'data', 'universities.json');
 
-  findAll(query: UniversitySearchQuery = {}): University[] {
+  findAll(query: UniversitySearchQuery = {}): ListUniversitiesResponse {
     const raw = readFileSync(this.dataPath, 'utf8');
     const universities = JSON.parse(raw) as University[];
     const normalizedSearch = this.normalize(query.search);
@@ -67,7 +71,7 @@ export class UniversitiesService {
     });
   }
 
-  findOne(id: string): University {
+  findOne(id: string): GetUniversityResponse {
     const university = this.readAll().find((candidate) => candidate.id === id);
     if (!university) {
       throw new NotFoundException(`University with id "${id}" was not found`);
@@ -76,7 +80,7 @@ export class UniversitiesService {
     return university;
   }
 
-  listPrograms(id: string, query: ProgramSearchQuery = {}): UniversityProgram[] {
+  listPrograms(id: string, query: ProgramSearchQuery = {}): ListUniversityProgramsResponse {
     const university = this.findOne(id);
     const normalizedSearch = this.normalize(query.search);
     const normalizedDegree = this.normalize(query.degree);
@@ -99,11 +103,11 @@ export class UniversitiesService {
     });
   }
 
-  getCampusMap(id: string): CampusMap {
+  getCampusMap(id: string): GetCampusMapResponse {
     return this.toCampusMap(this.findOne(id));
   }
 
-  searchLocations(id: string, query: LocationSearchQuery = {}): CampusLocation[] {
+  searchLocations(id: string, query: LocationSearchQuery = {}): SearchCampusLocationsResponse {
     const locations = this.getCampusMap(id).locations;
     const normalizedSearch = this.normalize(query.search);
     const normalizedType = this.normalize(query.type);
@@ -122,7 +126,7 @@ export class UniversitiesService {
     });
   }
 
-  getRoute(id: string, request: RouteRequest): RoutePlan {
+  getRoute(id: string, request: RouteRequest): GetRouteResponse {
     const campusMap = this.getCampusMap(id);
     const from = campusMap.locations.find((location) => location.id === request.fromLocationId);
     const to = campusMap.locations.find((location) => location.id === request.toLocationId);

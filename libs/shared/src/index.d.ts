@@ -98,3 +98,10 @@ export interface RoutePlan {
   estimatedMinutes: number;
   steps: RouteStep[];
 }
+
+export type ListUniversitiesResponse = University[];
+export type GetUniversityResponse = University;
+export type ListUniversityProgramsResponse = UniversityProgram[];
+export type GetCampusMapResponse = CampusMap;
+export type SearchCampusLocationsResponse = CampusLocation[];
+export type GetRouteResponse = RoutePlan;

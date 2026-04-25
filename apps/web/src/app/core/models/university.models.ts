@@ -1,11 +1,14 @@
 import type {
-  University,
-  UniversityProgram as ApiUniversityProgram
+  GetUniversityResponse,
+  ListUniversitiesResponse,
+  ListUniversityProgramsResponse
 } from '@university-overview/shared';
 
-export type ApiUniversity = University;
-export type UniversityDetail = University;
-export type UniversityProgram = ApiUniversityProgram;
+export type ApiUniversity = GetUniversityResponse;
+export type UniversityDetail = GetUniversityResponse;
+export type UniversityListResponse = ListUniversitiesResponse;
+export type UniversityProgram = ListUniversityProgramsResponse[number];
+export type UniversityProgramsResponse = ListUniversityProgramsResponse;
 
 export interface UniversitySummary {
   id: string;

@@ -1,4 +1,9 @@
-import type { CampusLocationType } from '@university-overview/shared';
+import type {
+  CampusLocationType,
+  GetCampusMapResponse,
+  GetRouteResponse,
+  SearchCampusLocationsResponse
+} from '@university-overview/shared';
 
 export type {
   CampusLocation,
@@ -9,6 +14,10 @@ export type {
   RouteRequest,
   RouteStep
 } from '@university-overview/shared';
+
+export type CampusLocationResultsResponse = SearchCampusLocationsResponse;
+export type CampusMapResponse = GetCampusMapResponse;
+export type CampusRouteResponse = GetRouteResponse;
 
 export interface LocationSearchQuery {
   search?: string;

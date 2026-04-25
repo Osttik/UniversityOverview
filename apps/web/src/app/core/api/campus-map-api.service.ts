@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from './api-base-url.token';
 import {
-  CampusMap,
+  CampusLocationResultsResponse,
   LocationSearchQuery,
-  RoutePlan,
+  CampusMapResponse,
+  CampusRouteResponse,
   RouteRequest
 } from '../models/campus-map.models';
 
@@ -15,21 +16,24 @@ export class CampusMapApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(API_BASE_URL);
 
-  getCampusMap(universityId: string): Observable<CampusMap> {
-    return this.http.get<CampusMap>(`${this.baseUrl}/universities/${universityId}/map`);
+  getCampusMap(universityId: string): Observable<CampusMapResponse> {
+    return this.http.get<CampusMapResponse>(`${this.baseUrl}/universities/${universityId}/map`);
   }
 
-  searchLocations(universityId: string, query: LocationSearchQuery): Observable<CampusMap['locations']> {
+  searchLocations(
+    universityId: string,
+    query: LocationSearchQuery
+  ): Observable<CampusLocationResultsResponse> {
     const params = new HttpParams({ fromObject: this.removeEmpty(query) });
 
-    return this.http.get<CampusMap['locations']>(
+    return this.http.get<CampusLocationResultsResponse>(
       `${this.baseUrl}/universities/${universityId}/locations`,
       { params }
     );
   }
 
-  getRoute(universityId: string, request: RouteRequest): Observable<RoutePlan> {
-    return this.http.post<RoutePlan>(
+  getRoute(universityId: string, request: RouteRequest): Observable<CampusRouteResponse> {
+    return this.http.post<CampusRouteResponse>(
       `${this.baseUrl}/universities/${universityId}/routes`,
       request
     );

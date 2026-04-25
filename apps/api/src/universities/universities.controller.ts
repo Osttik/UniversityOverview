@@ -6,12 +6,13 @@ import {
   UniversitySearchQuery
 } from './universities.service';
 import type {
-  CampusLocation,
-  CampusMap,
-  RoutePlan,
+  GetCampusMapResponse,
+  GetRouteResponse,
+  GetUniversityResponse,
+  ListUniversitiesResponse,
+  ListUniversityProgramsResponse,
   RouteRequest,
-  University,
-  UniversityProgram
+  SearchCampusLocationsResponse
 } from '@university-overview/shared';
 
 @Controller('universities')
@@ -19,7 +20,7 @@ export class UniversitiesController {
   constructor(private readonly universitiesService: UniversitiesService) {}
 
   @Get()
-  findAll(@Query() query: UniversitySearchQuery): University[] {
+  findAll(@Query() query: UniversitySearchQuery): ListUniversitiesResponse {
     return this.universitiesService.findAll(query);
   }
 
@@ -27,12 +28,12 @@ export class UniversitiesController {
   listPrograms(
     @Param('id') id: string,
     @Query() query: ProgramSearchQuery
-  ): UniversityProgram[] {
+  ): ListUniversityProgramsResponse {
     return this.universitiesService.listPrograms(id, query);
   }
 
   @Get(':id/map')
-  getCampusMap(@Param('id') id: string): CampusMap {
+  getCampusMap(@Param('id') id: string): GetCampusMapResponse {
     return this.universitiesService.getCampusMap(id);
   }
 
@@ -40,17 +41,17 @@ export class UniversitiesController {
   searchLocations(
     @Param('id') id: string,
     @Query() query: LocationSearchQuery
-  ): CampusLocation[] {
+  ): SearchCampusLocationsResponse {
     return this.universitiesService.searchLocations(id, query);
   }
 
   @Post(':id/routes')
-  getRoute(@Param('id') id: string, @Body() request: RouteRequest): RoutePlan {
+  getRoute(@Param('id') id: string, @Body() request: RouteRequest): GetRouteResponse {
     return this.universitiesService.getRoute(id, request);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): University {
+  findOne(@Param('id') id: string): GetUniversityResponse {
     return this.universitiesService.findOne(id);
   }
 }

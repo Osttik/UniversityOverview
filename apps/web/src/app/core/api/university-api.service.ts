@@ -6,7 +6,8 @@ import { API_BASE_URL } from './api-base-url.token';
 import {
   ApiUniversity,
   ProgramSearchQuery,
-  UniversityProgram,
+  UniversityListResponse,
+  UniversityProgramsResponse,
   UniversitySearchQuery
 } from '../models/university.models';
 
@@ -15,20 +16,23 @@ export class UniversityApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(API_BASE_URL);
 
-  listUniversities(query: UniversitySearchQuery = {}): Observable<ApiUniversity[]> {
+  listUniversities(query: UniversitySearchQuery = {}): Observable<UniversityListResponse> {
     const params = new HttpParams({ fromObject: this.toParams(query) });
 
-    return this.http.get<ApiUniversity[]>(`${this.baseUrl}/universities`, { params });
+    return this.http.get<UniversityListResponse>(`${this.baseUrl}/universities`, { params });
   }
 
   getUniversity(universityId: string): Observable<ApiUniversity> {
     return this.http.get<ApiUniversity>(`${this.baseUrl}/universities/${universityId}`);
   }
 
-  listPrograms(universityId: string, query: ProgramSearchQuery = {}): Observable<UniversityProgram[]> {
+  listPrograms(
+    universityId: string,
+    query: ProgramSearchQuery = {}
+  ): Observable<UniversityProgramsResponse> {
     const params = new HttpParams({ fromObject: this.toParams(query) });
 
-    return this.http.get<UniversityProgram[]>(
+    return this.http.get<UniversityProgramsResponse>(
       `${this.baseUrl}/universities/${universityId}/programs`,
       { params }
     );
