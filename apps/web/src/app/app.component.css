@@ -37,7 +37,7 @@
 
 h1 {
   margin: 0;
-  font-size: 3.75rem;
+  font-size: clamp(2.35rem, 5vw, 3.75rem);
   line-height: 1;
 }
 
@@ -132,10 +132,6 @@ mat-chip-set {
 
   .topbar {
     padding-inline: 12px;
-  }
-
-  h1 {
-    font-size: 2.35rem;
   }
 
   .legacy-map {

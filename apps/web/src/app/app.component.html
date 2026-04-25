@@ -28,7 +28,7 @@
       @for (university of universities; track university.id) {
         <mat-card class="university-card">
           <mat-card-header>
-            <mat-card-title>{{ university.shortName }} · {{ university.name }}</mat-card-title>
+            <mat-card-title>{{ university.shortName }} - {{ university.name }}</mat-card-title>
             <mat-card-subtitle>{{ university.city }}, {{ university.country }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
@@ -49,7 +49,7 @@
             </div>
             <mat-chip-set aria-label="Featured programs">
               @for (program of university.featuredPrograms; track program.id) {
-                <mat-chip>{{ program.degree }} · {{ program.title }}</mat-chip>
+                <mat-chip>{{ program.degree }} - {{ program.title }}</mat-chip>
               }
             </mat-chip-set>
           </mat-card-content>
