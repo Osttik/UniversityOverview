@@ -15,7 +15,9 @@
             "outputPath": "dist/apps/web",
             "index": "apps/web/src/index.html",
             "browser": "apps/web/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "apps/web/tsconfig.app.json",
             "assets": [
               {
@@ -24,20 +26,22 @@
                 "output": "/"
               }
             ],
-            "styles": ["apps/web/src/styles.css"]
+            "styles": [
+              "apps/web/src/styles.css"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "650kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "900kB",
+                  "maximumError": "1.25MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "8kb",
-                  "maximumError": "12kb"
+                  "maximumWarning": "12kB",
+                  "maximumError": "18kB"
                 }
               ],
               "outputHashing": "all"

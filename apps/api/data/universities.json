@@ -22,12 +22,12 @@
     "images": {
       "brand": {
         "src": "/assets/images/legacy/legacy-brand.jpg",
-        "alt": "Legacy UniversityProgramm brand image",
+        "alt": "Historic university brand image",
         "legacySource": "UniversityProgramm/jojo.jpg"
       },
       "campusMap": {
         "src": "/assets/images/legacy/campus-map.jpg",
-        "alt": "Legacy campus map image from the WPF application",
+        "alt": "Campus map image from the retired desktop application",
         "legacySource": "UniversityProgramm/Images/1.1.jpg"
       }
     },

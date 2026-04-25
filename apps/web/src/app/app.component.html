@@ -27,13 +27,13 @@
   <mat-sidenav-content class="shell__content">
     <mat-toolbar class="topbar">
       <div>
-        <span class="topbar__eyebrow">Angular app shell</span>
+        <span class="topbar__eyebrow">Replacement workspace</span>
         <h1>University Overview</h1>
       </div>
-      <button mat-flat-button color="primary" type="button" matTooltip="Create university profile">
-        <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
-        New profile
-      </button>
+      <a mat-flat-button color="primary" routerLink="/map" matTooltip="Open campus map">
+        <mat-icon fontSet="material-symbols-outlined">map</mat-icon>
+        Open map
+      </a>
     </mat-toolbar>
 
     <main class="page">

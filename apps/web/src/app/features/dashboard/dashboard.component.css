@@ -1,6 +1,6 @@
 .dashboard {
   display: grid;
-  gap: 22px;
+  gap: 24px;
 }
 
 .dashboard__intro {
@@ -8,13 +8,14 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 18px;
+  padding: 4px 0 2px;
 }
 
 .eyebrow {
   margin: 0 0 8px;
   color: var(--uo-accent);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
@@ -26,10 +27,10 @@ p {
 }
 
 h2 {
-  max-width: 780px;
+  max-width: 760px;
   margin-bottom: 0;
-  font-size: 34px;
-  line-height: 1.12;
+  font-size: 36px;
+  line-height: 1.1;
   letter-spacing: 0;
 }
 
@@ -47,6 +48,10 @@ h2 {
   box-shadow: none;
 }
 
+.metric {
+  background: linear-gradient(180deg, #ffffff, #f8fbfc);
+}
+
 .metric mat-card-content {
   display: grid;
   gap: 8px;
@@ -62,6 +67,7 @@ h2 {
 }
 
 .metric strong {
+  color: var(--uo-ink);
   font-size: 30px;
   line-height: 1;
 }
@@ -69,7 +75,7 @@ h2 {
 .panel {
   display: grid;
   gap: 16px;
-  padding: 20px;
+  padding: 22px;
   background: var(--uo-panel);
 }
 
@@ -82,7 +88,7 @@ h2 {
 
 .panel__heading h3 {
   margin-bottom: 4px;
-  font-size: 20px;
+  font-size: 21px;
 }
 
 .panel__heading p {
@@ -105,20 +111,70 @@ h2 {
   gap: 12px;
 }
 
+.university-card {
+  background: #ffffff;
+}
+
 .university-card mat-card-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
+}
+
+.university-card__main {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+
+.university-card__title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.university-card__title > span {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 8px;
+  background: #edf5f4;
+  color: var(--uo-accent-strong);
+  font-weight: 800;
 }
 
 .university-card h4 {
   margin-bottom: 6px;
   font-size: 18px;
+  line-height: 1.25;
 }
 
 .university-card p {
   margin-bottom: 0;
+}
+
+.university-card__summary {
+  max-width: 760px;
+  line-height: 1.5;
+}
+
+.program-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.program-strip span {
+  padding: 7px 10px;
+  border: 1px solid #d8e7e4;
+  border-radius: 999px;
+  background: #f3faf8;
+  color: var(--uo-accent-strong);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .empty-state {

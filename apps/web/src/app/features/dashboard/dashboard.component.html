@@ -1,8 +1,8 @@
 <section class="dashboard">
   <div class="dashboard__intro">
     <div>
-      <p class="eyebrow">Operations dashboard</p>
-      <h2>Explore universities, programs, and campus locations from one workspace.</h2>
+      <p class="eyebrow">University discovery</p>
+      <h2>Search programs, compare campuses, and jump into the interactive map.</h2>
     </div>
     <a mat-flat-button color="primary" routerLink="/map">
       <mat-icon fontSet="material-symbols-outlined">map</mat-icon>
@@ -79,9 +79,20 @@
       @for (university of universities(); track university.id) {
         <mat-card class="university-card">
           <mat-card-content>
-            <div>
-              <h4>{{ university.name }}</h4>
-              <p>{{ university.city }}, {{ university.country }}</p>
+            <div class="university-card__main">
+              <div class="university-card__title">
+                <span>{{ university.shortName }}</span>
+                <div>
+                  <h4>{{ university.name }}</h4>
+                  <p>{{ university.city }}, {{ university.country }}</p>
+                </div>
+              </div>
+              <p class="university-card__summary">{{ university.summary }}</p>
+              <div class="program-strip" aria-label="Featured programs">
+                @for (program of university.featuredPrograms; track program.id) {
+                  <span>{{ program.degree }} · {{ program.title }}</span>
+                }
+              </div>
             </div>
             <mat-chip-set aria-label="University facts">
               <mat-chip>{{ university.programs }} programs</mat-chip>

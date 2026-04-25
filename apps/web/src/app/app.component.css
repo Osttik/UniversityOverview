@@ -5,34 +5,36 @@
 
 .shell {
   min-height: 100vh;
-  background: var(--uo-bg);
+  background:
+    linear-gradient(180deg, rgba(237, 242, 247, 0.88), rgba(246, 248, 251, 0.98)),
+    var(--uo-bg);
 }
 
 .shell__nav {
-  width: 280px;
+  width: 286px;
   border-right: 1px solid var(--uo-line);
-  background: #f9fbfc;
-  padding: 20px 16px;
+  background: #fbfcfd;
+  padding: 24px 18px;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 30px;
   color: var(--uo-text);
   text-decoration: none;
-  margin-bottom: 28px;
 }
 
 .brand__mark {
   display: grid;
+  width: 48px;
+  height: 48px;
   place-items: center;
-  width: 44px;
-  height: 44px;
   border-radius: 8px;
-  background: var(--uo-accent);
+  background: var(--uo-ink);
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .brand strong,
@@ -41,7 +43,7 @@
 }
 
 .brand small {
-  margin-top: 2px;
+  margin-top: 3px;
   color: var(--uo-muted);
   font-size: 12px;
 }
@@ -53,7 +55,7 @@
 
 .nav-list__item {
   justify-content: flex-start;
-  min-height: 44px;
+  min-height: 46px;
   border-radius: 8px;
   color: var(--uo-text);
 }
@@ -63,7 +65,7 @@
 }
 
 .nav-list__item--active {
-  background: #d9f0ed;
+  background: #e0f2ef;
   color: var(--uo-accent-strong);
 }
 
@@ -77,16 +79,16 @@
   z-index: 2;
   display: flex;
   justify-content: space-between;
-  min-height: 82px;
-  padding: 16px 28px;
+  min-height: 84px;
+  padding: 16px 30px;
   border-bottom: 1px solid var(--uo-line);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
 }
 
 .topbar h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 27px;
   line-height: 1.15;
   letter-spacing: 0;
 }
@@ -96,14 +98,14 @@
   margin-bottom: 4px;
   color: var(--uo-muted);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
 .page {
-  width: min(1180px, calc(100vw - 336px));
+  width: min(1200px, calc(100vw - 330px));
   margin: 0 auto;
-  padding: 28px;
+  padding: 30px;
 }
 
 @media (max-width: 860px) {
