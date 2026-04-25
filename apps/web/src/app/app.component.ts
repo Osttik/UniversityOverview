@@ -69,8 +69,9 @@ export class AppComponent implements OnInit {
   });
 
   readonly selectedUniversity = computed(() => {
-    const selected = this.universities().find((university) => university.id === this.selectedId());
-    return selected ?? this.filteredUniversities()[0] ?? null;
+    const filteredUniversities = this.filteredUniversities();
+    const selected = filteredUniversities.find((university) => university.id === this.selectedId());
+    return selected ?? filteredUniversities[0] ?? null;
   });
 
   readonly totalStudents = computed(() => this.universities().reduce((sum, university) => sum + university.students, 0));
@@ -93,15 +94,18 @@ export class AppComponent implements OnInit {
 
   selectCategory(category: string): void {
     this.activeCategory.set(category);
+    this.ensureSelectedUniversityIsVisible();
   }
 
   updateSearch(value: string): void {
     this.searchText.set(value);
+    this.ensureSelectedUniversityIsVisible();
   }
 
   clearFilters(): void {
     this.searchText.set('');
     this.activeCategory.set('All');
+    this.ensureSelectedUniversityIsVisible();
   }
 
   loadUniversities(): void {
@@ -133,5 +137,14 @@ export class AppComponent implements OnInit {
       currency: 'USD',
       maximumFractionDigits: 0,
     }).format(value);
+  }
+
+  private ensureSelectedUniversityIsVisible(): void {
+    const filteredUniversities = this.filteredUniversities();
+    const selectedIsVisible = filteredUniversities.some((university) => university.id === this.selectedId());
+
+    if (!selectedIsVisible) {
+      this.selectedId.set(filteredUniversities[0]?.id ?? '');
+    }
   }
 }
