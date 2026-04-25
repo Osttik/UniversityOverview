@@ -1,0 +1,74 @@
+[
+  {
+    "id": "kyiv-polytechnic",
+    "name": "Kyiv Polytechnic Institute",
+    "city": "Kyiv",
+    "region": "Central Ukraine",
+    "founded": 1898,
+    "students": 25000,
+    "rating": 4.8,
+    "tuitionUsd": 2100,
+    "categories": ["Engineering", "Technology", "Research"],
+    "programs": ["Computer Science", "Mechanical Engineering", "Cybersecurity", "Applied Physics"],
+    "highlights": ["Large research campus", "Startup incubator", "Strong robotics labs"],
+    "campus": {
+      "x": 58,
+      "y": 35,
+      "label": "Innovation quarter"
+    }
+  },
+  {
+    "id": "lviv-polytechnic",
+    "name": "Lviv Polytechnic National University",
+    "city": "Lviv",
+    "region": "Western Ukraine",
+    "founded": 1816,
+    "students": 32000,
+    "rating": 4.7,
+    "tuitionUsd": 1900,
+    "categories": ["Architecture", "Engineering", "Technology"],
+    "programs": ["Architecture", "Software Engineering", "Civil Engineering", "Data Science"],
+    "highlights": ["Historic technical school", "European exchange network", "Design labs"],
+    "campus": {
+      "x": 30,
+      "y": 48,
+      "label": "Historic campus"
+    }
+  },
+  {
+    "id": "kharkiv-karazin",
+    "name": "V. N. Karazin Kharkiv National University",
+    "city": "Kharkiv",
+    "region": "Eastern Ukraine",
+    "founded": 1804,
+    "students": 15000,
+    "rating": 4.6,
+    "tuitionUsd": 1750,
+    "categories": ["Research", "Medicine", "Science"],
+    "programs": ["Biology", "Economics", "Medicine", "Mathematics"],
+    "highlights": ["Classic university model", "Strong science faculty", "International research groups"],
+    "campus": {
+      "x": 75,
+      "y": 43,
+      "label": "Science district"
+    }
+  },
+  {
+    "id": "odesa-mechnikov",
+    "name": "Odesa I. I. Mechnikov National University",
+    "city": "Odesa",
+    "region": "Southern Ukraine",
+    "founded": 1865,
+    "students": 10000,
+    "rating": 4.4,
+    "tuitionUsd": 1650,
+    "categories": ["Humanities", "Science", "Marine Studies"],
+    "programs": ["Marine Biology", "Journalism", "International Relations", "Chemistry"],
+    "highlights": ["Black Sea research focus", "Compact city campus", "Language programs"],
+    "campus": {
+      "x": 53,
+      "y": 75,
+      "label": "Coastal campus"
+    }
+  }
+]
