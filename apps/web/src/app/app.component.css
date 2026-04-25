@@ -1,0 +1,85 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f6f8fb;
+  color: #172033;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d9e1ec;
+  background: #ffffff;
+  color: #172033;
+}
+
+.shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+.intro {
+  max-width: 760px;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #516174;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  line-height: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.university-card {
+  border: 1px solid #d9e1ec;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.stats span {
+  border-radius: 8px;
+  background: #eef3f8;
+  padding: 14px;
+  color: #516174;
+}
+
+.stats strong {
+  display: block;
+  color: #172033;
+  font-size: 1.35rem;
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: min(100% - 24px, 1120px);
+    padding: 32px 0;
+  }
+
+  .topbar {
+    padding-inline: 12px;
+  }
+}

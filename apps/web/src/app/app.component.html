@@ -1,0 +1,41 @@
+<mat-toolbar class="topbar">
+  <span>University Overview</span>
+  <a mat-stroked-button href="/api/universities" target="_blank" rel="noreferrer">API</a>
+</mat-toolbar>
+
+<main class="shell">
+  <section class="intro">
+    <p class="eyebrow">Angular + NestJS monorepo</p>
+    <h1>Browse university programs from a local JSON-backed API.</h1>
+  </section>
+
+  @if (universities$ | async; as universities) {
+    <section class="grid" aria-label="University list">
+      @for (university of universities; track university.id) {
+        <mat-card class="university-card">
+          <mat-card-header>
+            <mat-card-title>{{ university.name }}</mat-card-title>
+            <mat-card-subtitle>{{ university.city }}, {{ university.country }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="stats">
+              <span>
+                <strong>{{ university.programs }}</strong>
+                programs
+              </span>
+              <span>
+                <strong>{{ university.students | number }}</strong>
+                students
+              </span>
+            </div>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <a mat-flat-button color="primary" [href]="university.website" target="_blank" rel="noreferrer">
+              Visit site
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </section>
+  }
+</main>

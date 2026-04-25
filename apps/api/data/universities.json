@@ -1,0 +1,29 @@
+[
+  {
+    "id": "knu",
+    "name": "Taras Shevchenko National University of Kyiv",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "programs": 98,
+    "students": 26000,
+    "website": "https://knu.ua"
+  },
+  {
+    "id": "kpi",
+    "name": "Igor Sikorsky Kyiv Polytechnic Institute",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "programs": 121,
+    "students": 25000,
+    "website": "https://kpi.ua"
+  },
+  {
+    "id": "lnu",
+    "name": "Ivan Franko National University of Lviv",
+    "city": "Lviv",
+    "country": "Ukraine",
+    "programs": 83,
+    "students": 19000,
+    "website": "https://lnu.edu.ua"
+  }
+]

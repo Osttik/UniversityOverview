@@ -1,0 +1,13 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@university-overview/shared": ["libs/shared/src/index.d.ts"]
+    },
+    "skipLibCheck": true,
+    "strict": true
+  }
+}
