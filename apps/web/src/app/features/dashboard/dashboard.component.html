@@ -11,7 +11,7 @@
   </div>
 
   <div class="metrics" aria-label="University metrics">
-    @for (metric of metrics; track metric.label) {
+    @for (metric of metrics(); track metric.label) {
       <mat-card class="metric">
         <mat-card-content>
           <mat-icon fontSet="material-symbols-outlined">{{ metric.icon }}</mat-icon>
@@ -24,15 +24,59 @@
 
   <section class="panel" aria-labelledby="featured-heading">
     <div class="panel__heading">
-      <h3 id="featured-heading">Featured universities</h3>
-      <button mat-stroked-button type="button">
-        <mat-icon fontSet="material-symbols-outlined">filter_list</mat-icon>
-        Filter
+      <div>
+        <h3 id="featured-heading">University search</h3>
+        <p>{{ universities().length }} results from the university API</p>
+      </div>
+      <button mat-stroked-button type="button" (click)="clearFilters()">
+        <mat-icon fontSet="material-symbols-outlined">filter_alt_off</mat-icon>
+        Clear filters
       </button>
     </div>
 
+    <div class="search-filters" aria-label="University filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Search universities</mat-label>
+        <input
+          matInput
+          type="search"
+          [value]="searchText()"
+          (input)="updateSearch($any($event.target).value)"
+        />
+        <mat-icon matSuffix fontSet="material-symbols-outlined">search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>City</mat-label>
+        <mat-select [value]="selectedCity()" (selectionChange)="updateCity($event.value)">
+          <mat-option value="">All cities</mat-option>
+          @for (city of cities(); track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Degree</mat-label>
+        <mat-select [value]="selectedDegree()" (selectionChange)="updateDegree($event.value)">
+          <mat-option value="">All degrees</mat-option>
+          @for (degree of degrees(); track degree) {
+            <mat-option [value]="degree">{{ degree }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    @if (isLoading()) {
+      <div class="empty-state">Loading universities...</div>
+    } @else if (errorMessage()) {
+      <div class="empty-state">{{ errorMessage() }}</div>
+    } @else if (!universities().length) {
+      <div class="empty-state">No universities match the current filters.</div>
+    }
+
     <div class="university-list">
-      @for (university of universities; track university.id) {
+      @for (university of universities(); track university.id) {
         <mat-card class="university-card">
           <mat-card-content>
             <div>
@@ -40,9 +84,9 @@
               <p>{{ university.city }}, {{ university.country }}</p>
             </div>
             <mat-chip-set aria-label="University facts">
-              <mat-chip>{{ university.programsCount }} programs</mat-chip>
-              <mat-chip>{{ university.campusesCount }} campuses</mat-chip>
-              <mat-chip>Rating {{ university.rating }}</mat-chip>
+              <mat-chip>{{ university.programs }} programs</mat-chip>
+              <mat-chip>{{ university.faculties }} faculties</mat-chip>
+              <mat-chip>{{ university.students }} students</mat-chip>
             </mat-chip-set>
           </mat-card-content>
         </mat-card>
