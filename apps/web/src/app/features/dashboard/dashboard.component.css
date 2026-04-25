@@ -1,0 +1,123 @@
+.dashboard {
+  display: grid;
+  gap: 22px;
+}
+
+.dashboard__intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--uo-accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+h2 {
+  max-width: 780px;
+  margin-bottom: 0;
+  font-size: 34px;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.metric,
+.panel,
+.university-card {
+  border: 1px solid var(--uo-line);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.metric mat-card-content {
+  display: grid;
+  gap: 8px;
+}
+
+.metric mat-icon {
+  color: var(--uo-accent);
+}
+
+.metric span,
+.university-card p {
+  color: var(--uo-muted);
+}
+
+.metric strong {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.panel {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  background: var(--uo-panel);
+}
+
+.panel__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.panel__heading h3 {
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+.university-list {
+  display: grid;
+  gap: 12px;
+}
+
+.university-card mat-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.university-card h4 {
+  margin-bottom: 6px;
+  font-size: 18px;
+}
+
+.university-card p {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .dashboard__intro,
+  .university-card mat-card-content {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+}

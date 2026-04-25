@@ -1,0 +1,126 @@
+.map-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 18px;
+}
+
+.map-page__main,
+.locations {
+  border: 1px solid var(--uo-line);
+  border-radius: 8px;
+  background: var(--uo-panel);
+  box-shadow: none;
+}
+
+.map-page__main {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+
+.map-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.map-toolbar h2,
+.map-toolbar p {
+  margin: 0;
+}
+
+.map-toolbar h2 {
+  margin-top: 6px;
+  font-size: 28px;
+  letter-spacing: 0;
+}
+
+.eyebrow {
+  color: var(--uo-accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.map-toolbar__actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.map-canvas {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid #c8d4df;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(15, 118, 110, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(15, 118, 110, 0.08) 1px, transparent 1px),
+    linear-gradient(135deg, #f7fbfc, #dce7ed);
+  background-size: 46px 46px, 46px 46px, 100% 100%;
+}
+
+.map-canvas::before,
+.map-canvas::after {
+  position: absolute;
+  content: '';
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 0 0 1px #cfd9e2;
+}
+
+.map-canvas::before {
+  left: 18%;
+  top: 22%;
+  width: 42%;
+  height: 18%;
+}
+
+.map-canvas::after {
+  right: 14%;
+  bottom: 18%;
+  width: 34%;
+  height: 24%;
+}
+
+.map-pin {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--uo-accent);
+  color: #ffffff;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 24px rgba(19, 78, 74, 0.22);
+}
+
+.locations {
+  align-self: start;
+  padding: 8px;
+}
+
+@media (max-width: 1040px) {
+  .map-page {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .map-toolbar {
+    flex-direction: column;
+  }
+
+  .map-toolbar__actions {
+    flex-wrap: wrap;
+  }
+
+  .map-canvas {
+    min-height: 420px;
+  }
+}
