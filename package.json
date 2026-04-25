@@ -1,13 +1,13 @@
 {
-  "name": "university-overview-web",
-  "version": "0.1.0",
+  "name": "university-overview",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run build:backend && npm run build:frontend",
-    "build:backend": "tsc -p backend/tsconfig.build.json",
-    "build:frontend": "ng build frontend",
-    "smoke": "node tools/smoke.mjs",
-    "start": "node dist/backend/main.js"
+    "build": "npm run build:web && npm run build:api",
+    "build:web": "ng build web",
+    "build:api": "tsc -p apps/api/tsconfig.app.json",
+    "typecheck": "npm run build",
+    "start:api": "node dist/apps/api/main.js"
   },
   "dependencies": {
     "@angular/animations": "21.2.10",
@@ -22,17 +22,16 @@
     "@nestjs/common": "11.1.19",
     "@nestjs/core": "11.1.19",
     "@nestjs/platform-express": "11.1.19",
-    "@nestjs/serve-static": "5.0.5",
+    "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "tslib": "2.8.1",
     "zone.js": "0.16.0"
   },
   "devDependencies": {
-    "@angular/build": "21.2.8",
+    "@angular-devkit/build-angular": "21.2.8",
     "@angular/cli": "21.2.8",
     "@angular/compiler-cli": "21.2.10",
-    "@types/express": "5.0.6",
-    "@types/node": "22.19.1",
+    "@types/node": "24.10.1",
     "typescript": "5.9.3"
   }
 }

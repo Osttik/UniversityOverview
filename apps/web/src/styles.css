@@ -1,0 +1,53 @@
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+:root {
+  color-scheme: light;
+  font-family: Inter, Arial, sans-serif;
+  --uo-bg: #eef2f6;
+  --uo-panel: #ffffff;
+  --uo-panel-soft: #f8fafc;
+  --uo-line: #d9e1ea;
+  --uo-text: #172033;
+  --uo-ink: #18324f;
+  --uo-muted: #667085;
+  --uo-accent: #0f766e;
+  --uo-accent-strong: #134e4a;
+  --uo-warn: #b45309;
+  --uo-danger: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--uo-bg);
+  color: var(--uo-text);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.material-symbols-outlined {
+  display: inline-block;
+  font-family: 'Material Symbols Outlined';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  font-feature-settings: 'liga';
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}

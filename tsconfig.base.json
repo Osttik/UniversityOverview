@@ -3,16 +3,22 @@
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": false,
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
     "moduleResolution": "node",
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": true,
-    "strict": true
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@university-overview/shared": [
+        "libs/shared/src/index.d.ts"
+      ]
+    },
+    "strict": true,
+    "target": "ES2022"
   }
 }

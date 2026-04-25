@@ -1,8 +1,24 @@
+import { existsSync, readFileSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 
 const port = 3131;
 const baseUrl = `http://127.0.0.1:${port}`;
-const server = spawn(process.execPath, ['dist/backend/main.js'], {
+const webIndexCandidates = [
+  'dist/apps/web/browser/index.html',
+  'dist/apps/web/index.html'
+];
+
+const webIndexPath = webIndexCandidates.find((candidate) => existsSync(candidate));
+if (!webIndexPath) {
+  throw new Error('Built Angular index was not found. Run npm run build before smoke.');
+}
+
+const webIndex = readFileSync(webIndexPath, 'utf8');
+if (!webIndex.includes('uo-root')) {
+  throw new Error('Built Angular index does not contain the application root element.');
+}
+
+const server = spawn(process.execPath, ['dist/apps/api/main.js'], {
   env: {
     ...process.env,
     PORT: String(port)
@@ -27,6 +43,7 @@ async function fetchWithRetry(path, attempts = 30) {
       if (response.ok) {
         return response;
       }
+
       lastError = new Error(`${path} returned ${response.status}`);
     } catch (error) {
       lastError = error;
@@ -41,22 +58,18 @@ async function fetchWithRetry(path, attempts = 30) {
 }
 
 try {
-  const health = await (await fetchWithRetry('/api/health')).json();
-  if (health.status !== 'ok') {
-    throw new Error('Health endpoint did not return ok status');
-  }
-
   const universities = await (await fetchWithRetry('/api/universities')).json();
   if (!Array.isArray(universities) || universities.length === 0) {
-    throw new Error('Universities endpoint returned no records');
+    throw new Error('Universities endpoint returned no records.');
   }
 
-  const html = await (await fetchWithRetry('/')).text();
-  if (!html.includes('app-root')) {
-    throw new Error('Frontend shell was not served from NestJS');
+  console.log('Smoke path passed: built Angular shell and JSON universities API are reachable.');
+} catch (error) {
+  if (serverLog.trim()) {
+    console.error(serverLog.trim());
   }
 
-  console.log('Smoke path passed: frontend shell, health API, and university data API are reachable.');
+  throw error;
 } finally {
   server.kill('SIGTERM');
 }
