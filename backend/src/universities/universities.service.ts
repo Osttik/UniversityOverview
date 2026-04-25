@@ -1,14 +1,16 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { join } from 'node:path';
+import { existsSync } from 'node:fs';
+import { dirname, join, parse } from 'node:path';
 import { JsonFileRepository } from '../common/json-file.repository';
 import { CreateUniversityDto, UpdateUniversityDto } from './dto/university.dto';
 import { University } from './university.entity';
 
+const backendRoot = findBackendRoot(__dirname);
+const universitiesDataPath = join(backendRoot, 'data', 'universities.json');
+
 @Injectable()
 export class UniversitiesService {
-  private readonly repository = new JsonFileRepository<University>(
-    join(__dirname, '..', '..', 'data', 'universities.json'),
-  );
+  private readonly repository = new JsonFileRepository<University>(universitiesDataPath);
 
   async findAll(): Promise<University[]> {
     return this.repository.findAll();
@@ -137,5 +139,22 @@ export class UniversitiesService {
 
   private isNonEmptyString(value: unknown): value is string {
     return typeof value === 'string' && value.trim().length > 0;
+  }
+}
+
+function findBackendRoot(startDir: string): string {
+  let currentDir = startDir;
+  const filesystemRoot = parse(startDir).root;
+
+  while (true) {
+    if (existsSync(join(currentDir, 'package.json')) && existsSync(join(currentDir, 'data'))) {
+      return currentDir;
+    }
+
+    if (currentDir === filesystemRoot) {
+      return process.cwd();
+    }
+
+    currentDir = dirname(currentDir);
   }
 }
