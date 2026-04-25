@@ -1,46 +1,51 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "apps",
   "projects": {
-    "university-overview-client": {
+    "web": {
       "projectType": "application",
-      "schematics": {},
-      "root": "client",
-      "sourceRoot": "client/src",
-      "prefix": "app",
+      "root": "apps/web",
+      "sourceRoot": "apps/web/src",
+      "prefix": "uo",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/client",
-            "index": "client/src/index.html",
-            "browser": "client/src/main.ts",
-            "polyfills": [
-              "zone.js"
+            "outputPath": "dist/apps/web",
+            "index": "apps/web/src/index.html",
+            "browser": "apps/web/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "apps/web/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/web/public",
+                "output": "/"
+              }
             ],
-            "tsConfig": "client/tsconfig.app.json",
-            "assets": [],
-            "styles": [
-              "client/src/styles.css"
-            ],
-            "scripts": []
+            "styles": ["apps/web/src/styles.css"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "600kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "650kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "8kB",
-                  "maximumError": "12kB"
+                  "maximumWarning": "8kb",
+                  "maximumError": "12kb"
                 }
               ],
               "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"

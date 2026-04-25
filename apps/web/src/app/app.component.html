@@ -1,0 +1,43 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav mode="side" opened class="shell__nav">
+    <a class="brand" routerLink="/overview" aria-label="University Overview home">
+      <span class="brand__mark">UO</span>
+      <span>
+        <strong>University Overview</strong>
+        <small>Campus intelligence</small>
+      </span>
+    </a>
+
+    <nav class="nav-list" aria-label="Main navigation">
+      @for (item of navItems; track item.route) {
+        <a
+          mat-button
+          class="nav-list__item"
+          [routerLink]="item.route"
+          routerLinkActive="nav-list__item--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon fontSet="material-symbols-outlined">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="shell__content">
+    <mat-toolbar class="topbar">
+      <div>
+        <span class="topbar__eyebrow">Angular app shell</span>
+        <h1>University Overview</h1>
+      </div>
+      <button mat-flat-button color="primary" type="button" matTooltip="Create university profile">
+        <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+        New profile
+      </button>
+    </mat-toolbar>
+
+    <main class="page">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
