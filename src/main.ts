@@ -28,8 +28,8 @@ class AppComponent implements AfterViewInit {
   @ViewChild('viewport', { static: true })
   private viewportRef!: ElementRef<HTMLElement>;
 
-  protected readonly mapWidth = 1280;
-  protected readonly mapHeight = 860;
+  protected readonly mapWidth = signal(1280);
+  protected readonly mapHeight = signal(960);
   protected readonly scale = signal(1);
   protected readonly panX = signal(0);
   protected readonly panY = signal(0);
@@ -128,15 +128,17 @@ class AppComponent implements AfterViewInit {
 
   protected resetViewport(): void {
     const viewport = this.viewportRef.nativeElement;
+    const mapWidth = this.mapWidth();
+    const mapHeight = this.mapHeight();
     const fitScale = Math.min(
-      viewport.clientWidth / this.mapWidth,
-      viewport.clientHeight / this.mapHeight
+      viewport.clientWidth / mapWidth,
+      viewport.clientHeight / mapHeight
     ) * 0.94;
     const nextScale = this.clamp(fitScale, this.minScale, this.maxScale);
 
     this.scale.set(nextScale);
-    this.panX.set((viewport.clientWidth - this.mapWidth * nextScale) / 2);
-    this.panY.set((viewport.clientHeight - this.mapHeight * nextScale) / 2);
+    this.panX.set((viewport.clientWidth - mapWidth * nextScale) / 2);
+    this.panY.set((viewport.clientHeight - mapHeight * nextScale) / 2);
   }
 
   protected selectMarker(marker: CampusMarker, event: MouseEvent): void {
@@ -146,6 +148,25 @@ class AppComponent implements AfterViewInit {
 
   protected clearMarker(): void {
     this.activeMarker.set(null);
+  }
+
+  protected syncMapSize(event: Event): void {
+    const image = event.target as HTMLImageElement;
+
+    if (!image.naturalWidth || !image.naturalHeight) {
+      return;
+    }
+
+    const sizeChanged =
+      this.mapWidth() !== image.naturalWidth ||
+      this.mapHeight() !== image.naturalHeight;
+
+    this.mapWidth.set(image.naturalWidth);
+    this.mapHeight.set(image.naturalHeight);
+
+    if (sizeChanged) {
+      this.resetViewport();
+    }
   }
 
   private zoomFromCenter(factor: number): void {
@@ -164,8 +185,8 @@ class AppComponent implements AfterViewInit {
 
   private clampPan(): void {
     const viewport = this.viewportRef.nativeElement;
-    const scaledWidth = this.mapWidth * this.scale();
-    const scaledHeight = this.mapHeight * this.scale();
+    const scaledWidth = this.mapWidth() * this.scale();
+    const scaledHeight = this.mapHeight() * this.scale();
 
     this.panX.set(this.clampAxis(this.panX(), viewport.clientWidth, scaledWidth));
     this.panY.set(this.clampAxis(this.panY(), viewport.clientHeight, scaledHeight));

@@ -39,10 +39,15 @@
       (click)="clearMarker()">
       <div
         class="map-layer"
-        [style.width.px]="mapWidth"
-        [style.height.px]="mapHeight"
+        [style.width.px]="mapWidth()"
+        [style.height.px]="mapHeight()"
         [style.transform]="transform">
-        <img class="map-image" src="assets/maps/1.1.jpg" alt="Campus overview map" draggable="false">
+        <img
+          class="map-image"
+          src="assets/maps/1.1.jpg"
+          alt="Campus overview map"
+          draggable="false"
+          (load)="syncMapSize($event)">
 
         <button
           type="button"
