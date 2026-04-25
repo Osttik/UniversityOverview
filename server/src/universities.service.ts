@@ -69,7 +69,7 @@ export class UniversitiesService {
           return false;
         }
 
-        if (Number.isFinite(maxTuition) && university.tuitionFrom > maxTuition) {
+        if (Number.isFinite(maxTuition) && university.tuitionTo > maxTuition) {
           return false;
         }
 
