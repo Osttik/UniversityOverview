@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run build:api && npm run build:web",
-    "build:api": "tsc -p apps/api/tsconfig.build.json",
+    "build": "npm run build:web && npm run build:api",
     "build:web": "ng build web",
-    "typecheck": "npm run build"
+    "build:api": "tsc -p apps/api/tsconfig.app.json",
+    "typecheck": "npm run build",
+    "start:api": "node dist/apps/api/main.js"
   },
   "dependencies": {
     "@angular/animations": "21.2.10",

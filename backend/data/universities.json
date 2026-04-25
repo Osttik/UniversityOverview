@@ -1,0 +1,28 @@
+[
+  {
+    "id": "university-overview-demo",
+    "createdAt": "2026-04-25T00:00:00.000Z",
+    "updatedAt": "2026-04-25T00:00:00.000Z",
+    "name": "University Overview Demo",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "description": "Seed record for the local JSON-backed university overview API.",
+    "website": "https://example.edu",
+    "campuses": [
+      {
+        "id": "main-campus",
+        "name": "Main Campus",
+        "address": "1 University Ave",
+        "mapImage": "Images/1.1.jpg"
+      }
+    ],
+    "programs": [
+      {
+        "id": "computer-science",
+        "name": "Computer Science",
+        "degree": "Bachelor",
+        "durationYears": 4
+      }
+    ]
+  }
+]

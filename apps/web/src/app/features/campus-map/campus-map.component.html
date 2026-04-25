@@ -1,0 +1,190 @@
+<section class="map-page">
+  <div class="map-page__main">
+    <div class="map-toolbar">
+      <div>
+        <p class="eyebrow">Campus map</p>
+        <h2>{{ campusMap()?.name || 'Campus map' }}</h2>
+      </div>
+      <div class="map-toolbar__actions">
+        <button mat-icon-button type="button" aria-label="Zoom out" (click)="zoomOut()">
+          <mat-icon fontSet="material-symbols-outlined">remove</mat-icon>
+        </button>
+        <span class="zoom-readout">{{ zoomPercent }}%</span>
+        <button mat-icon-button type="button" aria-label="Zoom in" (click)="zoomIn()">
+          <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+        </button>
+        <button mat-stroked-button type="button" (click)="resetViewport()">
+          <mat-icon fontSet="material-symbols-outlined">center_focus_strong</mat-icon>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div
+      #viewport
+      class="map-canvas"
+      aria-label="Interactive campus map"
+      (wheel)="onWheel($event)"
+      (pointerdown)="startPan($event)"
+      (pointermove)="movePan($event)"
+      (pointerup)="endPan($event)"
+      (pointercancel)="endPan($event)"
+      (click)="clearLocation()"
+    >
+      @if (campusMap(); as map) {
+        <div
+          class="map-layer"
+          [style.width.px]="mapWidth()"
+          [style.height.px]="mapHeight()"
+          [style.transform]="transform"
+        >
+          <img
+            class="map-image"
+            [src]="map.imageUrl"
+            alt="Campus overview map"
+            draggable="false"
+            (load)="syncMapSize($event)"
+          />
+
+          @for (location of filteredLocations(); track location.id) {
+            <button
+              class="map-pin"
+              type="button"
+              [class.map-pin--active]="activeLocation()?.id === location.id"
+              [style.left.%]="location.coordinates.x"
+              [style.top.%]="location.coordinates.y"
+              [attr.aria-label]="location.name"
+              (click)="selectLocation(location, $event)"
+            >
+              <mat-icon fontSet="material-symbols-outlined">location_on</mat-icon>
+            </button>
+          }
+        </div>
+      }
+
+      @if (isLoading()) {
+        <div class="map-empty">Loading campus map...</div>
+      } @else if (errorMessage()) {
+        <div class="map-empty">{{ errorMessage() }}</div>
+      } @else if (!filteredLocations().length) {
+        <div class="map-empty">No locations match the current filters.</div>
+      }
+
+      @if (activeLocation(); as location) {
+        <article class="location-popover">
+          <mat-chip-set aria-label="Selected location metadata">
+            <mat-chip>{{ location.type }}</mat-chip>
+            @if (location.floor) {
+              <mat-chip>Floor {{ location.floor }}</mat-chip>
+            }
+          </mat-chip-set>
+          <h3>{{ location.name }}</h3>
+          <p>{{ location.tags.join(' / ') }}</p>
+        </article>
+      }
+    </div>
+  </div>
+
+  <mat-card class="locations">
+    <mat-card-header>
+      <mat-card-title>Locations</mat-card-title>
+      <mat-card-subtitle>
+        {{ filteredLocations().length }} of {{ campusMap()?.locations?.length || 0 }} visible
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="location-filters" aria-label="Location filters">
+        <mat-form-field appearance="outline">
+          <mat-label>Search locations</mat-label>
+          <input
+            matInput
+            type="search"
+            [value]="searchText()"
+            (input)="updateSearch($any($event.target).value)"
+          />
+          <mat-icon matSuffix fontSet="material-symbols-outlined">search</mat-icon>
+        </mat-form-field>
+
+        <div class="location-filters__row">
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select [value]="selectedType()" (selectionChange)="updateType($event.value)">
+              <mat-option value="">All types</mat-option>
+              @for (type of locationTypes; track type) {
+                <mat-option [value]="type">{{ type }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Floor</mat-label>
+            <mat-select [value]="selectedFloor()" (selectionChange)="updateFloor($event.value)">
+              <mat-option value="">All floors</mat-option>
+              @for (floor of availableFloors(); track floor) {
+                <mat-option [value]="floor">{{ floor }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <button mat-stroked-button type="button" (click)="clearFilters()">
+          <mat-icon fontSet="material-symbols-outlined">filter_alt_off</mat-icon>
+          Clear filters
+        </button>
+      </div>
+
+      <mat-list class="location-list">
+        @for (location of filteredLocations(); track location.id) {
+          <mat-list-item
+            class="location-item"
+            [class.location-item--active]="activeLocation()?.id === location.id"
+            (click)="selectLocation(location, $event)"
+          >
+            <mat-icon matListItemIcon fontSet="material-symbols-outlined">apartment</mat-icon>
+            <div matListItemTitle>{{ location.name }}</div>
+            <div matListItemLine>
+              {{ location.type }} {{ location.buildingCode || '' }}
+              @if (location.floor) {
+                <span>Floor {{ location.floor }}</span>
+              }
+            </div>
+          </mat-list-item>
+        }
+      </mat-list>
+
+      @if (activeLocation(); as location) {
+        <section class="location-detail" aria-label="Selected location detail">
+          <p class="eyebrow">Selected location</p>
+          <h3>{{ location.name }}</h3>
+          <dl>
+            <div>
+              <dt>Type</dt>
+              <dd>{{ location.type }}</dd>
+            </div>
+            @if (location.buildingCode) {
+              <div>
+                <dt>Building</dt>
+                <dd>{{ location.buildingCode }}</dd>
+              </div>
+            }
+            @if (location.floor) {
+              <div>
+                <dt>Floor</dt>
+                <dd>{{ location.floor }}</dd>
+              </div>
+            }
+            <div>
+              <dt>Map point</dt>
+              <dd>{{ location.coordinates.x }}%, {{ location.coordinates.y }}%</dd>
+            </div>
+          </dl>
+          <mat-chip-set aria-label="Location tags">
+            @for (tag of location.tags; track tag) {
+              <mat-chip>{{ tag }}</mat-chip>
+            }
+          </mat-chip-set>
+        </section>
+      }
+    </mat-card-content>
+  </mat-card>
+</section>

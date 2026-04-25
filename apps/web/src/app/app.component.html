@@ -1,136 +1,43 @@
-<main class="shell">
-  <aside class="sidebar">
-    <section class="brand">
-      <div class="brand-mark">UO</div>
+<mat-sidenav-container class="shell">
+  <mat-sidenav mode="side" opened class="shell__nav">
+    <a class="brand" routerLink="/overview" aria-label="University Overview home">
+      <span class="brand__mark">UO</span>
+      <span>
+        <strong>University Overview</strong>
+        <small>Campus intelligence</small>
+      </span>
+    </a>
+
+    <nav class="nav-list" aria-label="Main navigation">
+      @for (item of navItems; track item.route) {
+        <a
+          mat-button
+          class="nav-list__item"
+          [routerLink]="item.route"
+          routerLinkActive="nav-list__item--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon fontSet="material-symbols-outlined">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="shell__content">
+    <mat-toolbar class="topbar">
       <div>
+        <span class="topbar__eyebrow">Replacement workspace</span>
         <h1>University Overview</h1>
-        <p>Modern campus discovery for Ukrainian universities.</p>
       </div>
-    </section>
+      <a mat-flat-button color="primary" routerLink="/map" matTooltip="Open campus map">
+        <mat-icon fontSet="material-symbols-outlined">map</mat-icon>
+        Open map
+      </a>
+    </mat-toolbar>
 
-    <label class="search">
-      <span>Search</span>
-      <input
-        type="search"
-        [ngModel]="searchText()"
-        (ngModelChange)="updateSearch($event)"
-        placeholder="Program, city, focus"
-      >
-    </label>
-
-    <mat-chip-set aria-label="University categories">
-      @for (category of categories(); track category) {
-        <mat-chip-option
-          [selected]="activeCategory() === category"
-          (selectionChange)="selectCategory(category)"
-        >
-          {{ category }}
-        </mat-chip-option>
-      }
-    </mat-chip-set>
-
-    <div class="stats">
-      <div>
-        <strong>{{ universities().length }}</strong>
-        <span>schools</span>
-      </div>
-      <div>
-        <strong>{{ formatStudents(totalStudents()) }}</strong>
-        <span>students</span>
-      </div>
-      <div>
-        <strong>{{ averageRating() | number: '1.1-1' }}</strong>
-        <span>avg rating</span>
-      </div>
-    </div>
-
-    @if (isLoading()) {
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    }
-
-    @if (errorMessage()) {
-      <p class="error">{{ errorMessage() }}</p>
-    }
-
-    <section class="result-list" aria-label="Universities">
-      @for (university of filteredUniversities(); track university.id) {
-        <button
-          type="button"
-          class="result-card"
-          [class.active]="selectedUniversity()?.id === university.id"
-          (click)="selectUniversity(university.id)"
-        >
-          <span class="result-meta">{{ university.city }} / {{ university.founded }}</span>
-          <strong>{{ university.name }}</strong>
-          <span>{{ university.programs.slice(0, 3).join(' · ') }}</span>
-        </button>
-      } @empty {
-        <div class="empty">
-          <strong>No matches</strong>
-          <span>Try another city, program, or category.</span>
-          <button mat-stroked-button type="button" (click)="clearFilters()">Clear filters</button>
-        </div>
-      }
-    </section>
-  </aside>
-
-  <section class="workspace">
-    <div class="toolbar">
-      <div>
-        <span class="eyebrow">Interactive campus map</span>
-        <h2>{{ selectedUniversity()?.name ?? 'Select a university' }}</h2>
-      </div>
-      <button mat-flat-button color="primary" type="button" (click)="clearFilters()">Reset view</button>
-    </div>
-
-    <section class="map-panel" aria-label="University map">
-      <div class="map-grid"></div>
-      <div class="route route-one"></div>
-      <div class="route route-two"></div>
-      @for (university of filteredUniversities(); track university.id) {
-        <button
-          type="button"
-          class="map-pin"
-          [class.active]="selectedUniversity()?.id === university.id"
-          [style.left.%]="university.campus.x"
-          [style.top.%]="university.campus.y"
-          (click)="selectUniversity(university.id)"
-          [attr.aria-label]="'Select ' + university.name"
-        >
-          <span></span>
-        </button>
-      }
-    </section>
-
-    @if (selectedUniversity(); as university) {
-      <section class="detail">
-        <div>
-          <span class="eyebrow">{{ university.region }}</span>
-          <h3>{{ university.campus.label }}</h3>
-          <p>{{ university.name }} pairs {{ university.programs[0] }} and {{ university.programs[1] }} with a {{ university.rating | number: '1.1-1' }} student rating.</p>
-        </div>
-
-        <div class="detail-grid">
-          <div>
-            <span>Tuition</span>
-            <strong>{{ formatTuition(university.tuitionUsd) }}</strong>
-          </div>
-          <div>
-            <span>Students</span>
-            <strong>{{ formatStudents(university.students) }}</strong>
-          </div>
-          <div>
-            <span>Founded</span>
-            <strong>{{ university.founded }}</strong>
-          </div>
-        </div>
-
-        <div class="programs">
-          @for (program of university.programs; track program) {
-            <span>{{ program }}</span>
-          }
-        </div>
-      </section>
-    }
-  </section>
-</main>
+    <main class="page">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
