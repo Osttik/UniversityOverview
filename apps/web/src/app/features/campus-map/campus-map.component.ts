@@ -280,6 +280,7 @@ export class CampusMapComponent implements AfterViewInit {
       .subscribe({
         next: (locations) => {
           this.filteredLocations.set(locations);
+          this.errorMessage.set(null);
 
           const selected = this.activeLocation();
           if (!selected || !locations.some((location) => location.id === selected.id)) {
