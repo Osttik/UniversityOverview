@@ -1,0 +1,143 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.shell {
+  min-height: 100vh;
+  background: var(--uo-bg);
+}
+
+.shell__nav {
+  width: 280px;
+  border-right: 1px solid var(--uo-line);
+  background: #f9fbfc;
+  padding: 20px 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--uo-text);
+  text-decoration: none;
+  margin-bottom: 28px;
+}
+
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--uo-accent);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand small {
+  margin-top: 2px;
+  color: var(--uo-muted);
+  font-size: 12px;
+}
+
+.nav-list {
+  display: grid;
+  gap: 8px;
+}
+
+.nav-list__item {
+  justify-content: flex-start;
+  min-height: 44px;
+  border-radius: 8px;
+  color: var(--uo-text);
+}
+
+.nav-list__item mat-icon {
+  margin-right: 10px;
+}
+
+.nav-list__item--active {
+  background: #d9f0ed;
+  color: var(--uo-accent-strong);
+}
+
+.shell__content {
+  min-height: 100vh;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  min-height: 82px;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--uo-line);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.topbar__eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--uo-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.page {
+  width: min(1180px, calc(100vw - 336px));
+  margin: 0 auto;
+  padding: 28px;
+}
+
+@media (max-width: 860px) {
+  .shell__nav {
+    width: 92px;
+    padding-inline: 12px;
+  }
+
+  .brand span:last-child,
+  .nav-list__item span {
+    display: none;
+  }
+
+  .nav-list__item {
+    justify-content: center;
+    min-width: 52px;
+  }
+
+  .nav-list__item mat-icon {
+    margin: 0;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+  }
+
+  .topbar h1 {
+    font-size: 22px;
+  }
+
+  .page {
+    width: calc(100vw - 92px);
+    padding: 18px;
+  }
+}

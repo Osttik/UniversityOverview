@@ -1,47 +1,89 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
   ViewChild,
   signal
 } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
-type CampusMarker = {
-  id: string;
-  name: string;
-  category: string;
-  x: number;
-  y: number;
-};
+import { CampusLocation, CampusMap } from '../../core/models/campus-map.models';
 
 @Component({
-  selector: 'app-root',
+  selector: 'uo-campus-map',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './app/app.component.html',
-  styleUrl: './app/app.component.css'
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatChipsModule,
+    MatIconModule,
+    MatListModule
+  ],
+  templateUrl: './campus-map.component.html',
+  styleUrl: './campus-map.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-class AppComponent implements AfterViewInit {
+export class CampusMapComponent implements AfterViewInit {
   @ViewChild('viewport', { static: true })
   private viewportRef!: ElementRef<HTMLElement>;
 
-  protected readonly mapWidth = signal(1280);
-  protected readonly mapHeight = signal(960);
+  protected readonly campusMap: CampusMap = {
+    universityId: 'knu',
+    name: 'KNU campus map',
+    imageUrl: '/assets/images/legacy/campus-map.jpg',
+    width: 1200,
+    height: 760,
+    updatedAt: '2026-04-25T00:00:00.000Z',
+    locations: [
+      {
+        id: 'main-hall',
+        name: 'Main Hall',
+        type: 'building',
+        buildingCode: 'A',
+        floor: '1',
+        tags: ['Admissions', 'Rectorate'],
+        coordinates: { x: 26, y: 38 }
+      },
+      {
+        id: 'science-wing',
+        name: 'Science Wing',
+        type: 'faculty',
+        buildingCode: 'C',
+        floor: '2',
+        tags: ['Labs', 'Lecture rooms'],
+        coordinates: { x: 68, y: 58 }
+      },
+      {
+        id: 'student-services',
+        name: 'Student Services',
+        type: 'service',
+        buildingCode: 'B',
+        floor: '1',
+        tags: ['Records', 'Scholarships'],
+        coordinates: { x: 48, y: 68 }
+      },
+      {
+        id: 'metro-stop',
+        name: 'Metro entrance',
+        type: 'transport',
+        tags: ['Transit'],
+        coordinates: { x: 14, y: 76 }
+      }
+    ]
+  };
+
+  protected readonly mapWidth = signal(this.campusMap.width);
+  protected readonly mapHeight = signal(this.campusMap.height);
   protected readonly scale = signal(1);
   protected readonly panX = signal(0);
   protected readonly panY = signal(0);
-  protected readonly activeMarker = signal<CampusMarker | null>(null);
-
-  protected readonly markers: CampusMarker[] = [
-    { id: 'admin', name: 'Administration', category: 'Services', x: 18, y: 33 },
-    { id: 'library', name: 'Main Library', category: 'Study', x: 38, y: 48 },
-    { id: 'science', name: 'Science Hall', category: 'Academic', x: 57, y: 37 },
-    { id: 'sports', name: 'Sports Center', category: 'Campus life', x: 76, y: 61 },
-    { id: 'dorms', name: 'Student Dorms', category: 'Housing', x: 62, y: 75 }
-  ];
+  protected readonly activeLocation = signal<CampusLocation | null>(this.campusMap.locations[0]);
 
   private readonly minScale = 0.35;
   private readonly maxScale = 3.25;
@@ -56,8 +98,12 @@ class AppComponent implements AfterViewInit {
   }
 
   @HostListener('window:resize')
-  protected resetOnResize(): void {
+  protected onWindowResize(): void {
     this.clampPan();
+  }
+
+  protected get locations(): CampusLocation[] {
+    return this.campusMap.locations;
   }
 
   protected get transform(): string {
@@ -87,7 +133,7 @@ class AppComponent implements AfterViewInit {
   }
 
   protected startPan(event: PointerEvent): void {
-    if (event.button !== 0) {
+    if (event.button !== 0 || this.isInteractiveTarget(event.target)) {
       return;
     }
 
@@ -115,7 +161,10 @@ class AppComponent implements AfterViewInit {
     }
 
     this.dragging = false;
-    this.viewportRef.nativeElement.releasePointerCapture(event.pointerId);
+
+    if (this.viewportRef.nativeElement.hasPointerCapture(event.pointerId)) {
+      this.viewportRef.nativeElement.releasePointerCapture(event.pointerId);
+    }
   }
 
   protected zoomIn(): void {
@@ -130,10 +179,8 @@ class AppComponent implements AfterViewInit {
     const viewport = this.viewportRef.nativeElement;
     const mapWidth = this.mapWidth();
     const mapHeight = this.mapHeight();
-    const fitScale = Math.min(
-      viewport.clientWidth / mapWidth,
-      viewport.clientHeight / mapHeight
-    ) * 0.94;
+    const fitScale =
+      Math.min(viewport.clientWidth / mapWidth, viewport.clientHeight / mapHeight) * 0.94;
     const nextScale = this.clamp(fitScale, this.minScale, this.maxScale);
 
     this.scale.set(nextScale);
@@ -141,13 +188,13 @@ class AppComponent implements AfterViewInit {
     this.panY.set((viewport.clientHeight - mapHeight * nextScale) / 2);
   }
 
-  protected selectMarker(marker: CampusMarker, event: MouseEvent): void {
-    event.stopPropagation();
-    this.activeMarker.set(marker);
+  protected selectLocation(location: CampusLocation, event?: Event): void {
+    event?.stopPropagation();
+    this.activeLocation.set(location);
   }
 
-  protected clearMarker(): void {
-    this.activeMarker.set(null);
+  protected clearLocation(): void {
+    this.activeLocation.set(null);
   }
 
   protected syncMapSize(event: Event): void {
@@ -158,8 +205,7 @@ class AppComponent implements AfterViewInit {
     }
 
     const sizeChanged =
-      this.mapWidth() !== image.naturalWidth ||
-      this.mapHeight() !== image.naturalHeight;
+      this.mapWidth() !== image.naturalWidth || this.mapHeight() !== image.naturalHeight;
 
     this.mapWidth.set(image.naturalWidth);
     this.mapHeight.set(image.naturalHeight);
@@ -203,8 +249,8 @@ class AppComponent implements AfterViewInit {
   private clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max);
   }
-}
 
-bootstrapApplication(AppComponent).catch((error: unknown) => {
-  console.error(error);
-});
+  private isInteractiveTarget(target: EventTarget | null): boolean {
+    return target instanceof HTMLElement && Boolean(target.closest('button, a, input'));
+  }
+}

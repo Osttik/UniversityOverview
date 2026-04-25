@@ -1,0 +1,52 @@
+<section class="dashboard">
+  <div class="dashboard__intro">
+    <div>
+      <p class="eyebrow">Operations dashboard</p>
+      <h2>Explore universities, programs, and campus locations from one workspace.</h2>
+    </div>
+    <a mat-flat-button color="primary" routerLink="/map">
+      <mat-icon fontSet="material-symbols-outlined">map</mat-icon>
+      Open campus map
+    </a>
+  </div>
+
+  <div class="metrics" aria-label="University metrics">
+    @for (metric of metrics; track metric.label) {
+      <mat-card class="metric">
+        <mat-card-content>
+          <mat-icon fontSet="material-symbols-outlined">{{ metric.icon }}</mat-icon>
+          <span>{{ metric.label }}</span>
+          <strong>{{ metric.value }}</strong>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <section class="panel" aria-labelledby="featured-heading">
+    <div class="panel__heading">
+      <h3 id="featured-heading">Featured universities</h3>
+      <button mat-stroked-button type="button">
+        <mat-icon fontSet="material-symbols-outlined">filter_list</mat-icon>
+        Filter
+      </button>
+    </div>
+
+    <div class="university-list">
+      @for (university of universities; track university.id) {
+        <mat-card class="university-card">
+          <mat-card-content>
+            <div>
+              <h4>{{ university.name }}</h4>
+              <p>{{ university.city }}, {{ university.country }}</p>
+            </div>
+            <mat-chip-set aria-label="University facts">
+              <mat-chip>{{ university.programsCount }} programs</mat-chip>
+              <mat-chip>{{ university.campusesCount }} campuses</mat-chip>
+              <mat-chip>Rating {{ university.rating }}</mat-chip>
+            </mat-chip-set>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </section>
+</section>
