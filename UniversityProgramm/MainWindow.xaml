@@ -27,9 +27,10 @@
             </controls:Map>-->
             <InkCanvas Background="Azure" EditingMode="None" Name="Map">
                 <Canvas x:Name="canvas"
-                    MouseLeftButtonDown="CanvasMouseLeftButtonDown"
-                    MouseLeftButtonUp="CanvasMouseLeftButtonUp"
-                    MouseMove="CanvasMouseMove">
+                        MouseWheel="CanvasMouseWheel"
+                        MouseLeftButtonDown="CanvasMouseLeftButtonDown"
+                        MouseLeftButtonUp="CanvasMouseLeftButtonUp"
+                        MouseMove="CanvasMouseMove">
                     <!--<Image Source="Images/1.1.jpg"/>-->
                 </Canvas>
             </InkCanvas>
