@@ -1,0 +1,65 @@
+<mat-toolbar class="topbar">
+  <span>University Overview</span>
+  <a mat-stroked-button href="/api/universities" target="_blank" rel="noreferrer">API</a>
+</mat-toolbar>
+
+<main class="shell">
+  <section class="intro">
+    <p class="eyebrow">JSON-backed university overview</p>
+    <h1>Browse university profiles seeded from the legacy application model.</h1>
+  </section>
+
+  @if (universities$ | async; as universities) {
+    @if (universities[0]?.images?.campusMap; as campusMap) {
+      <section class="legacy-map" aria-label="Migrated legacy campus map">
+        <img [src]="campusMap.src" [alt]="campusMap.alt" />
+        <div>
+          @if (universities[0]?.images?.brand; as brand) {
+            <img class="brand-mark" [src]="brand.src" [alt]="brand.alt" />
+          }
+          <p class="eyebrow">Migrated asset</p>
+          <h2>Campus map now lives in the Angular public assets.</h2>
+          <p>{{ universities[0].address }}</p>
+        </div>
+      </section>
+    }
+
+    <section class="grid" aria-label="University list">
+      @for (university of universities; track university.id) {
+        <mat-card class="university-card">
+          <mat-card-header>
+            <mat-card-title>{{ university.shortName }} · {{ university.name }}</mat-card-title>
+            <mat-card-subtitle>{{ university.city }}, {{ university.country }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="summary">{{ university.summary }}</p>
+            <div class="stats">
+              <span>
+                <strong>{{ university.programs }}</strong>
+                programs
+              </span>
+              <span>
+                <strong>{{ university.students | number }}</strong>
+                students
+              </span>
+              <span>
+                <strong>{{ university.faculties }}</strong>
+                faculties
+              </span>
+            </div>
+            <mat-chip-set aria-label="Featured programs">
+              @for (program of university.featuredPrograms; track program.id) {
+                <mat-chip>{{ program.degree }} · {{ program.title }}</mat-chip>
+              }
+            </mat-chip-set>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <a mat-flat-button color="primary" [href]="university.website" target="_blank" rel="noreferrer">
+              Visit site
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </section>
+  }
+</main>
