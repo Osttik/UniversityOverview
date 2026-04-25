@@ -3,31 +3,74 @@
     <div class="map-toolbar">
       <div>
         <p class="eyebrow">Campus map</p>
-        <h2>Interactive campus workspace</h2>
+        <h2>{{ campusMap.name }}</h2>
       </div>
       <div class="map-toolbar__actions">
-        <button mat-stroked-button type="button">
-          <mat-icon fontSet="material-symbols-outlined">search</mat-icon>
-          Find room
+        <button mat-icon-button type="button" aria-label="Zoom out" (click)="zoomOut()">
+          <mat-icon fontSet="material-symbols-outlined">remove</mat-icon>
         </button>
-        <button mat-flat-button color="primary" type="button">
-          <mat-icon fontSet="material-symbols-outlined">route</mat-icon>
-          Build route
+        <span class="zoom-readout">{{ zoomPercent }}%</span>
+        <button mat-icon-button type="button" aria-label="Zoom in" (click)="zoomIn()">
+          <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+        </button>
+        <button mat-stroked-button type="button" (click)="resetViewport()">
+          <mat-icon fontSet="material-symbols-outlined">center_focus_strong</mat-icon>
+          Reset
         </button>
       </div>
     </div>
 
-    <div class="map-canvas" aria-label="Campus map preview">
-      @for (location of locations; track location.id) {
-        <button
-          class="map-pin"
-          type="button"
-          [style.left.%]="location.coordinates.x"
-          [style.top.%]="location.coordinates.y"
-          [attr.aria-label]="location.name"
-        >
-          <mat-icon fontSet="material-symbols-outlined">location_on</mat-icon>
-        </button>
+    <div
+      #viewport
+      class="map-canvas"
+      aria-label="Interactive campus map"
+      (wheel)="onWheel($event)"
+      (pointerdown)="startPan($event)"
+      (pointermove)="movePan($event)"
+      (pointerup)="endPan($event)"
+      (pointercancel)="endPan($event)"
+      (click)="clearLocation()"
+    >
+      <div
+        class="map-layer"
+        [style.width.px]="mapWidth()"
+        [style.height.px]="mapHeight()"
+        [style.transform]="transform"
+      >
+        <img
+          class="map-image"
+          [src]="campusMap.imageUrl"
+          alt="KNU campus overview map"
+          draggable="false"
+          (load)="syncMapSize($event)"
+        />
+
+        @for (location of locations; track location.id) {
+          <button
+            class="map-pin"
+            type="button"
+            [class.map-pin--active]="activeLocation()?.id === location.id"
+            [style.left.%]="location.coordinates.x"
+            [style.top.%]="location.coordinates.y"
+            [attr.aria-label]="location.name"
+            (click)="selectLocation(location, $event)"
+          >
+            <mat-icon fontSet="material-symbols-outlined">location_on</mat-icon>
+          </button>
+        }
+      </div>
+
+      @if (activeLocation(); as location) {
+        <article class="location-popover">
+          <mat-chip-set aria-label="Selected location metadata">
+            <mat-chip>{{ location.type }}</mat-chip>
+            @if (location.floor) {
+              <mat-chip>Floor {{ location.floor }}</mat-chip>
+            }
+          </mat-chip-set>
+          <h3>{{ location.name }}</h3>
+          <p>{{ location.tags.join(' / ') }}</p>
+        </article>
       }
     </div>
   </div>
@@ -40,7 +83,11 @@
     <mat-card-content>
       <mat-list>
         @for (location of locations; track location.id) {
-          <mat-list-item>
+          <mat-list-item
+            class="location-item"
+            [class.location-item--active]="activeLocation()?.id === location.id"
+            (click)="selectLocation(location, $event)"
+          >
             <mat-icon matListItemIcon fontSet="material-symbols-outlined">apartment</mat-icon>
             <div matListItemTitle>{{ location.name }}</div>
             <div matListItemLine>{{ location.type }} {{ location.buildingCode || '' }}</div>
