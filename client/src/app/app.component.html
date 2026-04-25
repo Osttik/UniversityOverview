@@ -1,0 +1,184 @@
+<main class="shell">
+  <section class="search-panel" aria-label="University search filters">
+    <div class="brand-block">
+      <span class="eyebrow">University Overview</span>
+      <h1>Find a university location that fits the plan.</h1>
+    </div>
+
+    <label class="field">
+      <span>Search</span>
+      <input
+        type="search"
+        name="query"
+        [(ngModel)]="searchState.query"
+        (ngModelChange)="search()"
+        placeholder="Program, campus, service"
+      >
+    </label>
+
+    <div class="filter-grid">
+      <label class="field">
+        <span>City</span>
+        <select name="city" [(ngModel)]="searchState.city" (ngModelChange)="search()">
+          <option value="">Any city</option>
+          <option *ngFor="let city of filters.cities" [value]="city">{{ city }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Region</span>
+        <select name="region" [(ngModel)]="searchState.region" (ngModelChange)="search()">
+          <option value="">Any region</option>
+          <option *ngFor="let region of filters.regions" [value]="region">{{ region }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Type</span>
+        <select name="type" [(ngModel)]="searchState.type" (ngModelChange)="search()">
+          <option value="">Any type</option>
+          <option *ngFor="let type of filters.types" [value]="type">{{ type }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Level</span>
+        <select
+          name="programLevel"
+          [(ngModel)]="searchState.programLevel"
+          (ngModelChange)="search()"
+        >
+          <option value="">Any level</option>
+          <option *ngFor="let level of filters.programLevels" [value]="level">{{ level }}</option>
+        </select>
+      </label>
+    </div>
+
+    <label class="range-field">
+      <span>Max tuition: {{ searchState.maxTuition | currency:'USD':'symbol':'1.0-0' }}</span>
+      <input
+        type="range"
+        name="maxTuition"
+        min="1000"
+        [max]="filters.maxTuition"
+        step="100"
+        [(ngModel)]="searchState.maxTuition"
+        (change)="search()"
+      >
+    </label>
+
+    <label class="check-field">
+      <input
+        type="checkbox"
+        name="hasAccommodation"
+        [(ngModel)]="searchState.hasAccommodation"
+        (ngModelChange)="search()"
+      >
+      <span>Show universities with accommodation</span>
+    </label>
+
+    <div class="filter-actions">
+      <button type="button" class="primary-button" (click)="search()">Apply filters</button>
+      <button type="button" class="ghost-button" (click)="resetFilters()">Reset</button>
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+  </section>
+
+  <section class="results-panel" aria-label="University results">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">Search results</span>
+        <h2>{{ universities.length }} matches</h2>
+      </div>
+      <span class="loading" *ngIf="loading">Loading</span>
+    </div>
+
+    <div class="results-list" *ngIf="universities.length; else emptyState">
+      <button
+        type="button"
+        class="result-card"
+        *ngFor="let university of universities; trackBy: trackByUniversity"
+        [class.selected]="selectedUniversity?.id === university.id"
+        (click)="selectUniversity(university)"
+      >
+        <span class="result-kicker">{{ university.city }} · {{ university.type }}</span>
+        <strong>{{ university.name }}</strong>
+        <span>{{ university.summary }}</span>
+        <span class="result-meta">
+          {{ university.rating }} rating ·
+          {{ university.tuitionFrom | currency:'USD':'symbol':'1.0-0' }}-{{ university.tuitionTo | currency:'USD':'symbol':'1.0-0' }}
+        </span>
+      </button>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state">No universities match the current filters.</div>
+    </ng-template>
+  </section>
+
+  <section class="detail-panel" aria-label="Selected university and location details">
+    <ng-container *ngIf="selectedUniversity; else chooseUniversity">
+      <div class="detail-header">
+        <span class="eyebrow">{{ selectedUniversity.city }} · {{ selectedUniversity.region }}</span>
+        <h2>{{ selectedUniversity.name }}</h2>
+        <p>{{ selectedUniversity.summary }}</p>
+      </div>
+
+      <div class="detail-stats">
+        <span>{{ selectedUniversity.type }}</span>
+        <span>{{ selectedUniversity.programLevels.join(', ') }}</span>
+        <span>{{ selectedUniversity.hasAccommodation ? 'Accommodation available' : 'No housing office' }}</span>
+      </div>
+
+      <div class="location-layout">
+        <div class="location-list">
+          <button
+            type="button"
+            *ngFor="let location of selectedUniversity.locations; trackBy: trackByLocation"
+            [class.selected]="selectedLocation?.id === location.id"
+            (click)="selectLocation(location)"
+          >
+            <strong>{{ location.name }}</strong>
+            <span>{{ location.address }}</span>
+          </button>
+        </div>
+
+        <article class="location-card" *ngIf="selectedLocation">
+          <div class="map-preview">
+            <span class="pin"></span>
+            <span>{{ selectedLocation.latitude }}, {{ selectedLocation.longitude }}</span>
+          </div>
+
+          <h3>{{ selectedLocation.name }}</h3>
+          <dl>
+            <div>
+              <dt>Address</dt>
+              <dd>{{ selectedLocation.address }}</dd>
+            </div>
+            <div>
+              <dt>Phone</dt>
+              <dd>{{ selectedLocation.phone }}</dd>
+            </div>
+            <div>
+              <dt>Hours</dt>
+              <dd>{{ selectedLocation.hours }}</dd>
+            </div>
+            <div>
+              <dt>Transport</dt>
+              <dd>{{ selectedLocation.transport }}</dd>
+            </div>
+          </dl>
+
+          <div class="services">
+            <span *ngFor="let service of selectedLocation.services">{{ service }}</span>
+          </div>
+        </article>
+      </div>
+    </ng-container>
+
+    <ng-template #chooseUniversity>
+      <div class="empty-state">Select a university to view location details.</div>
+    </ng-template>
+  </section>
+</main>
