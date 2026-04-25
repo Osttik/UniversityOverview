@@ -1,4 +1,11 @@
-import { CampusLocation } from './campus-map.models';
+import type {
+  University,
+  UniversityProgram as ApiUniversityProgram
+} from '@university-overview/shared';
+
+export type ApiUniversity = University;
+export type UniversityDetail = University;
+export type UniversityProgram = ApiUniversityProgram;
 
 export interface UniversitySummary {
   id: string;
@@ -11,45 +18,24 @@ export interface UniversitySummary {
   rating?: number;
 }
 
-export interface UniversityDetail extends UniversitySummary {
-  description: string;
-  websiteUrl?: string;
-  admissionsEmail?: string;
-  phone?: string;
-  campuses: Campus[];
-  programs: UniversityProgram[];
-}
-
 export interface Campus {
   id: string;
   name: string;
   address: string;
   city: string;
   country: string;
-  locations: CampusLocation[];
-}
-
-export interface UniversityProgram {
-  id: string;
-  universityId: string;
-  name: string;
-  degree: 'bachelor' | 'master' | 'phd' | 'certificate';
-  faculty: string;
-  durationMonths: number;
-  language: string;
-  tuitionPerYear?: number;
 }
 
 export interface UniversitySearchQuery {
   search?: string;
   city?: string;
   country?: string;
-  degree?: UniversityProgram['degree'];
+  degree?: string;
 }
 
 export interface ProgramSearchQuery {
   search?: string;
-  degree?: UniversityProgram['degree'];
+  degree?: string;
   faculty?: string;
   language?: string;
 }

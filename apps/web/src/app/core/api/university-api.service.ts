@@ -4,11 +4,10 @@ import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from './api-base-url.token';
 import {
+  ApiUniversity,
   ProgramSearchQuery,
-  UniversityDetail,
   UniversityProgram,
-  UniversitySearchQuery,
-  UniversitySummary
+  UniversitySearchQuery
 } from '../models/university.models';
 
 @Injectable({ providedIn: 'root' })
@@ -16,14 +15,14 @@ export class UniversityApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(API_BASE_URL);
 
-  listUniversities(query: UniversitySearchQuery = {}): Observable<UniversitySummary[]> {
+  listUniversities(query: UniversitySearchQuery = {}): Observable<ApiUniversity[]> {
     const params = new HttpParams({ fromObject: this.toParams(query) });
 
-    return this.http.get<UniversitySummary[]>(`${this.baseUrl}/universities`, { params });
+    return this.http.get<ApiUniversity[]>(`${this.baseUrl}/universities`, { params });
   }
 
-  getUniversity(universityId: string): Observable<UniversityDetail> {
-    return this.http.get<UniversityDetail>(`${this.baseUrl}/universities/${universityId}`);
+  getUniversity(universityId: string): Observable<ApiUniversity> {
+    return this.http.get<ApiUniversity>(`${this.baseUrl}/universities/${universityId}`);
   }
 
   listPrograms(universityId: string, query: ProgramSearchQuery = {}): Observable<UniversityProgram[]> {
