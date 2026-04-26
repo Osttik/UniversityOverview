@@ -12,11 +12,13 @@ const route = useRoute();
 const shell = useAppShellStore();
 
 const navigationItems = computed(() =>
-  routes.map((item) => ({
-    path: item.path,
-    label: String(item.meta?.label ?? item.name),
-    icon: String(item.meta?.icon ?? 'pi pi-circle'),
-  })),
+  routes
+    .filter((item) => item.meta?.nav !== false)
+    .map((item) => ({
+      path: item.path,
+      label: String(item.meta?.label ?? item.name),
+      icon: String(item.meta?.icon ?? 'pi pi-circle'),
+    })),
 );
 
 const currentTitle = computed(() => String(route.meta.label ?? 'University Overview'));
