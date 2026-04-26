@@ -2,28 +2,40 @@
   {
     "id": "kyiv-polytechnic",
     "name": "Kyiv Polytechnic Institute",
+    "shortName": "KPI",
     "city": "Kyiv",
     "country": "Ukraine",
     "students": 25000,
     "programs": ["Engineering", "Computer Science", "Applied Mathematics"],
-    "founded": 1898
+    "founded": 1898,
+    "type": "Public",
+    "website": "https://kpi.ua",
+    "description": "Large public technical university with engineering, computer science, and applied sciences programs."
   },
   {
     "id": "lviv-polytechnic",
     "name": "Lviv Polytechnic National University",
+    "shortName": "LPNU",
     "city": "Lviv",
     "country": "Ukraine",
     "students": 30000,
     "programs": ["Architecture", "Information Systems", "Economics"],
-    "founded": 1816
+    "founded": 1816,
+    "type": "Public",
+    "website": "https://lpnu.ua",
+    "description": "Technical university known for architecture, information systems, engineering, and business education."
   },
   {
     "id": "taras-shevchenko",
     "name": "Taras Shevchenko National University",
+    "shortName": "KNU",
     "city": "Kyiv",
     "country": "Ukraine",
     "students": 26000,
     "programs": ["Law", "International Relations", "Physics"],
-    "founded": 1834
+    "founded": 1834,
+    "type": "Public",
+    "website": "https://knu.ua",
+    "description": "Comprehensive research university offering law, international relations, physics, and humanities programs."
   }
 ]

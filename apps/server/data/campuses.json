@@ -1,0 +1,32 @@
+[
+  {
+    "id": "kpi-main-campus",
+    "universityId": "kyiv-polytechnic",
+    "name": "KPI Main Campus",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "address": "37 Beresteiskyi Avenue, Kyiv",
+    "facilities": ["Libraries", "Research labs", "Student housing", "Sports complex"],
+    "description": "Primary Kyiv campus with engineering labs, academic buildings, and residence halls."
+  },
+  {
+    "id": "lpnu-main-campus",
+    "universityId": "lviv-polytechnic",
+    "name": "LPNU Main Campus",
+    "city": "Lviv",
+    "country": "Ukraine",
+    "address": "12 Stepana Bandery Street, Lviv",
+    "facilities": ["Architecture studios", "Computer labs", "Library", "Innovation hub"],
+    "description": "Historic central campus serving architecture, computing, and engineering programs."
+  },
+  {
+    "id": "knu-red-building-campus",
+    "universityId": "taras-shevchenko",
+    "name": "Red Building Campus",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "address": "60 Volodymyrska Street, Kyiv",
+    "facilities": ["Lecture halls", "Research centers", "Library", "Student services"],
+    "description": "Central Kyiv campus for core academic and research activity."
+  }
+]

@@ -4,10 +4,9 @@ import type { ErrorRequestHandler, RequestHandler } from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import morgan from "morgan";
+import { CatalogService } from "./catalogService.js";
+import { createCatalogRouter } from "./routes/catalog.js";
 import { createHealthRouter } from "./routes/health.js";
-import { createUniversitiesRouter } from "./routes/universities.js";
-import { JsonRepository } from "./storage/JsonRepository.js";
-import type { University } from "./types.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +14,6 @@ const defaultDataDir = path.resolve(__dirname, "../data");
 
 export interface CreateAppOptions {
   dataDir?: string;
-  universitiesRepository?: JsonRepository<University>;
 }
 
 export interface HttpError extends Error {
@@ -26,12 +24,7 @@ export interface HttpError extends Error {
 export function createApp(options: CreateAppOptions = {}) {
   const app = express();
   const dataDir = options.dataDir ?? defaultDataDir;
-  const universities =
-    options.universitiesRepository ??
-    new JsonRepository<University>({
-      filePath: path.join(dataDir, "universities.json"),
-      idField: "id"
-    });
+  const catalog = new CatalogService(dataDir);
 
   app.use(cors());
   app.use(express.json({ limit: "1mb" }));
@@ -39,7 +32,7 @@ export function createApp(options: CreateAppOptions = {}) {
 
   app.use("/api/health", createHealthRouter());
   app.use("/health", createHealthRouter());
-  app.use("/api/universities", createUniversitiesRouter({ universities }));
+  app.use("/api", createCatalogRouter({ catalog }));
 
   app.use((_request, response) => {
     response.status(404).json({

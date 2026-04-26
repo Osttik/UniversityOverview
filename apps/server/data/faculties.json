@@ -1,0 +1,42 @@
+[
+  {
+    "id": "kpi-informatics",
+    "universityId": "kyiv-polytechnic",
+    "name": "Faculty of Informatics and Computer Science",
+    "shortName": "FICS",
+    "description": "Computer science, software engineering, data systems, and artificial intelligence.",
+    "programIds": ["kpi-software-engineering-bsc", "kpi-computer-science-msc"]
+  },
+  {
+    "id": "kpi-engineering",
+    "universityId": "kyiv-polytechnic",
+    "name": "Faculty of Engineering",
+    "shortName": "FE",
+    "description": "Mechanical engineering, manufacturing systems, and applied industrial design.",
+    "programIds": ["kpi-mechanical-engineering-bsc"]
+  },
+  {
+    "id": "lpnu-computer-sciences",
+    "universityId": "lviv-polytechnic",
+    "name": "Institute of Computer Sciences and Information Technologies",
+    "shortName": "ICSIT",
+    "description": "Information systems, computer science, networks, and software development.",
+    "programIds": ["lpnu-computer-science-bsc"]
+  },
+  {
+    "id": "lpnu-architecture",
+    "universityId": "lviv-polytechnic",
+    "name": "Institute of Architecture and Design",
+    "shortName": "IARD",
+    "description": "Architecture, urban planning, spatial design, and heritage studies.",
+    "programIds": ["lpnu-architecture-bsc"]
+  },
+  {
+    "id": "knu-international-relations",
+    "universityId": "taras-shevchenko",
+    "name": "Educational and Scientific Institute of International Relations",
+    "shortName": "IIR",
+    "description": "International relations, global policy, law, and regional studies.",
+    "programIds": ["knu-international-relations-bsc"]
+  }
+]
