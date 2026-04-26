@@ -22,6 +22,10 @@ interface University {
   founded: number;
 }
 
+interface UniversitiesResponse {
+  data: University[];
+}
+
 const universities = ref<University[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
@@ -29,6 +33,15 @@ const error = ref<string | null>(null);
 const totalStudents = computed(() =>
   universities.value.reduce((total, university) => total + university.students, 0)
 );
+
+function isUniversitiesResponse(value: unknown): value is UniversitiesResponse {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "data" in value &&
+    Array.isArray((value as { data: unknown }).data)
+  );
+}
 
 async function loadUniversities() {
   loading.value = true;
@@ -41,7 +54,12 @@ async function loadUniversities() {
       throw new Error(`API request failed with ${response.status}`);
     }
 
-    universities.value = (await response.json()) as University[];
+    const payload: unknown = await response.json();
+    if (!isUniversitiesResponse(payload)) {
+      throw new Error("API response did not include universities data");
+    }
+
+    universities.value = payload.data;
   } catch (err) {
     error.value = err instanceof Error ? err.message : "Unable to load universities";
   } finally {
