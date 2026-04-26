@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
@@ -14,6 +15,11 @@
     "types": [
       "vite/client"
     ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
     "noEmit": true
   },
   "include": [
