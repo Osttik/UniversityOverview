@@ -1,0 +1,42 @@
+[
+  {
+    "id": "campus-kpi-main",
+    "universityId": "university-kyiv-polytechnic",
+    "name": "KPI Main Campus",
+    "address": {
+      "line1": "37 Beresteiskyi Avenue",
+      "city": "Kyiv",
+      "country": "Ukraine",
+      "postalCode": "03056"
+    },
+    "coordinates": {
+      "latitude": 50.4492,
+      "longitude": 30.4619
+    },
+    "facilities": [
+      "library",
+      "student housing",
+      "sports complex"
+    ]
+  },
+  {
+    "id": "campus-lpnu-main",
+    "universityId": "university-lviv-polytechnic",
+    "name": "LPNU Main Campus",
+    "address": {
+      "line1": "12 Stepana Bandery Street",
+      "city": "Lviv",
+      "country": "Ukraine",
+      "postalCode": "79013"
+    },
+    "coordinates": {
+      "latitude": 49.8351,
+      "longitude": 24.0149
+    },
+    "facilities": [
+      "library",
+      "innovation hub",
+      "design studios"
+    ]
+  }
+]

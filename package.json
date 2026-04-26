@@ -3,22 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "apps/client",
+    "apps/server"
+  ],
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
-    "typecheck": "vue-tsc --noEmit"
-  },
-  "dependencies": {
-    "@primeuix/themes": "^1.2.3",
-    "pinia": "^3.0.3",
-    "primeicons": "^7.0.0",
-    "primevue": "^4.3.9",
-    "vue": "^3.5.17",
-    "vue-router": "^4.5.1"
+    "dev": "concurrently -n client,server -c cyan,green \"npm run dev -w @university-overview/client\" \"npm run dev -w @university-overview/server\"",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "start": "npm run start -w @university-overview/server",
+    "test": "npm run typecheck && npm run build"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.0",
-    "typescript": "^5.8.3",
-    "vite": "^7.0.0",
-    "vue-tsc": "^2.2.10"
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

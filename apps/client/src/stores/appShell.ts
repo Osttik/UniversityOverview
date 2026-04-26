@@ -16,5 +16,8 @@ export const useAppShellStore = defineStore('appShell', {
     setSearchTerm(value: string) {
       this.searchTerm = value;
     },
+    setLastSyncLabel(value: string) {
+      this.lastSyncLabel = value;
+    },
   },
 });

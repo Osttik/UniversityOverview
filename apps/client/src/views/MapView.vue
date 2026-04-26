@@ -4,7 +4,7 @@ import Slider from 'primevue/slider';
 import Tag from 'primevue/tag';
 import { computed, ref } from 'vue';
 
-import mapImageUrl from '../../UniversityProgramm/Images/1.1.jpg';
+import mapImageUrl from '../../../../UniversityProgramm/Images/1.1.jpg';
 import type { MapPoint } from '@/types/university';
 
 const zoom = ref(100);
