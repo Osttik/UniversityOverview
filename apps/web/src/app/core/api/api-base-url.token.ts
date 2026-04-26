@@ -11,7 +11,10 @@ declare global {
 function resolveApiBaseUrl(): string {
   const configuredBaseUrl = window.__UNIVERSITY_OVERVIEW_CONFIG__?.apiBaseUrl?.trim();
   if (configuredBaseUrl) {
-    return configuredBaseUrl.replace(/\/$/, '');
+    const normalizedBaseUrl = configuredBaseUrl.replace(/\/+$/, '');
+    if (normalizedBaseUrl) {
+      return normalizedBaseUrl;
+    }
   }
 
   const localStaticHost =
