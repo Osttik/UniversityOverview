@@ -1,0 +1,29 @@
+[
+  {
+    "id": "kyiv-polytechnic",
+    "name": "Kyiv Polytechnic Institute",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "students": 25000,
+    "programs": ["Engineering", "Computer Science", "Applied Mathematics"],
+    "founded": 1898
+  },
+  {
+    "id": "lviv-polytechnic",
+    "name": "Lviv Polytechnic National University",
+    "city": "Lviv",
+    "country": "Ukraine",
+    "students": 30000,
+    "programs": ["Architecture", "Information Systems", "Economics"],
+    "founded": 1816
+  },
+  {
+    "id": "taras-shevchenko",
+    "name": "Taras Shevchenko National University",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "students": 26000,
+    "programs": ["Law", "International Relations", "Physics"],
+    "founded": 1834
+  }
+]
