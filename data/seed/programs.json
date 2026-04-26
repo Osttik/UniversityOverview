@@ -1,0 +1,92 @@
+[
+  {
+    "id": "program-kpi-software-engineering-bsc",
+    "universityId": "university-kyiv-polytechnic",
+    "facultyId": "faculty-kpi-informatics",
+    "name": "Software Engineering",
+    "degree": "Bachelor",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "tuitionPerYear": {
+      "amount": 42000,
+      "currency": "UAH"
+    },
+    "tags": [
+      "software",
+      "web",
+      "systems"
+    ]
+  },
+  {
+    "id": "program-kpi-computer-science-msc",
+    "universityId": "university-kyiv-polytechnic",
+    "facultyId": "faculty-kpi-informatics",
+    "name": "Computer Science",
+    "degree": "Master",
+    "durationYears": 2,
+    "language": "English",
+    "tuitionPerYear": {
+      "amount": 56000,
+      "currency": "UAH"
+    },
+    "tags": [
+      "algorithms",
+      "ai",
+      "data"
+    ]
+  },
+  {
+    "id": "program-kpi-mechanical-engineering-bsc",
+    "universityId": "university-kyiv-polytechnic",
+    "facultyId": "faculty-kpi-engineering",
+    "name": "Mechanical Engineering",
+    "degree": "Bachelor",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "tuitionPerYear": {
+      "amount": 39000,
+      "currency": "UAH"
+    },
+    "tags": [
+      "mechanics",
+      "manufacturing",
+      "design"
+    ]
+  },
+  {
+    "id": "program-lpnu-computer-science-bsc",
+    "universityId": "university-lviv-polytechnic",
+    "facultyId": "faculty-lpnu-computer-sciences",
+    "name": "Computer Science",
+    "degree": "Bachelor",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "tuitionPerYear": {
+      "amount": 41000,
+      "currency": "UAH"
+    },
+    "tags": [
+      "programming",
+      "data",
+      "networks"
+    ]
+  },
+  {
+    "id": "program-lpnu-architecture-bsc",
+    "universityId": "university-lviv-polytechnic",
+    "facultyId": "faculty-lpnu-architecture",
+    "name": "Architecture and Urban Planning",
+    "degree": "Bachelor",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "tuitionPerYear": {
+      "amount": 45000,
+      "currency": "UAH"
+    },
+    "tags": [
+      "architecture",
+      "urbanism",
+      "design"
+    ]
+  }
+]

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "university-kyiv-polytechnic",
+    "name": "Kyiv Polytechnic Institute",
+    "shortName": "KPI",
+    "country": "Ukraine",
+    "city": "Kyiv",
+    "website": "https://kpi.ua",
+    "foundedYear": 1898,
+    "campusIds": [
+      "campus-kpi-main"
+    ],
+    "facultyIds": [
+      "faculty-kpi-informatics",
+      "faculty-kpi-engineering"
+    ],
+    "programIds": [
+      "program-kpi-software-engineering-bsc",
+      "program-kpi-computer-science-msc",
+      "program-kpi-mechanical-engineering-bsc"
+    ]
+  },
+  {
+    "id": "university-lviv-polytechnic",
+    "name": "Lviv Polytechnic National University",
+    "shortName": "LPNU",
+    "country": "Ukraine",
+    "city": "Lviv",
+    "website": "https://lpnu.ua",
+    "foundedYear": 1816,
+    "campusIds": [
+      "campus-lpnu-main"
+    ],
+    "facultyIds": [
+      "faculty-lpnu-computer-sciences",
+      "faculty-lpnu-architecture"
+    ],
+    "programIds": [
+      "program-lpnu-computer-science-bsc",
+      "program-lpnu-architecture-bsc"
+    ]
+  }
+]
