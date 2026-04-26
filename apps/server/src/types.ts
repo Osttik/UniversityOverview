@@ -54,3 +54,26 @@ export interface Program {
   tags: string[];
   description?: string;
 }
+
+export interface CampusMapImage {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+export interface CampusMapMarker {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  x: number;
+  y: number;
+  campusId?: string;
+}
+
+export interface CampusMap {
+  name: string;
+  image: CampusMapImage;
+  markers: CampusMapMarker[];
+}

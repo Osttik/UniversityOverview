@@ -299,6 +299,8 @@ h2 {
 
 .map-viewport {
   position: relative;
+  display: grid;
+  place-items: center;
   min-height: 34rem;
   overflow: hidden;
   cursor: grab;
@@ -313,8 +315,9 @@ h2 {
 }
 
 .map-stage {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: min(100%, 64rem);
+  max-height: 100%;
   transform-origin: center;
   transition: transform 120ms ease;
 }
@@ -351,8 +354,31 @@ h2 {
   color: #14a36d;
 }
 
-.map-point-landmark .pi {
+.map-point-landmark .pi,
+.map-point-athletics .pi {
   color: #c27803;
+}
+
+.map-point-academic .pi {
+  color: #2563eb;
+}
+
+.map-point-research .pi {
+  color: #14a36d;
+}
+
+.map-point-services .pi {
+  color: #7c3aed;
+}
+
+.map-point-study .pi {
+  color: #60718f;
+}
+
+.map-point-active {
+  z-index: 2;
+  border-color: #172033;
+  box-shadow: 0 10px 28px rgba(19, 32, 53, 0.24);
 }
 
 .map-tools {
@@ -369,9 +395,51 @@ h2 {
 }
 
 .map-point-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 0.5rem;
+}
+
+.selected-marker {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f8fafd;
+  border: 1px solid #dce3ee;
+  border-radius: 0.5rem;
+}
+
+.selected-marker h3,
+.selected-marker p {
+  margin: 0;
+}
+
+.selected-marker h3 {
+  color: #172033;
+  font-size: 1.05rem;
+}
+
+.selected-marker p {
+  color: #52637e;
+}
+
+.map-point-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.7rem;
+  color: #33435c;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #dce3ee;
+  border-radius: 0.5rem;
+}
+
+.map-point-chip:hover,
+.map-point-chip-active {
+  border-color: #9fb0c8;
+  background: #f1f5fb;
 }
 
 .p-datatable {

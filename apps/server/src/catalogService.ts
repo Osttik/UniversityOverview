@@ -1,6 +1,6 @@
 import path from "node:path";
 import { readJsonFile } from "./storage/jsonFile.js";
-import type { Campus, Faculty, Program, University } from "./types.js";
+import type { Campus, CampusMap, Faculty, Program, University } from "./types.js";
 
 type QueryValue = string | string[] | undefined;
 type CatalogQuery = Record<string, QueryValue>;
@@ -138,6 +138,23 @@ export class CatalogService {
       })),
       query
     );
+  }
+
+  async getCampusMap() {
+    return readJsonFile<CampusMap>(path.join(this.dataDir, "campus-map.json"), {
+      name: "Campus map",
+      image: {
+        src: "/api/campus-map/image",
+        width: 1024,
+        height: 768,
+        alt: "Campus map"
+      },
+      markers: []
+    });
+  }
+
+  getCampusMapImagePath() {
+    return path.resolve(this.dataDir, "../../../UniversityProgramm/Images/1.1.jpg");
   }
 
   async getCampusDetail(id: string) {

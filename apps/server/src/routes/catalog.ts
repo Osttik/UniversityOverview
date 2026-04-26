@@ -53,6 +53,20 @@ export function createCatalogRouter({ catalog }: CreateCatalogRouterOptions) {
   );
 
   router.get(
+    "/campus-map",
+    asyncHandler(async (_request, response) => {
+      response.json({ data: await catalog.getCampusMap() });
+    })
+  );
+
+  router.get(
+    "/campus-map/image",
+    asyncHandler(async (_request, response) => {
+      response.sendFile(catalog.getCampusMapImagePath());
+    })
+  );
+
+  router.get(
     "/programs",
     asyncHandler(async (request, response) => {
       response.json(await catalog.listPrograms(toCatalogQuery(request)));
