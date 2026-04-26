@@ -57,14 +57,14 @@ export class CatalogService {
     );
 
     return paginate(
-      filtered.map((university) => ({
+      sortUniversities(query)(filtered.map((university) => ({
         ...university,
         counts: {
           campuses: catalog.campuses.filter((campus) => campus.universityId === university.id).length,
           faculties: catalog.faculties.filter((faculty) => faculty.universityId === university.id).length,
           programs: catalog.programs.filter((program) => program.universityId === university.id).length
         }
-      })),
+      }))),
       query
     );
   }
@@ -160,6 +160,7 @@ export class CatalogService {
   async listPrograms(query: CatalogQuery = {}) {
     const catalog = await this.loadCatalog();
     const q = normalize(firstQueryValue(query.q) ?? firstQueryValue(query.search));
+    const maxTuition = toPositiveNumber(query.maxTuition);
     const filtered = catalog.programs.filter((program) => {
       const campus = catalog.campuses.find((item) => item.id === program.campusId);
 
@@ -172,11 +173,12 @@ export class CatalogService {
         matchesExact(program.field, query.field) &&
         matchesExact(program.language, query.language) &&
         matchesExact(program.studyMode, query.studyMode ?? query.mode) &&
-        matchesExact(campus?.city, query.city)
+        matchesExact(campus?.city, query.city) &&
+        (maxTuition === undefined || (program.tuitionPerYear?.amount ?? Number.POSITIVE_INFINITY) <= maxTuition)
       );
     });
 
-    return paginate(filtered.map((program) => enrichProgram(program, catalog)), query);
+    return paginate(sortPrograms(filtered.map((program) => enrichProgram(program, catalog)), query), query);
   }
 
   async getProgramDetail(id: string) {
@@ -309,6 +311,11 @@ function toPositiveInteger(value: QueryValue): number | undefined {
   return Number.isInteger(parsed) && parsed > 0 ? parsed : undefined;
 }
 
+function toPositiveNumber(value: QueryValue): number | undefined {
+  const parsed = Number(firstQueryValue(value));
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
+}
+
 function normalize(value: unknown): string {
   return String(value ?? "").trim().toLowerCase();
 }
@@ -338,6 +345,59 @@ function valueIncludes(value: unknown, query: string): boolean {
 
 function uniqueSorted(values: unknown[]): string[] {
   return [...new Set(values.filter(Boolean).map(String))].sort((a, b) => a.localeCompare(b));
+}
+
+function sortUniversities<T extends University & { counts?: { programs: number } }>(query: CatalogQuery) {
+  return (items: T[]) => {
+    const sort = normalize(firstQueryValue(query.sort));
+    const sorted = [...items];
+
+    switch (sort) {
+      case "city":
+        sorted.sort((a, b) => a.city.localeCompare(b.city) || a.name.localeCompare(b.name));
+        break;
+      case "founded":
+        sorted.sort((a, b) => a.founded - b.founded || a.name.localeCompare(b.name));
+        break;
+      case "programs":
+        sorted.sort((a, b) => (b.counts?.programs ?? 0) - (a.counts?.programs ?? 0) || a.name.localeCompare(b.name));
+        break;
+      case "students":
+        sorted.sort((a, b) => b.students - a.students || a.name.localeCompare(b.name));
+        break;
+      default:
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+    }
+
+    return sorted;
+  };
+}
+
+function sortPrograms<T extends Program>(items: T[], query: CatalogQuery): T[] {
+  const sort = normalize(firstQueryValue(query.sort));
+  const sorted = [...items];
+
+  switch (sort) {
+    case "duration":
+      sorted.sort((a, b) => a.durationYears - b.durationYears || a.name.localeCompare(b.name));
+      break;
+    case "field":
+      sorted.sort((a, b) => a.field.localeCompare(b.field) || a.name.localeCompare(b.name));
+      break;
+    case "tuition":
+      sorted.sort(
+        (a, b) =>
+          (a.tuitionPerYear?.amount ?? Number.POSITIVE_INFINITY) -
+            (b.tuitionPerYear?.amount ?? Number.POSITIVE_INFINITY) || a.name.localeCompare(b.name)
+      );
+      break;
+    default:
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+  }
+
+  return sorted;
 }
 
 function enrichProgram(program: Program, catalog: Catalog) {

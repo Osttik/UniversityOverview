@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import DashboardView from '@/views/DashboardView.vue';
 import MapView from '@/views/MapView.vue';
+import ProgramDetailView from '@/views/ProgramDetailView.vue';
+import ProgramsView from '@/views/ProgramsView.vue';
+import UniversityDetailView from '@/views/UniversityDetailView.vue';
 import UniversitiesView from '@/views/UniversitiesView.vue';
 
 export const routes = [
@@ -16,6 +19,24 @@ export const routes = [
     name: 'universities',
     component: UniversitiesView,
     meta: { label: 'Universities', icon: 'pi pi-building-columns' },
+  },
+  {
+    path: '/universities/:id',
+    name: 'university-detail',
+    component: UniversityDetailView,
+    meta: { label: 'University detail', icon: 'pi pi-building-columns', nav: false },
+  },
+  {
+    path: '/programs',
+    name: 'programs',
+    component: ProgramsView,
+    meta: { label: 'Programs', icon: 'pi pi-book' },
+  },
+  {
+    path: '/programs/:id',
+    name: 'program-detail',
+    component: ProgramDetailView,
+    meta: { label: 'Program detail', icon: 'pi pi-book', nav: false },
   },
   {
     path: '/map',
