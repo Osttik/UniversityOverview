@@ -1,0 +1,51 @@
+{
+  "name": "University Campus",
+  "image": {
+    "src": "/api/campus/map-image",
+    "width": 1024,
+    "height": 768,
+    "alt": "University campus map"
+  },
+  "markers": [
+    {
+      "id": "main-building",
+      "name": "Main Building",
+      "type": "academic",
+      "description": "Central administration and lecture halls.",
+      "x": 38,
+      "y": 31
+    },
+    {
+      "id": "library",
+      "name": "Library",
+      "type": "study",
+      "description": "Reading rooms, archives, and student workspaces.",
+      "x": 55,
+      "y": 45
+    },
+    {
+      "id": "science-labs",
+      "name": "Science Labs",
+      "type": "research",
+      "description": "Laboratory building for practical classes and research.",
+      "x": 68,
+      "y": 37
+    },
+    {
+      "id": "student-center",
+      "name": "Student Center",
+      "type": "services",
+      "description": "Dining, clubs, and student support services.",
+      "x": 46,
+      "y": 62
+    },
+    {
+      "id": "sports-hall",
+      "name": "Sports Hall",
+      "type": "athletics",
+      "description": "Indoor courts, gym space, and wellness programs.",
+      "x": 75,
+      "y": 71
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "university-overview",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "start": "node server/server.js",
+    "check": "npm run build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.2.0",
+    "vue": "^3.5.13",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {}
+}
