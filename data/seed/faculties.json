@@ -1,0 +1,43 @@
+[
+  {
+    "id": "faculty-kpi-informatics",
+    "universityId": "university-kyiv-polytechnic",
+    "name": "Faculty of Informatics and Computer Science",
+    "shortName": "FICS",
+    "description": "Computer science, software systems, and applied information technology education.",
+    "programIds": [
+      "program-kpi-software-engineering-bsc",
+      "program-kpi-computer-science-msc"
+    ]
+  },
+  {
+    "id": "faculty-kpi-engineering",
+    "universityId": "university-kyiv-polytechnic",
+    "name": "Faculty of Mechanical Engineering",
+    "shortName": "FME",
+    "description": "Engineering design, manufacturing systems, and applied mechanics.",
+    "programIds": [
+      "program-kpi-mechanical-engineering-bsc"
+    ]
+  },
+  {
+    "id": "faculty-lpnu-computer-sciences",
+    "universityId": "university-lviv-polytechnic",
+    "name": "Institute of Computer Science and Information Technologies",
+    "shortName": "ICSIT",
+    "description": "Information systems, computing, and data-centered engineering programs.",
+    "programIds": [
+      "program-lpnu-computer-science-bsc"
+    ]
+  },
+  {
+    "id": "faculty-lpnu-architecture",
+    "universityId": "university-lviv-polytechnic",
+    "name": "Institute of Architecture and Design",
+    "shortName": "IARD",
+    "description": "Architecture, urban planning, and design education.",
+    "programIds": [
+      "program-lpnu-architecture-bsc"
+    ]
+  }
+]

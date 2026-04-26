@@ -1,0 +1,110 @@
+[
+  {
+    "id": "kpi-software-engineering-bsc",
+    "universityId": "kyiv-polytechnic",
+    "facultyId": "kpi-informatics",
+    "campusId": "kpi-main-campus",
+    "name": "Software Engineering",
+    "degree": "Bachelor",
+    "field": "Computer Science",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "studyMode": "Full-time",
+    "tuitionPerYear": {
+      "amount": 42000,
+      "currency": "UAH"
+    },
+    "tags": ["software", "web", "systems"],
+    "description": "Undergraduate software engineering program focused on web systems, architecture, and product delivery."
+  },
+  {
+    "id": "kpi-computer-science-msc",
+    "universityId": "kyiv-polytechnic",
+    "facultyId": "kpi-informatics",
+    "campusId": "kpi-main-campus",
+    "name": "Computer Science",
+    "degree": "Master",
+    "field": "Computer Science",
+    "durationYears": 2,
+    "language": "English",
+    "studyMode": "Full-time",
+    "tuitionPerYear": {
+      "amount": 56000,
+      "currency": "UAH"
+    },
+    "tags": ["algorithms", "ai", "data"],
+    "description": "Graduate computer science program covering algorithms, data systems, and artificial intelligence."
+  },
+  {
+    "id": "kpi-mechanical-engineering-bsc",
+    "universityId": "kyiv-polytechnic",
+    "facultyId": "kpi-engineering",
+    "campusId": "kpi-main-campus",
+    "name": "Mechanical Engineering",
+    "degree": "Bachelor",
+    "field": "Engineering",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "studyMode": "Full-time",
+    "tuitionPerYear": {
+      "amount": 39000,
+      "currency": "UAH"
+    },
+    "tags": ["mechanics", "manufacturing", "design"],
+    "description": "Mechanical engineering program for manufacturing, mechanics, and industrial design fundamentals."
+  },
+  {
+    "id": "lpnu-computer-science-bsc",
+    "universityId": "lviv-polytechnic",
+    "facultyId": "lpnu-computer-sciences",
+    "campusId": "lpnu-main-campus",
+    "name": "Computer Science",
+    "degree": "Bachelor",
+    "field": "Computer Science",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "studyMode": "Full-time",
+    "tuitionPerYear": {
+      "amount": 41000,
+      "currency": "UAH"
+    },
+    "tags": ["programming", "data", "networks"],
+    "description": "Undergraduate program in programming, data engineering, networking, and information systems."
+  },
+  {
+    "id": "lpnu-architecture-bsc",
+    "universityId": "lviv-polytechnic",
+    "facultyId": "lpnu-architecture",
+    "campusId": "lpnu-main-campus",
+    "name": "Architecture and Urban Planning",
+    "degree": "Bachelor",
+    "field": "Architecture",
+    "durationYears": 4,
+    "language": "Ukrainian",
+    "studyMode": "Full-time",
+    "tuitionPerYear": {
+      "amount": 45000,
+      "currency": "UAH"
+    },
+    "tags": ["architecture", "urbanism", "design"],
+    "description": "Architecture program centered on spatial design, urban planning, and visual communication."
+  },
+  {
+    "id": "knu-international-relations-bsc",
+    "universityId": "taras-shevchenko",
+    "facultyId": "knu-international-relations",
+    "campusId": "knu-red-building-campus",
+    "name": "International Relations",
+    "degree": "Bachelor",
+    "field": "Social Sciences",
+    "durationYears": 4,
+    "language": "English",
+    "studyMode": "Full-time",
+    "tuitionPerYear": {
+      "amount": 52000,
+      "currency": "UAH"
+    },
+    "tags": ["diplomacy", "policy", "law"],
+    "description": "Program covering diplomacy, international law, global policy, and regional studies."
+  }
+]

@@ -1,7 +1,7 @@
 {
   "name": "University Campus",
   "image": {
-    "src": "/api/campus/map-image",
+    "src": "/api/campus-map/image",
     "width": 1024,
     "height": 768,
     "alt": "University campus map"
@@ -13,7 +13,8 @@
       "type": "academic",
       "description": "Central administration and lecture halls.",
       "x": 38,
-      "y": 31
+      "y": 31,
+      "campusId": "kpi-main-campus"
     },
     {
       "id": "library",
@@ -21,7 +22,8 @@
       "type": "study",
       "description": "Reading rooms, archives, and student workspaces.",
       "x": 55,
-      "y": 45
+      "y": 45,
+      "campusId": "kpi-main-campus"
     },
     {
       "id": "science-labs",
@@ -29,7 +31,8 @@
       "type": "research",
       "description": "Laboratory building for practical classes and research.",
       "x": 68,
-      "y": 37
+      "y": 37,
+      "campusId": "kpi-main-campus"
     },
     {
       "id": "student-center",
@@ -37,7 +40,8 @@
       "type": "services",
       "description": "Dining, clubs, and student support services.",
       "x": 46,
-      "y": 62
+      "y": 62,
+      "campusId": "lpnu-main-campus"
     },
     {
       "id": "sports-hall",
@@ -45,7 +49,8 @@
       "type": "athletics",
       "description": "Indoor courts, gym space, and wellness programs.",
       "x": 75,
-      "y": 71
+      "y": 71,
+      "campusId": "lpnu-main-campus"
     }
   ]
 }

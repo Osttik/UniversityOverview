@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://university-overview.local/schemas/program.schema.json",
+  "title": "Program",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "universityId",
+    "facultyId",
+    "name",
+    "degree",
+    "durationYears",
+    "language",
+    "tuitionPerYear",
+    "tags"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "universityId": {
+      "$ref": "#/$defs/id"
+    },
+    "facultyId": {
+      "$ref": "#/$defs/id"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "degree": {
+      "type": "string",
+      "enum": [
+        "Bachelor",
+        "Master",
+        "PhD",
+        "Certificate"
+      ]
+    },
+    "durationYears": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 8
+    },
+    "language": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tuitionPerYear": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    }
+  }
+}
