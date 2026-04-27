@@ -1,0 +1,12 @@
+<section class="ui-empty-state" aria-live="polite">
+  <div class="ui-empty-state__mark" aria-hidden="true"></div>
+  <div>
+    <h2>{{ title }}</h2>
+    @if (description) {
+      <p>{{ description }}</p>
+    }
+  </div>
+  @if (actionLabel) {
+    <button uiButton="secondary" type="button">{{ actionLabel }}</button>
+  }
+</section>

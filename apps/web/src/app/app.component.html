@@ -1,0 +1,46 @@
+<main class="shell">
+  <section class="toolbar" aria-label="University overview dashboard">
+    <div>
+      <p class="eyebrow">University Overview</p>
+      <h1>Admissions workspace</h1>
+    </div>
+    <div class="toolbar__actions">
+      <button uiButton="secondary" size="sm" type="button">Import data</button>
+      <button uiButton="primary" size="sm" type="button">New program</button>
+    </div>
+  </section>
+
+  <section class="metrics" aria-label="Overview metrics">
+    @for (metric of metrics; track metric.label) {
+      <app-ui-card [title]="metric.value" [subtitle]="metric.label">
+        <app-ui-badge [tone]="metric.tone" label="Live"></app-ui-badge>
+      </app-ui-card>
+    }
+  </section>
+
+  <section class="workspace">
+    <app-ui-card title="API client layer" subtitle="Typed services for the Express backend">
+      <div class="stack">
+        <app-ui-badge tone="info" label="Universities"></app-ui-badge>
+        <app-ui-badge tone="success" label="Programs"></app-ui-badge>
+        <app-ui-badge tone="warning" label="Applications"></app-ui-badge>
+      </div>
+    </app-ui-card>
+
+    <app-ui-card title="Shared primitives" subtitle="Reusable controls for feature screens">
+      <div class="stack stack--actions">
+        <button uiButton="primary" type="button">Primary</button>
+        <button uiButton="secondary" type="button">Secondary</button>
+        <button uiButton="ghost" type="button">Ghost</button>
+      </div>
+    </app-ui-card>
+
+    <app-ui-empty-state
+      title="No active search"
+      description="Search results can render here once a feature screen connects to the API client."
+      actionLabel="Start search"
+    ></app-ui-empty-state>
+
+    <app-ui-loading label="Preparing workspace"></app-ui-loading>
+  </section>
+</main>
