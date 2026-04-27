@@ -1,0 +1,47 @@
+[
+  {
+    "id": "kyiv-polytechnic-institute",
+    "name": "National Technical University of Ukraine Igor Sikorsky Kyiv Polytechnic Institute",
+    "shortName": "KPI",
+    "country": "Ukraine",
+    "city": "Kyiv",
+    "address": "37 Beresteiskyi Avenue",
+    "website": "https://kpi.ua",
+    "description": "Large technical university with engineering, IT, science, and management programs.",
+    "programs": ["Engineering", "Computer Science", "Management", "Applied Mathematics"],
+    "coordinates": {
+      "latitude": 50.4499,
+      "longitude": 30.4574
+    }
+  },
+  {
+    "id": "taras-shevchenko-national-university",
+    "name": "Taras Shevchenko National University of Kyiv",
+    "shortName": "KNU",
+    "country": "Ukraine",
+    "city": "Kyiv",
+    "address": "60 Volodymyrska Street",
+    "website": "https://knu.ua",
+    "description": "Classical research university offering humanities, sciences, law, economics, and technology programs.",
+    "programs": ["Law", "Economics", "Computer Science", "Philology", "Biology"],
+    "coordinates": {
+      "latitude": 50.4419,
+      "longitude": 30.5116
+    }
+  },
+  {
+    "id": "lviv-polytechnic-national-university",
+    "name": "Lviv Polytechnic National University",
+    "shortName": "Lviv Polytechnic",
+    "country": "Ukraine",
+    "city": "Lviv",
+    "address": "12 Stepan Bandera Street",
+    "website": "https://lpnu.ua",
+    "description": "Technical university focused on engineering, architecture, computer science, and business education.",
+    "programs": ["Architecture", "Engineering", "Computer Science", "Business"],
+    "coordinates": {
+      "latitude": 49.8353,
+      "longitude": 24.0144
+    }
+  }
+]

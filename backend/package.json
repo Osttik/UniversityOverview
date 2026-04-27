@@ -1,0 +1,17 @@
+{
+  "name": "university-overview-backend",
+  "version": "1.0.0",
+  "description": "Express backend API for UniversityOverview university data.",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "check": "node --check src/app.js && node --check src/server.js && node --check src/routes/universities.js && node --check src/services/universityService.js && node --check src/storage/jsonStore.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
