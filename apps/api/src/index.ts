@@ -604,8 +604,8 @@ function normalizeUniversity(body: Partial<University>, existing?: University): 
     status: isUniversityStatus(body.status) ? body.status : "draft",
     description: normalizeText(body.description),
     coordinates: {
-      latitude: normalizeNumber(body.coordinates?.latitude),
-      longitude: normalizeNumber(body.coordinates?.longitude)
+      latitude: normalizeCoordinate(body.coordinates?.latitude, -90, 90),
+      longitude: normalizeCoordinate(body.coordinates?.longitude, -180, 180)
     },
     contacts: {
       email: normalizeText(body.contacts?.email),
@@ -745,6 +745,11 @@ function normalizeText(value: unknown) {
 function normalizeNumber(value: unknown) {
   const numberValue = Number(value);
   return Number.isFinite(numberValue) && numberValue >= 0 ? numberValue : 0;
+}
+
+function normalizeCoordinate(value: unknown, min: number, max: number) {
+  const numberValue = Number(value);
+  return Number.isFinite(numberValue) && numberValue >= min && numberValue <= max ? numberValue : 0;
 }
 
 function createId(prefix: string, value: unknown) {
