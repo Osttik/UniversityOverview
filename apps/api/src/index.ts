@@ -45,6 +45,17 @@ type University = {
   faculties: Faculty[];
 };
 
+type TuitionRange = {
+  min: number;
+  max: number;
+  currency: "UAH";
+};
+
+type NumberRange = {
+  min: number;
+  max: number;
+};
+
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
 const dataFile = join(process.cwd(), "data", "universities.json");
@@ -75,6 +86,42 @@ app.get("/api/universities", async (request, response, next) => {
       data: filtered.map(toUniversitySummary),
       count: filtered.length
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/api/detail-pages/:key/overview", async (request, response, next) => {
+  try {
+    const university = findUniversityByKey(await readUniversities(), request.params.key);
+
+    if (!university) {
+      response.status(404).json({
+        error: "not_found",
+        message: "University was not found."
+      });
+      return;
+    }
+
+    response.json({ data: toUniversityOverview(university) });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/api/universities/:id/overview", async (request, response, next) => {
+  try {
+    const university = findUniversityByKey(await readUniversities(), request.params.id);
+
+    if (!university) {
+      response.status(404).json({
+        error: "not_found",
+        message: "University was not found."
+      });
+      return;
+    }
+
+    response.json({ data: toUniversityOverview(university) });
   } catch (error) {
     next(error);
   }
@@ -164,6 +211,16 @@ async function readUniversities(): Promise<University[]> {
   return JSON.parse(payload) as University[];
 }
 
+function findUniversityByKey(universities: University[], key: string) {
+  const normalized = normalize(key);
+
+  return (
+    universities.find((university) =>
+      [university.id, university.shortName, university.name].some((value) => normalize(value) === normalized)
+    ) ?? null
+  );
+}
+
 function toUniversitySummary(university: University) {
   const programs = university.faculties.flatMap((faculty) => faculty.programs);
 
@@ -184,6 +241,38 @@ function toUniversitySummary(university: University) {
   };
 }
 
+function toUniversityOverview(university: University) {
+  const programs = university.faculties.flatMap((faculty) => faculty.programs);
+  const faculties = university.faculties.map(toFacultySummary);
+
+  return {
+    id: university.id,
+    name: university.name,
+    shortName: university.shortName,
+    description: university.description,
+    status: university.status,
+    website: university.website,
+    location: {
+      country: university.country,
+      city: university.city,
+      latitude: university.coordinates.latitude,
+      longitude: university.coordinates.longitude
+    },
+    contacts: university.contacts,
+    metrics: {
+      faculties: faculties.length,
+      programs: programs.length,
+      tuitionRange: getTuitionRange(programs),
+      durationYears: getDurationYearsRange(programs),
+      studyModes: uniqueSorted(programs.map((program) => program.mode)),
+      programLevels: countValues(programs.map((program) => program.degree)),
+      languages: uniqueSorted(programs.map((program) => program.language))
+    },
+    faculties,
+    programs
+  };
+}
+
 function toFacultySummary(faculty: Faculty) {
   return {
     id: faculty.id,
@@ -196,6 +285,53 @@ function toFacultySummary(faculty: Faculty) {
   };
 }
 
+function getTuitionRange(programs: StudyProgram[]): TuitionRange | null {
+  const tuitionValues = programs.map((program) => program.tuitionPerYear).filter(isFiniteNumber);
+
+  if (tuitionValues.length === 0) {
+    return null;
+  }
+
+  return {
+    min: Math.min(...tuitionValues),
+    max: Math.max(...tuitionValues),
+    currency: "UAH"
+  };
+}
+
+function getDurationYearsRange(programs: StudyProgram[]): NumberRange | null {
+  const durationValues = programs.map((program) => program.durationYears).filter(isFiniteNumber);
+
+  if (durationValues.length === 0) {
+    return null;
+  }
+
+  return {
+    min: Math.min(...durationValues),
+    max: Math.max(...durationValues)
+  };
+}
+
+function countValues(values: Array<string | null | undefined>) {
+  return values.reduce<Record<string, number>>((counts, item) => {
+    const value = item ?? "Unknown";
+    counts[value] = (counts[value] ?? 0) + 1;
+    return counts;
+  }, {});
+}
+
+function uniqueSorted(values: Array<string | null | undefined>) {
+  return Array.from(new Set(values.filter((value): value is string => Boolean(value)))).sort();
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
 function singleQueryValue(value: unknown) {
   return Array.isArray(value) ? String(value[0] ?? "") : value === undefined ? undefined : String(value);
+}
+
+function normalize(value: unknown) {
+  return String(value ?? "").trim().toLowerCase();
 }
