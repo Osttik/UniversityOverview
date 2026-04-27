@@ -5,17 +5,42 @@ import { Router } from "express";
 
 import { HttpError } from "../errors/http-error.js";
 import { JsonUniversityRepository, type UniversityListFilters } from "../persistence/university-repository.js";
+import { type UniversityOverviewService } from "../services/university-overview-service.js";
 
 const dataFilePath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../data/universities.json");
-const defaultRepository = new JsonUniversityRepository(dataFilePath);
+export const defaultUniversityRepository = new JsonUniversityRepository(dataFilePath);
 
-export function createUniversityRouter(repository = defaultRepository) {
+export function createUniversityRouter(
+  repository = defaultUniversityRepository,
+  overviewService?: UniversityOverviewService
+) {
   const router = Router();
 
   router.get("/", async (request, response, next) => {
     try {
       const universities = await repository.list(readListFilters(request.query));
       response.json({ data: universities, count: universities.length });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.get("/:key/overview", async (request, response, next) => {
+    try {
+      if (!overviewService) {
+        throw new HttpError(500, "University overview service is not configured.", {
+          code: "OVERVIEW_SERVICE_NOT_CONFIGURED",
+          expose: false
+        });
+      }
+
+      const overview = await overviewService.findByUniversityKey(request.params.key);
+
+      if (!overview) {
+        throw new HttpError(404, "University was not found.", { code: "UNIVERSITY_NOT_FOUND" });
+      }
+
+      response.json({ data: overview });
     } catch (error) {
       next(error);
     }

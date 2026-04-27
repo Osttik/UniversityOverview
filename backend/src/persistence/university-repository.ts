@@ -42,6 +42,18 @@ export class JsonUniversityRepository {
     return universities.find((university) => university.id === id) ?? null;
   }
 
+  async findByKey(key: string) {
+    await this.initialize();
+    const data = await this.store.read();
+    const normalized = normalize(key);
+
+    return (
+      data.universities.find((university) =>
+        [university.id, university.shortName, university.name].some((value) => normalize(value) === normalized)
+      ) ?? null
+    );
+  }
+
   async create(input: unknown) {
     await this.initialize();
 
