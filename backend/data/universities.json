@@ -1,0 +1,121 @@
+{
+  "universities": [
+    {
+      "id": "kyiv-polytechnic-institute",
+      "name": "National Technical University of Ukraine Igor Sikorsky Kyiv Polytechnic Institute",
+      "shortName": "KPI",
+      "description": "Large technical university with engineering, IT, science, and management programs.",
+      "status": "active",
+      "website": "https://kpi.ua/",
+      "location": {
+        "country": "Ukraine",
+        "city": "Kyiv",
+        "address": "37 Beresteiskyi Avenue",
+        "latitude": 50.4499,
+        "longitude": 30.4574
+      },
+      "contacts": {
+        "email": "info@kpi.ua",
+        "phone": "+380 44 204 9494"
+      },
+      "programs": [
+        {
+          "id": "kpi-engineering",
+          "name": "Engineering",
+          "degree": "bachelor",
+          "mode": "full-time",
+          "durationMonths": 48,
+          "language": "Ukrainian"
+        },
+        {
+          "id": "kpi-computer-science",
+          "name": "Computer Science",
+          "degree": "bachelor",
+          "mode": "full-time",
+          "durationMonths": 48,
+          "language": "Ukrainian"
+        }
+      ],
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "taras-shevchenko-national-university",
+      "name": "Taras Shevchenko National University of Kyiv",
+      "shortName": "KNU",
+      "description": "Classical research university offering humanities, sciences, law, economics, and technology programs.",
+      "status": "active",
+      "website": "https://knu.ua/",
+      "location": {
+        "country": "Ukraine",
+        "city": "Kyiv",
+        "address": "60 Volodymyrska Street",
+        "latitude": 50.4419,
+        "longitude": 30.5116
+      },
+      "contacts": {
+        "email": "office.chief@univ.net.ua",
+        "phone": "+380 44 239 3333"
+      },
+      "programs": [
+        {
+          "id": "knu-law",
+          "name": "Law",
+          "degree": "master",
+          "mode": "full-time",
+          "durationMonths": 24,
+          "language": "Ukrainian"
+        },
+        {
+          "id": "knu-economics",
+          "name": "Economics",
+          "degree": "bachelor",
+          "mode": "hybrid",
+          "durationMonths": 48,
+          "language": "Ukrainian"
+        }
+      ],
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "lviv-polytechnic-national-university",
+      "name": "Lviv Polytechnic National University",
+      "shortName": "Lviv Polytechnic",
+      "description": "Technical university focused on engineering, architecture, computer science, and business education.",
+      "status": "active",
+      "website": "https://lpnu.ua/",
+      "location": {
+        "country": "Ukraine",
+        "city": "Lviv",
+        "address": "12 Stepan Bandera Street",
+        "latitude": 49.8353,
+        "longitude": 24.0144
+      },
+      "contacts": {
+        "email": "coffice@lpnu.ua",
+        "phone": "+380 32 258 2111"
+      },
+      "programs": [
+        {
+          "id": "lpnu-architecture",
+          "name": "Architecture",
+          "degree": "bachelor",
+          "mode": "full-time",
+          "durationMonths": 48,
+          "language": "Ukrainian"
+        },
+        {
+          "id": "lpnu-business",
+          "name": "Business",
+          "degree": "master",
+          "mode": "hybrid",
+          "durationMonths": 24,
+          "language": "English"
+        }
+      ],
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    }
+  ]
+}

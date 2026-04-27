@@ -1,0 +1,119 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+  color-scheme: light;
+  --app-background: #f6f7fb;
+  --app-surface: #ffffff;
+  --app-surface-muted: #eef2f7;
+  --app-border: #d9e0ea;
+  --app-text: #18202f;
+  --app-muted: #667085;
+  --app-primary: #2454d6;
+  --app-primary-strong: #183b9b;
+  --app-success: #087443;
+  --app-warning: #a15c00;
+  --app-danger: #b42318;
+  --app-shadow: 0 14px 34px rgba(20, 32, 50, 0.08);
+  font-family: Inter, Roboto, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  min-width: 320px;
+  background: var(--app-background);
+  color: var(--app-text);
+  font-family: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: max-content;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.ui-button:focus-visible {
+  outline: 3px solid rgba(36, 84, 214, 0.24);
+  outline-offset: 2px;
+}
+
+.ui-button:disabled,
+.ui-button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.ui-button--sm {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 0.88rem;
+}
+
+.ui-button--md {
+  min-height: 42px;
+  padding: 0 18px;
+}
+
+.ui-button--lg {
+  min-height: 48px;
+  padding: 0 22px;
+  font-size: 1.02rem;
+}
+
+.ui-button--primary {
+  background: var(--app-primary);
+  color: #ffffff;
+}
+
+.ui-button--primary:hover {
+  background: var(--app-primary-strong);
+}
+
+.ui-button--secondary {
+  border-color: var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text);
+}
+
+.ui-button--secondary:hover {
+  border-color: #b7c2d2;
+  box-shadow: 0 8px 18px rgba(20, 32, 50, 0.08);
+}
+
+.ui-button--ghost {
+  background: transparent;
+  color: var(--app-primary-strong);
+}
+
+.ui-button--ghost:hover {
+  background: #e8efff;
+}
+
+.ui-button.is-loading {
+  pointer-events: none;
+}
