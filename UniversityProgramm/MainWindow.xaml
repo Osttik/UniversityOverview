@@ -7,7 +7,10 @@
         xmlns:local="clr-namespace:UniversityProgramm.Helpers"
         xmlns:dmx="http://schemas.devexpress.com/winfx/2008/xaml/map"
         mc:Ignorable="d"
-        Height="450" Width="800"
+        Height="640" Width="1040"
+        MinHeight="520" MinWidth="760"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackgroundBrush}"
         xmlns:controls="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         >
     <Window.DataContext>
@@ -15,18 +18,27 @@
 
         </local:ApplicationModel>
     </Window.DataContext>
-    <Grid x:Name="MainGrid" DataContext="Application">
+    <Grid x:Name="MainGrid" DataContext="Application" Background="{StaticResource AppBackgroundBrush}">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" MinWidth="190" MaxWidth="240"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Border x:Name="Results" Grid.Column="1" Grid.ColumnSpan="2">
+        <Border x:Name="Results"
+                Grid.Column="1"
+                Margin="14"
+                Background="#FFFFFF"
+                BorderBrush="#C7D4DC"
+                BorderThickness="1"
+                CornerRadius="8"
+                ClipToBounds="True">
             <!--<controls:Map x:Name="CurrentMap">
             </controls:Map>-->
-            <InkCanvas Background="Azure" EditingMode="None" Name="Map">
+            <InkCanvas Background="#F5FBFD" EditingMode="None" Name="Map" SizeChanged="MapSizeChanged">
                 <Canvas x:Name="canvas"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
                         MouseWheel="CanvasMouseWheel"
                         MouseLeftButtonDown="CanvasMouseLeftButtonDown"
                         MouseLeftButtonUp="CanvasMouseLeftButtonUp"
@@ -36,7 +48,9 @@
             </InkCanvas>
         </Border>
 
-        <Border x:Name="LeftPanel" Grid.Column="0">
+        <Border x:Name="LeftPanel"
+                Grid.Column="0"
+                Background="{StaticResource PanelBackgroundBrush}">
             <!--<Button 
                 Content="->" 
                 HorizontalAlignment="Left" 
@@ -49,19 +63,28 @@
         <Border 
             x:Name="LeftExpandPanel" 
             Grid.Column="0" 
-            Grid.ColumnSpan="2" 
             Visibility="Visible" 
-            Background="Blue" 
+            Background="{StaticResource PanelBackgroundBrush}"
+            MinWidth="190"
+            MaxWidth="240"
             >
-            <DockPanel LastChildFill="False" 
-                       HorizontalAlignment="Left" 
-                       VerticalAlignment="Top" 
-            >
+            <DockPanel LastChildFill="False"
+                       Margin="16"
+                       HorizontalAlignment="Stretch">
                 <!--<Button DockPanel.Dock="Top" Content="(-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Click="Expander_Button_click" Margin="160, 0, 0, 0"/>-->
-                <Image DockPanel.Dock="Top" Source="jojo.jpg" Margin="5,0,10,0"/>
-                <Button DockPanel.Dock="Top" Content="To map" Height="30" Margin="5,0,10,0" Click="ToMap"/>
-                <Button DockPanel.Dock="Top" Content="Find" Height="30" Margin="5,0,10,0" Click="Find"/>
-                <Button DockPanel.Dock="Top" Content="Exit" Height="28" Margin="5,0,10,0" Click="Exit"/>
+                <Border DockPanel.Dock="Top"
+                        Margin="0,0,0,20"
+                        CornerRadius="8"
+                        Background="#102A3A"
+                        ClipToBounds="True">
+                    <Image Source="jojo.jpg"
+                           Stretch="UniformToFill"
+                           MaxHeight="150"
+                           MinHeight="110" />
+                </Border>
+                <Button DockPanel.Dock="Top" Style="{StaticResource PanelButton}" Content="To map" Click="ToMap"/>
+                <Button DockPanel.Dock="Top" Style="{StaticResource PanelButton}" Content="Find" Click="Find"/>
+                <Button DockPanel.Dock="Bottom" Style="{StaticResource PanelButton}" Content="Exit" Click="Exit"/>
             </DockPanel>
         </Border>
     </Grid>

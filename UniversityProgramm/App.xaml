@@ -4,23 +4,60 @@
              xmlns:local="clr-namespace:UniversityProgramm"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style x:Key="MyButton" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#EEF3F6" />
+        <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#193447" />
+        <SolidColorBrush x:Key="PanelAccentBrush" Color="#41A6B5" />
+        <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#F7FAFC" />
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#D9EEF2" />
+        <SolidColorBrush x:Key="ButtonPressedBrush" Color="#BFE1E7" />
+        <SolidColorBrush x:Key="ButtonForegroundBrush" Color="#102A3A" />
+
+        <Style x:Key="PanelButton" TargetType="Button">
+            <Setter Property="MinHeight" Value="42" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="{StaticResource ButtonBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource ButtonForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Border x:Name="ButtonChrome"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.8" />
+                                <Setter TargetName="ButtonChrome" Property="Background" Value="{StaticResource ButtonHoverBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonChrome" Property="Background" Value="{StaticResource ButtonPressedBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{StaticResource PanelAccentBrush}" />
+                                <Setter TargetName="ButtonChrome" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Setter Property="Cursor" Value="Arrow" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="MyButton" TargetType="Button" BasedOn="{StaticResource PanelButton}" />
     </Application.Resources>
 </Application>

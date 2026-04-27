@@ -19,11 +19,12 @@ namespace UniversityProgramm
 
         private int _delta = 120;
         private float _persantage = 0.1f;
-        private float _maxPersantage = 1.5f;
+        private readonly float _minPersantage = 0.6f;
+        private readonly float _maxPersantage = 1.5f;
         private float _currentPersantage = 1f;
         private double _normalHeight = 800;
         private double _normalWidth = 1024;
-        private Image _map;
+        private Image? _map;
 
         public MainWindow()
         {
@@ -76,9 +77,9 @@ namespace UniversityProgramm
 
             foreach (var item in Map.Children)
             {
-                if(item is Line)
+                if(item is Line line)
                 {
-                    lines.Add(item as Line);
+                    lines.Add(line);
                 }
             }
 
@@ -97,7 +98,7 @@ namespace UniversityProgramm
                 Filter = "Image Files (*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp"
             };
 
-            if ((bool)dialog.ShowDialog())
+            if (dialog.ShowDialog() == true)
             {
                 AddPicture(dialog.FileName);
             }
@@ -106,20 +107,29 @@ namespace UniversityProgramm
         private void AddPicture(string path)
         {
             var bitmap = new BitmapImage(new Uri(path));
-            var image = new Image() { Source = bitmap };
+            var image = new Image()
+            {
+                Source = bitmap,
+                Width = bitmap.Width,
+                Height = bitmap.Height,
+                Stretch = Stretch.Fill
+            };
 
             image.Name = "MapPicture";
 
             _normalHeight = bitmap.Height;
             _normalWidth = bitmap.Width;
+            _currentPersantage = 1f;
+            _map = image;
 
             Canvas.SetLeft(image, 0);
             Canvas.SetTop(image, 0);
 
             canvas.Children.Add(image);
+            Dispatcher.BeginInvoke(new Action(ConstrainMapPosition));
         }
 
-        private Image draggedImage;
+        private Image? draggedImage;
         private Point mousePosition;
 
         private void CanvasMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -154,20 +164,9 @@ namespace UniversityProgramm
                 var offset = position - mousePosition;
                 mousePosition = position;
 
-                Point relativePoint = draggedImage.TransformToAncestor(Map).Transform(new Point(0, 0));
-
-                double toX = relativePoint.X + offset.X;
-                double toY = relativePoint.Y + offset.Y;
-
-                if ((offset.X > 0 && toX <= 0) || (offset.X < 0 && -toX + Map.ActualWidth <= draggedImage.ActualWidth))
-                {
-                    Canvas.SetLeft(draggedImage, Canvas.GetLeft(draggedImage) + offset.X);
-                }
-
-                if ((offset.Y > 0 && toY <= 0) || (offset.Y < 0 && -toY + Map.ActualHeight <= draggedImage.ActualHeight))
-                {
-                    Canvas.SetTop(draggedImage, Canvas.GetTop(draggedImage) + offset.Y);
-                }
+                Canvas.SetLeft(draggedImage, GetCanvasLeft(draggedImage) + offset.X);
+                Canvas.SetTop(draggedImage, GetCanvasTop(draggedImage) + offset.Y);
+                ConstrainMapPosition();
             }
         }
 
@@ -187,15 +186,86 @@ namespace UniversityProgramm
             {
                 foreach (var item in canvas.Children)
                 {
-                    Image image = item as Image;
-                    if (image != null && image.Name == "MapPicture")
+                    if (item is Image image && image.Name == "MapPicture")
                     {
-                        (item as Image).Height += ((e.Delta / _delta) * _persantage * _normalHeight);
-                        (item as Image).Width += ((e.Delta / _delta) * _persantage * _normalWidth);
+                        _map = image;
                         break;
                     }
                 }
             }
+
+            if (_map == null)
+            {
+                return;
+            }
+
+            var zoomStep = (e.Delta / _delta) * _persantage;
+            var nextPersantage = Math.Max(_minPersantage, Math.Min(_maxPersantage, _currentPersantage + zoomStep));
+
+            if (Math.Abs(nextPersantage - _currentPersantage) < 0.001)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            _currentPersantage = nextPersantage;
+            _map.Height = _currentPersantage * _normalHeight;
+            _map.Width = _currentPersantage * _normalWidth;
+            ConstrainMapPosition();
+            e.Handled = true;
+        }
+
+        private void MapSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            canvas.Width = Math.Max(0, e.NewSize.Width);
+            canvas.Height = Math.Max(0, e.NewSize.Height);
+            ConstrainMapPosition();
+        }
+
+        private void ConstrainMapPosition()
+        {
+            if (_map == null || Map.ActualWidth <= 0 || Map.ActualHeight <= 0)
+            {
+                return;
+            }
+
+            var imageWidth = _map.ActualWidth > 0 ? _map.ActualWidth : _map.Width;
+            var imageHeight = _map.ActualHeight > 0 ? _map.ActualHeight : _map.Height;
+            var left = GetCanvasLeft(_map);
+            var top = GetCanvasTop(_map);
+
+            if (imageWidth <= Map.ActualWidth)
+            {
+                left = (Map.ActualWidth - imageWidth) / 2;
+            }
+            else
+            {
+                left = Math.Min(0, Math.Max(Map.ActualWidth - imageWidth, left));
+            }
+
+            if (imageHeight <= Map.ActualHeight)
+            {
+                top = (Map.ActualHeight - imageHeight) / 2;
+            }
+            else
+            {
+                top = Math.Min(0, Math.Max(Map.ActualHeight - imageHeight, top));
+            }
+
+            Canvas.SetLeft(_map, left);
+            Canvas.SetTop(_map, top);
+        }
+
+        private double GetCanvasLeft(UIElement element)
+        {
+            var left = Canvas.GetLeft(element);
+            return double.IsNaN(left) ? 0 : left;
+        }
+
+        private double GetCanvasTop(UIElement element)
+        {
+            var top = Canvas.GetTop(element);
+            return double.IsNaN(top) ? 0 : top;
         }
     }
 }
