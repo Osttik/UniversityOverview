@@ -1,0 +1,129 @@
+[
+  {
+    "id": "kyiv-national-university",
+    "name": "Taras Shevchenko National University of Kyiv",
+    "shortName": "KNU",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "website": "https://knu.ua",
+    "status": "active",
+    "description": "A national research university with broad academic coverage across sciences, humanities, engineering, economics, and international relations.",
+    "coordinates": {
+      "latitude": 50.4419,
+      "longitude": 30.5118
+    },
+    "contacts": {
+      "email": "admissions@knu.ua",
+      "phone": "+380 44 239 31 41"
+    },
+    "faculties": [
+      {
+        "id": "faculty-computer-science",
+        "universityId": "kyiv-national-university",
+        "name": "Faculty of Computer Science and Cybernetics",
+        "description": "Applied mathematics, software engineering, data systems, and cyber defense.",
+        "dean": "Prof. Olena Hryshchenko",
+        "programs": [
+          {
+            "id": "program-software-engineering",
+            "facultyId": "faculty-computer-science",
+            "facultyName": "Faculty of Computer Science and Cybernetics",
+            "name": "Software Engineering",
+            "degree": "Bachelor",
+            "mode": "full-time",
+            "durationYears": 4,
+            "language": "Ukrainian",
+            "tuitionPerYear": 125000,
+            "description": "Product engineering, distributed systems, databases, testing, and team delivery."
+          },
+          {
+            "id": "program-data-science",
+            "facultyId": "faculty-computer-science",
+            "facultyName": "Faculty of Computer Science and Cybernetics",
+            "name": "Data Science",
+            "degree": "Master",
+            "mode": "hybrid",
+            "durationYears": 2,
+            "language": "English",
+            "tuitionPerYear": 148000,
+            "description": "Machine learning, analytics platforms, statistical modeling, and applied AI projects."
+          }
+        ]
+      },
+      {
+        "id": "faculty-economics",
+        "universityId": "kyiv-national-university",
+        "name": "Faculty of Economics",
+        "description": "Economics, finance, public policy, and business analytics programs.",
+        "dean": "Prof. Andrii Melnyk",
+        "programs": [
+          {
+            "id": "program-business-analytics",
+            "facultyId": "faculty-economics",
+            "facultyName": "Faculty of Economics",
+            "name": "Business Analytics",
+            "degree": "Bachelor",
+            "mode": "full-time",
+            "durationYears": 4,
+            "language": "Ukrainian",
+            "tuitionPerYear": 98000,
+            "description": "Quantitative management, reporting systems, forecasting, and decision support."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lviv-polytechnic",
+    "name": "Lviv Polytechnic National University",
+    "shortName": "LPNU",
+    "city": "Lviv",
+    "country": "Ukraine",
+    "website": "https://lpnu.ua",
+    "status": "active",
+    "description": "A technical university focused on engineering, architecture, computer science, and innovation-driven professional education.",
+    "coordinates": {
+      "latitude": 49.8357,
+      "longitude": 24.0145
+    },
+    "contacts": {
+      "email": "admission@lpnu.ua",
+      "phone": "+380 32 258 21 11"
+    },
+    "faculties": [
+      {
+        "id": "faculty-engineering",
+        "universityId": "lviv-polytechnic",
+        "name": "Institute of Engineering Mechanics and Transport",
+        "description": "Mechanical engineering, logistics, transport systems, and industrial automation.",
+        "dean": "Dr. Marta Bondar",
+        "programs": [
+          {
+            "id": "program-robotics",
+            "facultyId": "faculty-engineering",
+            "facultyName": "Institute of Engineering Mechanics and Transport",
+            "name": "Robotics and Mechatronics",
+            "degree": "Bachelor",
+            "mode": "full-time",
+            "durationYears": 4,
+            "language": "Ukrainian",
+            "tuitionPerYear": 112000,
+            "description": "Embedded systems, sensors, control theory, robotics labs, and industrial automation."
+          },
+          {
+            "id": "program-transport-logistics",
+            "facultyId": "faculty-engineering",
+            "facultyName": "Institute of Engineering Mechanics and Transport",
+            "name": "Transport Logistics",
+            "degree": "Master",
+            "mode": "part-time",
+            "durationYears": 2,
+            "language": "Ukrainian",
+            "tuitionPerYear": 76000,
+            "description": "Supply networks, route planning, transport economics, and logistics operations."
+          }
+        ]
+      }
+    ]
+  }
+]

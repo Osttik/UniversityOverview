@@ -1,0 +1,157 @@
+<main class="shell">
+  <section class="hero" aria-label="University detail overview">
+    <div class="hero__content">
+      <p class="eyebrow">University Overview</p>
+      <h1>University detail and academic structure</h1>
+      <p>
+        Review each university profile with nested faculties and programs from the Express API data model.
+      </p>
+    </div>
+    <div class="hero__actions">
+      <button uiButton="secondary" size="sm" type="button">Import catalog</button>
+      <button uiButton="primary" size="sm" type="button">New program</button>
+    </div>
+  </section>
+
+  @if (loading()) {
+    <app-ui-loading label="Loading university catalog"></app-ui-loading>
+  } @else if (error()) {
+    <app-ui-empty-state
+      title="Catalog unavailable"
+      [description]="error() ?? ''"
+      actionLabel="Retry"
+    ></app-ui-empty-state>
+  } @else {
+    <section class="layout">
+      <aside class="directory" aria-label="Universities">
+        <header>
+          <p class="eyebrow">Directory</p>
+          <h2>Universities</h2>
+        </header>
+
+        <div class="university-list">
+          @for (university of universities(); track university.id) {
+            <button
+              class="university-item"
+              [class.is-active]="selectedUniversity()?.id === university.id"
+              type="button"
+              (click)="selectUniversity(university.id)"
+            >
+              <span class="university-item__name">{{ university.shortName || university.name }}</span>
+              <span>{{ university.city }}, {{ university.country }}</span>
+              <span>{{ university.facultyCount ?? university.faculties?.length ?? 0 }} faculties</span>
+            </button>
+          }
+        </div>
+      </aside>
+
+      <section class="detail" aria-live="polite">
+        @if (selectedUniversity(); as university) {
+          <header class="detail__header">
+            <div>
+              <app-ui-badge [tone]="university.status === 'active' ? 'success' : 'warning'" [label]="university.status || 'draft'"></app-ui-badge>
+              <h2>{{ university.name }}</h2>
+              <p>{{ university.description }}</p>
+            </div>
+            <a class="website-link" [href]="university.website" target="_blank" rel="noreferrer">Website</a>
+          </header>
+
+          @if (loadingDetail()) {
+            <app-ui-loading label="Refreshing university detail"></app-ui-loading>
+          }
+
+          <section class="metrics" aria-label="Selected university metrics">
+            @for (metric of metrics(); track metric.label) {
+              <app-ui-card [title]="metric.value" [subtitle]="metric.label">
+                <app-ui-badge [tone]="metric.tone" label="Current"></app-ui-badge>
+              </app-ui-card>
+            }
+          </section>
+
+          <section class="profile-grid" aria-label="University profile">
+            <app-ui-card title="Location" [subtitle]="university.city + ', ' + university.country">
+              <dl class="definition-list">
+                <div>
+                  <dt>Latitude</dt>
+                  <dd>{{ university.coordinates?.latitude ?? 'Pending' }}</dd>
+                </div>
+                <div>
+                  <dt>Longitude</dt>
+                  <dd>{{ university.coordinates?.longitude ?? 'Pending' }}</dd>
+                </div>
+              </dl>
+            </app-ui-card>
+
+            <app-ui-card title="Admissions contact" [subtitle]="university.contacts?.email || 'Contact pending'">
+              <dl class="definition-list">
+                <div>
+                  <dt>Phone</dt>
+                  <dd>{{ university.contacts?.phone || 'Pending' }}</dd>
+                </div>
+              </dl>
+            </app-ui-card>
+          </section>
+
+          <section class="faculty-overview" aria-label="Faculties and programs">
+            <div class="section-heading">
+              <p class="eyebrow">Nested overview</p>
+              <h2>Faculties and programs</h2>
+            </div>
+
+            @for (faculty of faculties(); track faculty.id) {
+              <article class="faculty-panel">
+                <header class="faculty-panel__header">
+                  <div>
+                    <h3>{{ faculty.name }}</h3>
+                    <p>{{ faculty.description }}</p>
+                  </div>
+                  <div class="faculty-meta">
+                    <span>{{ faculty.dean || 'Dean pending' }}</span>
+                    <app-ui-badge tone="info" [label]="facultyProgramCount(faculty) + ' programs'"></app-ui-badge>
+                  </div>
+                </header>
+
+                <div class="program-grid">
+                  @for (program of faculty.programs ?? []; track program.id) {
+                    <article class="program-card">
+                      <div>
+                        <h4>{{ program.name }}</h4>
+                        <p>{{ program.description }}</p>
+                      </div>
+                      <dl class="program-card__facts">
+                        <div>
+                          <dt>Track</dt>
+                          <dd>{{ programSummary(program) }}</dd>
+                        </div>
+                        <div>
+                          <dt>Language</dt>
+                          <dd>{{ program.language || 'Pending' }}</dd>
+                        </div>
+                        <div>
+                          <dt>Tuition</dt>
+                          <dd>{{ tuition(program) }} / year</dd>
+                        </div>
+                      </dl>
+                    </article>
+                  }
+                </div>
+              </article>
+            } @empty {
+              <app-ui-empty-state
+                title="No faculties yet"
+                description="This university has no faculties in the current catalog."
+                actionLabel="Add faculty"
+              ></app-ui-empty-state>
+            }
+          </section>
+        } @else {
+          <app-ui-empty-state
+            title="No university selected"
+            description="Select a university from the directory to inspect its faculties and programs."
+            actionLabel="Select university"
+          ></app-ui-empty-state>
+        }
+      </section>
+    </section>
+  }
+</main>
