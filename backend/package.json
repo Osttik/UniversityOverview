@@ -1,0 +1,17 @@
+{
+  "name": "university-overview-backend",
+  "version": "1.0.0",
+  "description": "Express backend for UniversityOverview faculties and programs.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/routes/faculties.routes.js && node --check src/routes/programs.routes.js && node --check src/services/dataStore.js && node --check src/services/faculties.service.js && node --check src/services/programs.service.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
