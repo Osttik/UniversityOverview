@@ -1,201 +1,351 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.IO;
-using System.Collections.Generic;
+using System.Windows.Data;
 
 namespace UniversityProgramm
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        public double MaximumHeight { get => Height; }
+        private const string AllCountries = "All countries";
+        private const string AllPrograms = "All programs";
 
-        private int _delta = 120;
-        private float _persantage = 0.1f;
-        private float _maxPersantage = 1.5f;
-        private float _currentPersantage = 1f;
-        private double _normalHeight = 800;
-        private double _normalWidth = 1024;
-        private Image _map;
+        private readonly List<UniversityCatalogItem> _universities;
+        private ICollectionView _catalogView;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            var picturePath = "pack://application:,,,/Images/1.1.jpg";
-
-            AddPicture(picturePath);
+            _universities = BuildCatalog();
+            ConfigureFilters();
+            ConfigureCatalogList();
         }
 
-        //private void Expander_Button_click(object sender, RoutedEventArgs e)
-        //{
-        //    if (LeftExpandPanel.Visibility == Visibility.Collapsed)
-        //    {
-        //        LeftExpandPanel.Visibility = Visibility.Visible;
-        //        ((Button)sender).Content = "-->";
-        //    }
-        //    else
-        //    {
-        //        LeftExpandPanel.Visibility = Visibility.Collapsed;
-        //        ((Button)sender).Content = "<--";
-        //    }
-        //}
+        private void ConfigureFilters()
+        {
+            var countries = new[] { AllCountries }
+                .Concat(_universities.Select(university => university.Country).Distinct().OrderBy(country => country))
+                .ToList();
+
+            var programs = new[] { AllPrograms }
+                .Concat(_universities.Select(university => university.DegreeFocus).Distinct().OrderBy(program => program))
+                .ToList();
+
+            CountryFilter.ItemsSource = countries;
+            ProgramFilter.ItemsSource = programs;
+            CountryFilter.SelectedIndex = 0;
+            ProgramFilter.SelectedIndex = 0;
+        }
+
+        private void ConfigureCatalogList()
+        {
+            _catalogView = CollectionViewSource.GetDefaultView(_universities);
+            _catalogView.Filter = MatchesCurrentFilters;
+            CatalogList.ItemsSource = _catalogView;
+
+            RefreshCatalog();
+            CatalogList.SelectedIndex = 0;
+        }
+
+        private bool MatchesCurrentFilters(object value)
+        {
+            var university = value as UniversityCatalogItem;
+            if (university == null)
+            {
+                return false;
+            }
+
+            var country = CountryFilter.SelectedItem as string;
+            if (!string.IsNullOrEmpty(country) && country != AllCountries && university.Country != country)
+            {
+                return false;
+            }
+
+            var program = ProgramFilter.SelectedItem as string;
+            if (!string.IsNullOrEmpty(program) && program != AllPrograms && university.DegreeFocus != program)
+            {
+                return false;
+            }
+
+            var query = (SearchBox.Text ?? string.Empty).Trim();
+            if (query.Length == 0)
+            {
+                return true;
+            }
+
+            var searchableText = string.Join(" ",
+                university.Name,
+                university.City,
+                university.Country,
+                university.DegreeFocus,
+                university.Description,
+                string.Join(" ", university.PopularPrograms),
+                string.Join(" ", university.Highlights));
+
+            return CultureInfo.CurrentCulture.CompareInfo
+                .IndexOf(searchableText, query, CompareOptions.IgnoreCase) >= 0;
+        }
+
+        private void RefreshCatalog()
+        {
+            if (_catalogView == null)
+            {
+                return;
+            }
+
+            _catalogView.Refresh();
+            var resultCount = _catalogView.Cast<object>().Count();
+            SummaryText.Text = string.Format(
+                CultureInfo.CurrentCulture,
+                "{0} public universities available. Use search and filters to compare programs, cost, admissions, and campus strengths.",
+                resultCount);
+
+            if (resultCount == 0)
+            {
+                ClearDetails();
+                return;
+            }
+
+            if (CatalogList.SelectedItem == null || !_catalogView.Cast<object>().Contains(CatalogList.SelectedItem))
+            {
+                CatalogList.SelectedItem = _catalogView.Cast<object>().FirstOrDefault();
+            }
+        }
+
+        private void UpdateSelectedUniversity(UniversityCatalogItem university)
+        {
+            if (university == null)
+            {
+                ClearDetails();
+                return;
+            }
+
+            SelectedNameText.Text = university.Name;
+            SelectedLocationText.Text = university.LocationDisplay;
+            EstablishedText.Text = university.Established.ToString(CultureInfo.CurrentCulture);
+            StudentsText.Text = university.StudentCount;
+            AcceptanceText.Text = university.AcceptanceRate;
+            TuitionText.Text = university.TuitionSummary;
+            SelectedDescriptionText.Text = university.Description;
+            ProgramsList.ItemsSource = university.PopularPrograms;
+            HighlightsList.ItemsSource = university.Highlights;
+            WebsiteButton.Tag = university.WebsiteUrl;
+            WebsiteButton.IsEnabled = !string.IsNullOrWhiteSpace(university.WebsiteUrl);
+        }
+
+        private void ClearDetails()
+        {
+            SelectedNameText.Text = "No matching universities";
+            SelectedLocationText.Text = "Adjust the filters or search terms to expand the catalog.";
+            EstablishedText.Text = "-";
+            StudentsText.Text = "-";
+            AcceptanceText.Text = "-";
+            TuitionText.Text = "-";
+            SelectedDescriptionText.Text = string.Empty;
+            ProgramsList.ItemsSource = null;
+            HighlightsList.ItemsSource = null;
+            WebsiteButton.Tag = null;
+            WebsiteButton.IsEnabled = false;
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RefreshCatalog();
+        }
+
+        private void Filter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshCatalog();
+        }
+
+        private void CatalogList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateSelectedUniversity(CatalogList.SelectedItem as UniversityCatalogItem);
+        }
+
+        private void WebsiteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var url = WebsiteButton.Tag as string;
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+        }
 
         private void Exit(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            Close();
         }
 
-        public void DrawLine(Point firstPoint, Point secondPoint)
+        private static List<UniversityCatalogItem> BuildCatalog()
         {
-            Line line = new Line
+            return new List<UniversityCatalogItem>
             {
-                X1 = firstPoint.X,
-                X2 = secondPoint.X,
-                Y1 = firstPoint.Y,
-                Y2 = secondPoint.Y,
-                Stroke = Brushes.Blue,
-                StrokeThickness = 2
+                new UniversityCatalogItem
+                {
+                    Name = "University of California, Berkeley",
+                    City = "Berkeley",
+                    Country = "United States",
+                    DegreeFocus = "Engineering",
+                    TuitionSummary = "$14k in-state",
+                    Established = 1868,
+                    StudentCount = "45k",
+                    AcceptanceRate = "11%",
+                    WebsiteUrl = "https://www.berkeley.edu",
+                    Description = "A large public research university known for computer science, engineering, economics, and policy programs with direct access to the Bay Area innovation ecosystem.",
+                    PopularPrograms = new[] { "Computer Science", "Electrical Engineering", "Economics", "Public Policy" },
+                    Highlights = new[] { "Research-intensive public campus", "Strong startup and internship network", "Urban campus near San Francisco" }
+                },
+                new UniversityCatalogItem
+                {
+                    Name = "University of Michigan",
+                    City = "Ann Arbor",
+                    Country = "United States",
+                    DegreeFocus = "Business",
+                    TuitionSummary = "$18k in-state",
+                    Established = 1817,
+                    StudentCount = "52k",
+                    AcceptanceRate = "18%",
+                    WebsiteUrl = "https://umich.edu",
+                    Description = "A flagship public university with broad undergraduate choice, nationally recognized business and engineering schools, and a highly active campus community.",
+                    PopularPrograms = new[] { "Business Administration", "Mechanical Engineering", "Data Science", "Political Science" },
+                    Highlights = new[] { "Major alumni network", "Big Ten campus life", "Extensive research and honors options" }
+                },
+                new UniversityCatalogItem
+                {
+                    Name = "University of Toronto",
+                    City = "Toronto",
+                    Country = "Canada",
+                    DegreeFocus = "Computer Science",
+                    TuitionSummary = "CA$6k domestic",
+                    Established = 1827,
+                    StudentCount = "97k",
+                    AcceptanceRate = "43%",
+                    WebsiteUrl = "https://www.utoronto.ca",
+                    Description = "Canada's largest public research university, offering a dense catalog of programs across three campuses and strong links to Toronto employers.",
+                    PopularPrograms = new[] { "Computer Science", "Life Sciences", "Rotman Commerce", "Engineering Science" },
+                    Highlights = new[] { "Three-campus system", "Downtown research hospitals nearby", "Large international student community" }
+                },
+                new UniversityCatalogItem
+                {
+                    Name = "Technical University of Munich",
+                    City = "Munich",
+                    Country = "Germany",
+                    DegreeFocus = "Engineering",
+                    TuitionSummary = "Low public fees",
+                    Established = 1868,
+                    StudentCount = "52k",
+                    AcceptanceRate = "Selective",
+                    WebsiteUrl = "https://www.tum.de/en",
+                    Description = "A public technical university with strong engineering, informatics, and applied science programs across Munich, Garching, and other Bavarian sites.",
+                    PopularPrograms = new[] { "Mechanical Engineering", "Informatics", "Management and Technology", "Aerospace" },
+                    Highlights = new[] { "Close industry partnerships", "Research-led technical programs", "Many graduate programs in English" }
+                },
+                new UniversityCatalogItem
+                {
+                    Name = "University of Amsterdam",
+                    City = "Amsterdam",
+                    Country = "Netherlands",
+                    DegreeFocus = "Social Sciences",
+                    TuitionSummary = "EU public rate",
+                    Established = 1632,
+                    StudentCount = "43k",
+                    AcceptanceRate = "Program based",
+                    WebsiteUrl = "https://www.uva.nl/en",
+                    Description = "A public research university with a broad catalog in social sciences, humanities, business, informatics, and media studies in an international city setting.",
+                    PopularPrograms = new[] { "Communication Science", "Psychology", "Business Analytics", "Political Science" },
+                    Highlights = new[] { "Many English-taught tracks", "City-integrated campus", "Strong social science research profile" }
+                },
+                new UniversityCatalogItem
+                {
+                    Name = "University of Melbourne",
+                    City = "Melbourne",
+                    Country = "Australia",
+                    DegreeFocus = "Life Sciences",
+                    TuitionSummary = "AU public rates",
+                    Established = 1853,
+                    StudentCount = "54k",
+                    AcceptanceRate = "70%",
+                    WebsiteUrl = "https://www.unimelb.edu.au",
+                    Description = "A public university with a wide course catalog, prominent health and life science programs, and a central role in Australia's research sector.",
+                    PopularPrograms = new[] { "Biomedicine", "Commerce", "Design", "Engineering" },
+                    Highlights = new[] { "Parkville biomedical precinct", "Flexible undergraduate model", "Large international intake" }
+                },
+                new UniversityCatalogItem
+                {
+                    Name = "University of Warsaw",
+                    City = "Warsaw",
+                    Country = "Poland",
+                    DegreeFocus = "Data Science",
+                    TuitionSummary = "EU public rate",
+                    Established = 1816,
+                    StudentCount = "37k",
+                    AcceptanceRate = "Program based",
+                    WebsiteUrl = "https://www.uw.edu.pl",
+                    Description = "A major public university in Central Europe with strong mathematics, informatics, economics, and international relations programs.",
+                    PopularPrograms = new[] { "Data Science", "Economics", "International Relations", "Mathematics" },
+                    Highlights = new[] { "Capital-city internships", "Growing English program catalog", "Strong quantitative departments" }
+                },
+                new UniversityCatalogItem
+                {
+                    Name = "National University of Singapore",
+                    City = "Singapore",
+                    Country = "Singapore",
+                    DegreeFocus = "Computer Science",
+                    TuitionSummary = "Subsidized public rate",
+                    Established = 1905,
+                    StudentCount = "40k",
+                    AcceptanceRate = "5%",
+                    WebsiteUrl = "https://www.nus.edu.sg",
+                    Description = "A public autonomous university with globally competitive computing, engineering, business, and public policy programs in Southeast Asia.",
+                    PopularPrograms = new[] { "Computer Science", "Business Analytics", "Engineering", "Public Policy" },
+                    Highlights = new[] { "Strong Asia-Pacific employer links", "Residential college options", "Large research enterprise" }
+                }
             };
-
-            Map.Children.Add(line);
         }
+    }
 
-        public bool ClearAllLines()
+    public class UniversityCatalogItem
+    {
+        public string Name { get; set; }
+
+        public string City { get; set; }
+
+        public string Country { get; set; }
+
+        public string DegreeFocus { get; set; }
+
+        public string TuitionSummary { get; set; }
+
+        public int Established { get; set; }
+
+        public string StudentCount { get; set; }
+
+        public string AcceptanceRate { get; set; }
+
+        public string WebsiteUrl { get; set; }
+
+        public string Description { get; set; }
+
+        public string[] PopularPrograms { get; set; }
+
+        public string[] Highlights { get; set; }
+
+        public string LocationDisplay
         {
-            bool isCLeared = false;
-
-            List<Line> lines = new List<Line>();
-
-            foreach (var item in Map.Children)
-            {
-                if(item is Line)
-                {
-                    lines.Add(item as Line);
-                }
-            }
-
-            foreach (var item in lines)
-            {
-                Map.Children.Remove(item);
-            }
-
-            return isCLeared;
-        }
-
-        private void AddButtonClick(object sender, RoutedEventArgs e)
-        {
-            var dialog = new Microsoft.Win32.OpenFileDialog
-            {
-                Filter = "Image Files (*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp"
-            };
-
-            if ((bool)dialog.ShowDialog())
-            {
-                AddPicture(dialog.FileName);
-            }
-        }
-
-        private void AddPicture(string path)
-        {
-            var bitmap = new BitmapImage(new Uri(path));
-            var image = new Image() { Source = bitmap };
-
-            image.Name = "MapPicture";
-
-            _normalHeight = bitmap.Height;
-            _normalWidth = bitmap.Width;
-
-            Canvas.SetLeft(image, 0);
-            Canvas.SetTop(image, 0);
-
-            canvas.Children.Add(image);
-        }
-
-        private Image draggedImage;
-        private Point mousePosition;
-
-        private void CanvasMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var image = e.Source as Image;
-
-            if (image != null && canvas.CaptureMouse())
-            {
-                Mouse.OverrideCursor = Cursors.ScrollAll;
-                mousePosition = e.GetPosition(canvas);
-                draggedImage = image;
-                Panel.SetZIndex(draggedImage, 1);
-            }
-        }
-
-        private void CanvasMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (draggedImage != null)
-            {
-                Mouse.OverrideCursor = Cursors.Arrow;
-                canvas.ReleaseMouseCapture();
-                Panel.SetZIndex(draggedImage, 0);
-                draggedImage = null;
-            }
-        }
-
-        private void CanvasMouseMove(object sender, MouseEventArgs e)
-        {
-            if (draggedImage != null)
-            {
-                var position = e.GetPosition(canvas);
-                var offset = position - mousePosition;
-                mousePosition = position;
-
-                Point relativePoint = draggedImage.TransformToAncestor(Map).Transform(new Point(0, 0));
-
-                double toX = relativePoint.X + offset.X;
-                double toY = relativePoint.Y + offset.Y;
-
-                if ((offset.X > 0 && toX <= 0) || (offset.X < 0 && -toX + Map.ActualWidth <= draggedImage.ActualWidth))
-                {
-                    Canvas.SetLeft(draggedImage, Canvas.GetLeft(draggedImage) + offset.X);
-                }
-
-                if ((offset.Y > 0 && toY <= 0) || (offset.Y < 0 && -toY + Map.ActualHeight <= draggedImage.ActualHeight))
-                {
-                    Canvas.SetTop(draggedImage, Canvas.GetTop(draggedImage) + offset.Y);
-                }
-            }
-        }
-
-        private void Find(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ToMap(object sender, RoutedEventArgs e)
-        {
-            ClearAllLines();
-        }
-
-        private void CanvasMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (_map == null)
-            {
-                foreach (var item in canvas.Children)
-                {
-                    Image image = item as Image;
-                    if (image != null && image.Name == "MapPicture")
-                    {
-                        (item as Image).Height += ((e.Delta / _delta) * _persantage * _normalHeight);
-                        (item as Image).Width += ((e.Delta / _delta) * _persantage * _normalWidth);
-                        break;
-                    }
-                }
-            }
+            get { return string.Format(CultureInfo.CurrentCulture, "{0}, {1}", City, Country); }
         }
     }
 }
