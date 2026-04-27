@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="Abstract campus architecture">
+  <rect width="1200" height="640" fill="#0d47a1"/>
+  <path d="M0 445h1200v195H0z" fill="#003c8f"/>
+  <path d="M140 420h190V210H140zm270 0h120V270H410zm190 0h220V160H600zm300 0h150V250H900z" fill="#ffffff" opacity=".2"/>
+  <path d="M110 210h250L235 115zm462-50h278L711 64z" fill="#ffffff" opacity=".24"/>
+  <path d="M166 250h30v170h-30zm76 0h30v170h-30zm386-40h34v210h-34zm82 0h34v210h-34zm220 80h30v130h-30zm60 0h30v130h-30z" fill="#e3f2fd" opacity=".32"/>
+  <circle cx="980" cy="105" r="54" fill="#80deea" opacity=".42"/>
+</svg>
