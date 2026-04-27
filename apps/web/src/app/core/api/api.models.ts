@@ -27,6 +27,9 @@ export interface University {
   };
   location?: UniversityLocation;
   contacts?: UniversityContacts | null;
+  facultyCount?: number;
+  programCount?: number;
+  faculties?: Faculty[];
   programs?: StudyProgram[];
   createdAt?: string;
   updatedAt?: string;
@@ -47,10 +50,12 @@ export interface UniversityContacts {
 
 export interface Faculty {
   id: string;
+  universityId?: string;
   name: string;
   description?: string | null;
   dean?: string | null;
   programCount?: number;
+  programs?: StudyProgram[];
   createdAt?: string;
   updatedAt?: string;
 }

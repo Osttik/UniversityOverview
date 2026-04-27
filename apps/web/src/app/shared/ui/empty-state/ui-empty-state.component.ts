@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { UiButtonDirective } from '../button/ui-button.directive';
 
@@ -14,4 +14,5 @@ export class UiEmptyStateComponent {
   @Input({ required: true }) title = '';
   @Input() description = '';
   @Input() actionLabel = '';
+  @Output() action = new EventEmitter<void>();
 }

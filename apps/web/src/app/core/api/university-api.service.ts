@@ -25,6 +25,10 @@ export class UniversityApiService {
     return this.api.get<ApiItemResponse<University>>(`/universities/${id}`).pipe(map((response) => response.data));
   }
 
+  listUniversityFaculties(id: string): Observable<ApiCollection<Faculty>> {
+    return this.api.get<ApiListResponse<Faculty>>(`/universities/${id}/faculties`).pipe(map(toCollection));
+  }
+
   listFaculties(): Observable<ApiCollection<Faculty>> {
     return this.api.get<ApiListResponse<Faculty>>('/faculties').pipe(map(toCollection));
   }

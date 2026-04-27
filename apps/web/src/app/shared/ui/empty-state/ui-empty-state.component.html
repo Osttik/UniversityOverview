@@ -7,6 +7,6 @@
     }
   </div>
   @if (actionLabel) {
-    <button uiButton="secondary" type="button">{{ actionLabel }}</button>
+    <button uiButton="secondary" type="button" (click)="action.emit()">{{ actionLabel }}</button>
   }
 </section>
