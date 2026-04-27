@@ -20,6 +20,7 @@
       title="Catalog unavailable"
       [description]="error() ?? ''"
       actionLabel="Retry"
+      (action)="loadUniversities()"
     ></app-ui-empty-state>
   } @else {
     <section class="layout">

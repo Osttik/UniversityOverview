@@ -111,7 +111,10 @@ export class AppComponent {
     return faculty.programCount ?? faculty.programs?.length ?? 0;
   }
 
-  private loadUniversities(): void {
+  protected loadUniversities(): void {
+    this.loading.set(true);
+    this.error.set(null);
+
     this.universityApi.listUniversities().subscribe({
       next: (collection) => {
         this.universities.set(collection.items);
