@@ -44,15 +44,23 @@ function buildUniversityOverview(
   faculties: PublicFaculty[],
   academicPrograms: PublicProgram[]
 ) {
-  const facultyOverviews = faculties.map((faculty) => ({
-    id: faculty.id,
-    name: faculty.name,
-    description: faculty.description ?? null,
-    dean: faculty.dean ?? null,
-    programCount: faculty.programCount,
-    programs: academicPrograms.filter((program) => program.facultyId === faculty.id)
-  }));
-  const programs = academicPrograms.length > 0 ? academicPrograms : university.programs;
+  const selectedFaculties = faculties.filter((faculty) => faculty.universityId === university.id);
+  const facultyIds = new Set(selectedFaculties.map((faculty) => faculty.id));
+  const selectedAcademicPrograms = academicPrograms.filter((program) => facultyIds.has(program.facultyId));
+  const facultyOverviews = selectedFaculties.map((faculty) => {
+    const programs = selectedAcademicPrograms.filter((program) => program.facultyId === faculty.id);
+
+    return {
+      id: faculty.id,
+      universityId: faculty.universityId ?? null,
+      name: faculty.name,
+      description: faculty.description ?? null,
+      dean: faculty.dean ?? null,
+      programCount: programs.length,
+      programs
+    };
+  });
+  const programs = university.programs;
 
   return {
     id: university.id,
@@ -67,11 +75,11 @@ function buildUniversityOverview(
       faculties: facultyOverviews.length,
       programs: programs.length,
       universityPrograms: university.programs.length,
-      tuitionRange: getTuitionRange(university.programs),
+      tuitionRange: getTuitionRange(programs),
       durationYears: getDurationYearsRange(programs),
-      studyModes: uniqueSorted(university.programs.map((program) => program.mode)),
+      studyModes: uniqueSorted(programs.map((program) => program.mode)),
       programLevels: countValues(programs.map((program) => program.degree)),
-      languages: uniqueSorted(university.programs.map((program) => program.language))
+      languages: uniqueSorted(programs.map((program) => program.language))
     },
     faculties: facultyOverviews,
     programs: university.programs,

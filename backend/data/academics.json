@@ -1,7 +1,8 @@
 {
   "faculties": [
     {
-      "id": "faculty-engineering",
+      "id": "kpi-faculty-engineering",
+      "universityId": "kyiv-polytechnic-institute",
       "name": "Faculty of Engineering",
       "description": "Applied technical education across software, hardware, and systems disciplines.",
       "dean": "Dr. Elena Kovalenko",
@@ -9,42 +10,82 @@
       "updatedAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "faculty-business",
-      "name": "Faculty of Business",
-      "description": "Programs focused on management, finance, entrepreneurship, and analytics.",
-      "dean": "Dr. Mark Peterson",
+      "id": "knu-faculty-law-economics",
+      "universityId": "taras-shevchenko-national-university",
+      "name": "Faculty of Law and Economics",
+      "description": "Legal studies, economics, public policy, and quantitative social science programs.",
+      "dean": "Dr. Olena Hrytsenko",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "lpnu-faculty-architecture-business",
+      "universityId": "lviv-polytechnic-national-university",
+      "name": "Faculty of Architecture and Business",
+      "description": "Architecture, urban design, management, and business innovation programs.",
+      "dean": "Dr. Andriy Melnyk",
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-01-01T00:00:00.000Z"
     }
   ],
   "programs": [
     {
-      "id": "program-software-engineering",
-      "facultyId": "faculty-engineering",
-      "name": "Software Engineering",
-      "degree": "Bachelor",
+      "id": "program-kpi-engineering",
+      "facultyId": "kpi-faculty-engineering",
+      "name": "Engineering",
+      "degree": "bachelor",
       "durationYears": 4,
-      "description": "Software design, backend systems, databases, and product delivery.",
+      "description": "Engineering foundations, applied mechanics, electronics, and systems design.",
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "program-computer-systems",
-      "facultyId": "faculty-engineering",
-      "name": "Computer Systems",
-      "degree": "Bachelor",
+      "id": "program-kpi-computer-science",
+      "facultyId": "kpi-faculty-engineering",
+      "name": "Computer Science",
+      "degree": "bachelor",
       "durationYears": 4,
-      "description": "Computer architecture, networking, operating systems, and embedded platforms.",
+      "description": "Software engineering, backend systems, databases, algorithms, and product delivery.",
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "program-business-administration",
-      "facultyId": "faculty-business",
-      "name": "Business Administration",
-      "degree": "Bachelor",
+      "id": "program-knu-law",
+      "facultyId": "knu-faculty-law-economics",
+      "name": "Law",
+      "degree": "master",
+      "durationYears": 2,
+      "description": "Legal theory, constitutional law, regulatory practice, and legal research.",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "program-knu-economics",
+      "facultyId": "knu-faculty-law-economics",
+      "name": "Economics",
+      "degree": "bachelor",
       "durationYears": 4,
-      "description": "Management, economics, strategy, and organizational leadership.",
+      "description": "Economics, econometrics, finance, and applied policy analysis.",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "program-lpnu-architecture",
+      "facultyId": "lpnu-faculty-architecture-business",
+      "name": "Architecture",
+      "degree": "bachelor",
+      "durationYears": 4,
+      "description": "Architecture, spatial planning, urban design, and sustainable building practice.",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "program-lpnu-business",
+      "facultyId": "lpnu-faculty-architecture-business",
+      "name": "Business",
+      "degree": "master",
+      "durationYears": 2,
+      "description": "Business strategy, management analytics, entrepreneurship, and international operations.",
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-01-01T00:00:00.000Z"
     }

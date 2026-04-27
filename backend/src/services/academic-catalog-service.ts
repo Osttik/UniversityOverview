@@ -5,6 +5,7 @@ import { JsonStore } from "../persistence/json-store.js";
 
 export interface Faculty {
   id: string;
+  universityId?: string | null;
   name: string;
   description?: string | null;
   dean?: string | null;
