@@ -267,6 +267,12 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# Node backend
+backend/dist/
+backend/.env
+backend/.env.*
+!backend/.env.example
+
 # Visual Studio 6 build log
 *.plg
 
