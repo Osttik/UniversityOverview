@@ -8,6 +8,14 @@ interface UniversityDataFile {
   universities: University[];
 }
 
+export interface UniversityListFilters {
+  search?: string;
+  country?: string;
+  city?: string;
+  program?: string;
+  status?: University["status"];
+}
+
 export class JsonUniversityRepository {
   private readonly store: JsonStore<UniversityDataFile>;
   private initializePromise: Promise<void> | null = null;
@@ -21,14 +29,16 @@ export class JsonUniversityRepository {
     return this.initializePromise;
   }
 
-  async list() {
+  async list(filters: UniversityListFilters = {}) {
     await this.initialize();
     const data = await this.store.read();
-    return data.universities;
+    return data.universities.filter((university) => matchesFilters(university, filters));
   }
 
   async findById(id: string) {
-    const universities = await this.list();
+    await this.initialize();
+    const data = await this.store.read();
+    const universities = data.universities;
     return universities.find((university) => university.id === id) ?? null;
   }
 
@@ -102,6 +112,56 @@ export class JsonUniversityRepository {
     });
   }
 
+  async patch(id: string, input: unknown) {
+    await this.initialize();
+
+    if (!isPlainObject(input)) {
+      throw validationError(["university must be an object."]);
+    }
+
+    return this.store.transaction(async ({ read, write }) => {
+      const data = await read();
+      const index = data.universities.findIndex((university) => university.id === id);
+
+      if (index === -1) {
+        return null;
+      }
+
+      const existing = data.universities[index];
+      const validation = validateUniversity(input, { partial: true });
+      if (!validation.valid) {
+        throw validationError(validation.errors);
+      }
+
+      const patched = assignProgramIds({
+        ...existing,
+        ...validation.value,
+        location: validation.value.location
+          ? { ...existing.location, ...validation.value.location }
+          : existing.location,
+        contacts:
+          validation.value.contacts === undefined
+            ? existing.contacts
+            : validation.value.contacts === null
+              ? null
+              : { ...existing.contacts, ...validation.value.contacts },
+        id: existing.id,
+        createdAt: existing.createdAt,
+        updatedAt: new Date().toISOString()
+      } as University);
+
+      const finalValidation = validateUniversity(patched, { allowGenerated: true });
+      if (!finalValidation.valid) {
+        throw validationError(finalValidation.errors);
+      }
+
+      data.universities[index] = finalValidation.value as University;
+      await write(data);
+
+      return data.universities[index];
+    });
+  }
+
   async delete(id: string) {
     await this.initialize();
 
@@ -148,6 +208,64 @@ function validationError(details: string[]) {
     code: "VALIDATION_ERROR",
     details
   });
+}
+
+function matchesFilters(university: University, filters: UniversityListFilters) {
+  if (filters.country && normalize(university.location.country) !== normalize(filters.country)) {
+    return false;
+  }
+
+  if (filters.city && normalize(university.location.city) !== normalize(filters.city)) {
+    return false;
+  }
+
+  if (filters.status && university.status !== filters.status) {
+    return false;
+  }
+
+  if (filters.program && !university.programs.some((program) => programMatches(program, filters.program ?? ""))) {
+    return false;
+  }
+
+  if (filters.search && !searchableText(university).includes(normalize(filters.search))) {
+    return false;
+  }
+
+  return true;
+}
+
+function programMatches(program: University["programs"][number], filter: string) {
+  const normalized = normalize(filter);
+  return [program.name, program.degree, program.mode, program.language].some((value) => normalize(value).includes(normalized));
+}
+
+function searchableText(university: University) {
+  return [
+    university.name,
+    university.shortName,
+    university.description,
+    university.website,
+    university.status,
+    university.location.country,
+    university.location.city,
+    university.location.address,
+    university.contacts?.email,
+    university.contacts?.phone,
+    ...university.programs.flatMap((program) => [
+      program.name,
+      program.degree,
+      program.mode,
+      program.language,
+      program.durationMonths?.toString(),
+      program.tuitionPerYear?.toString()
+    ])
+  ]
+    .map(normalize)
+    .join(" ");
+}
+
+function normalize(value: unknown) {
+  return String(value ?? "").trim().toLowerCase();
 }
 
 function isUniversityDataFile(value: unknown): value is UniversityDataFile {

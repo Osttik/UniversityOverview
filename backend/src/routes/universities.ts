@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { Router } from "express";
 
 import { HttpError } from "../errors/http-error.js";
-import { JsonUniversityRepository } from "../persistence/university-repository.js";
+import { JsonUniversityRepository, type UniversityListFilters } from "../persistence/university-repository.js";
 
 const dataFilePath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../data/universities.json");
 const defaultRepository = new JsonUniversityRepository(dataFilePath);
@@ -12,9 +12,10 @@ const defaultRepository = new JsonUniversityRepository(dataFilePath);
 export function createUniversityRouter(repository = defaultRepository) {
   const router = Router();
 
-  router.get("/", async (_request, response, next) => {
+  router.get("/", async (request, response, next) => {
     try {
-      response.json({ data: await repository.list() });
+      const universities = await repository.list(readListFilters(request.query));
+      response.json({ data: universities, count: universities.length });
     } catch (error) {
       next(error);
     }
@@ -57,6 +58,20 @@ export function createUniversityRouter(repository = defaultRepository) {
     }
   });
 
+  router.patch("/:id", async (request, response, next) => {
+    try {
+      const university = await repository.patch(request.params.id, request.body);
+
+      if (!university) {
+        throw new HttpError(404, "University was not found.", { code: "UNIVERSITY_NOT_FOUND" });
+      }
+
+      response.json({ data: university });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   router.delete("/:id", async (request, response, next) => {
     try {
       const deleted = await repository.delete(request.params.id);
@@ -72,4 +87,18 @@ export function createUniversityRouter(repository = defaultRepository) {
   });
 
   return router;
+}
+
+function readListFilters(query: Record<string, unknown>): UniversityListFilters {
+  return {
+    search: singleQueryValue(query.search),
+    country: singleQueryValue(query.country),
+    city: singleQueryValue(query.city),
+    program: singleQueryValue(query.program),
+    status: singleQueryValue(query.status) as UniversityListFilters["status"]
+  };
+}
+
+function singleQueryValue(value: unknown) {
+  return Array.isArray(value) ? String(value[0] ?? "") : value === undefined ? undefined : String(value);
 }
