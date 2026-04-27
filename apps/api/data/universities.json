@@ -1,0 +1,13 @@
+[
+  {
+    "id": "kyiv-national-university",
+    "name": "Taras Shevchenko National University of Kyiv",
+    "city": "Kyiv",
+    "country": "Ukraine",
+    "description": "Reference seed data for the Node API bootstrap.",
+    "coordinates": {
+      "latitude": 50.4419,
+      "longitude": 30.5118
+    }
+  }
+]
