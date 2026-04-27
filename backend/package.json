@@ -1,17 +1,27 @@
 {
-  "name": "university-overview-backend",
-  "version": "1.0.0",
-  "description": "Express backend API for UniversityOverview university data.",
-  "main": "src/server.js",
+  "name": "university-overview-api",
+  "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node src/server.js",
-    "check": "node --check src/app.js && node --check src/server.js && node --check src/routes/universities.js && node --check src/services/universityService.js && node --check src/storage/jsonStore.js"
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0"
   },
-  "engines": {
-    "node": ">=18"
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
   }
 }

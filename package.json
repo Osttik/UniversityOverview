@@ -1,0 +1,19 @@
+{
+  "name": "university-overview",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Node workspace for the University Overview rework while keeping the legacy WPF app intact.",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "start:api": "npm --workspace apps/api start",
+    "start:web": "npm --workspace apps/web start"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
