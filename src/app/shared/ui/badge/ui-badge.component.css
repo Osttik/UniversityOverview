@@ -1,0 +1,36 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 26px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ui-badge--neutral {
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+}
+
+.ui-badge--info {
+  background: #e8efff;
+  color: var(--app-primary-strong);
+}
+
+.ui-badge--success {
+  background: #e8f8ef;
+  color: var(--app-success);
+}
+
+.ui-badge--warning {
+  background: #fff3de;
+  color: var(--app-warning);
+}
+
+.ui-badge--danger {
+  background: #ffebe9;
+  color: var(--app-danger);
+}

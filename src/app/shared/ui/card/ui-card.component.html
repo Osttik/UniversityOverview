@@ -1,0 +1,11 @@
+<article class="ui-card">
+  <header class="ui-card__header">
+    <h2>{{ title }}</h2>
+    @if (subtitle) {
+      <p>{{ subtitle }}</p>
+    }
+  </header>
+  <div class="ui-card__content">
+    <ng-content></ng-content>
+  </div>
+</article>
