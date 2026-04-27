@@ -4,79 +4,43 @@
 
 .shell {
   display: grid;
-  gap: 24px;
-  width: min(1200px, calc(100% - 32px));
+  gap: 20px;
+  width: min(1360px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 32px 0 48px;
+  padding: 24px 0 40px;
 }
 
-.hero,
-.layout,
-.detail,
-.metrics,
-.profile-grid,
-.faculty-overview,
-.program-grid {
+.topbar,
+.admin-layout,
+.panel,
+.split,
+.editor,
+.form-grid,
+.actions {
   display: grid;
   gap: 16px;
 }
 
-.hero {
+.topbar {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  padding: clamp(24px, 4vw, 40px);
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(238, 242, 247, 0.84)),
-    radial-gradient(circle at 86% 12%, rgba(8, 116, 67, 0.16), transparent 34%),
-    var(--app-surface);
-  box-shadow: var(--app-shadow);
+  padding: 20px 0 4px;
 }
 
-.hero h1,
-.detail__header h2,
-.section-heading h2,
-.directory h2,
-.faculty-panel h3,
-.program-card h4 {
+.topbar h1,
+.panel h2,
+.editor h3 {
   margin: 0;
   letter-spacing: 0;
 }
 
-.hero h1 {
-  max-width: 760px;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+.topbar h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1.04;
 }
 
-.hero p,
-.detail__header p,
-.faculty-panel p,
-.program-card p {
-  margin: 0;
-  color: var(--app-muted);
-  line-height: 1.55;
-}
-
-.hero__content,
-.detail__header > div,
-.section-heading,
-.faculty-panel__header > div,
-.program-card {
-  display: grid;
-  gap: 12px;
-}
-
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
 .eyebrow {
-  margin: 0;
+  margin: 0 0 6px;
   color: var(--app-primary-strong);
   font-size: 0.78rem;
   font-weight: 800;
@@ -84,210 +48,234 @@
   text-transform: uppercase;
 }
 
-.layout {
-  grid-template-columns: 300px minmax(0, 1fr);
+.status-strip {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  color: var(--app-muted);
+  font-weight: 700;
+}
+
+.admin-layout {
+  grid-template-columns: 220px minmax(0, 1fr);
   align-items: start;
 }
 
-.directory,
-.detail__header,
-.faculty-panel,
-.program-card {
+.sidebar {
+  position: sticky;
+  top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.section-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 14px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--app-text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  text-align: left;
+}
+
+.section-tab strong {
+  display: inline-grid;
+  min-width: 30px;
+  min-height: 30px;
+  place-items: center;
+  border-radius: 999px;
+  background: #edf3ff;
+  color: var(--app-primary-strong);
+  font-size: 0.85rem;
+}
+
+.section-tab:hover,
+.section-tab.is-active {
+  border-color: var(--app-primary);
+  background: #f5f8ff;
+}
+
+.panel {
+  padding: clamp(18px, 3vw, 24px);
   border: 1px solid var(--app-border);
   border-radius: 8px;
   background: var(--app-surface);
-  box-shadow: 0 10px 24px rgba(20, 32, 50, 0.06);
+  box-shadow: var(--app-shadow);
 }
 
-.directory {
-  position: sticky;
-  top: 18px;
-  display: grid;
+.panel__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
   gap: 16px;
-  padding: 16px;
 }
 
-.university-list {
-  display: grid;
-  gap: 10px;
+.split {
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 420px);
+  align-items: start;
 }
 
-.university-item {
-  display: grid;
-  gap: 5px;
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+}
+
+table {
   width: 100%;
-  padding: 14px;
+  min-width: 720px;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+th,
+td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--app-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #f8fafc;
+  color: var(--app-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+td {
+  color: var(--app-text);
+}
+
+td span {
+  display: block;
+  margin-top: 4px;
+  color: var(--app-muted);
+  font-size: 0.86rem;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover,
+tbody tr.is-selected {
+  background: #eef4ff;
+}
+
+.editor {
+  padding: 18px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.editor h3 {
+  font-size: 1.1rem;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: var(--app-muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 11px;
   border: 1px solid var(--app-border);
   border-radius: 7px;
   background: #ffffff;
-  color: var(--app-muted);
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
-}
-
-.university-item:hover,
-.university-item.is-active {
-  border-color: var(--app-primary);
-  background: #eef4ff;
-  color: var(--app-primary-strong);
-}
-
-.university-item__name {
   color: var(--app-text);
-  font-weight: 800;
+  font: inherit;
 }
 
-.detail__header {
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  padding: clamp(20px, 3vw, 28px);
+textarea {
+  resize: vertical;
 }
 
-.detail__header h2,
-.section-heading h2 {
-  font-size: clamp(1.65rem, 3vw, 2.5rem);
-  line-height: 1.08;
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--app-primary);
+  outline: 3px solid rgba(37, 99, 235, 0.12);
 }
 
-.website-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 38px;
-  padding: 0 14px;
-  border: 1px solid var(--app-border);
-  border-radius: 7px;
-  color: var(--app-primary-strong);
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.metrics {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.profile-grid {
+.form-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.definition-list,
-.program-card__facts {
-  display: grid;
-  gap: 10px;
-  margin: 0;
+.actions {
+  grid-template-columns: repeat(3, max-content);
+  align-items: center;
 }
 
-.definition-list div,
-.program-card__facts div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--app-border);
-}
-
-dt {
-  color: var(--app-muted);
-  font-weight: 700;
-}
-
-dd {
-  margin: 0;
-  color: var(--app-text);
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid #b91c1c;
+  border-radius: 7px;
+  background: #b91c1c;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
   font-weight: 800;
-  text-align: right;
 }
 
-.faculty-overview {
-  margin-top: 8px;
+button:disabled,
+.danger-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
-.faculty-panel {
-  padding: clamp(18px, 3vw, 24px);
-}
-
-.faculty-panel__header {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 18px;
-}
-
-.faculty-panel h3 {
-  font-size: 1.3rem;
-}
-
-.faculty-meta {
-  display: grid;
-  justify-items: end;
-  gap: 10px;
-  color: var(--app-muted);
-  font-weight: 700;
-  text-align: right;
-}
-
-.program-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.program-card {
-  min-height: 260px;
-  justify-content: space-between;
-  padding: 16px;
-}
-
-.program-card h4 {
-  font-size: 1.08rem;
-}
-
-.program-card__facts div {
-  display: grid;
-  gap: 4px;
-}
-
-.program-card__facts dd {
-  text-align: left;
-}
-
-@media (max-width: 900px) {
-  .hero,
-  .layout,
-  .detail__header,
-  .profile-grid {
+@media (max-width: 1100px) {
+  .admin-layout,
+  .split {
     grid-template-columns: 1fr;
   }
 
-  .directory {
+  .sidebar {
     position: static;
-  }
-
-  .hero__actions {
-    justify-content: flex-start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 700px) {
   .shell {
-    width: min(100% - 24px, 1200px);
-    padding-top: 20px;
+    width: min(100% - 24px, 1360px);
   }
 
-  .metrics {
+  .topbar,
+  .form-grid,
+  .sidebar {
     grid-template-columns: 1fr;
   }
 
-  .faculty-panel__header,
-  .definition-list div {
+  .status-strip,
+  .panel__header {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .faculty-meta {
-    justify-items: start;
-    text-align: left;
-  }
-
-  dd {
-    text-align: left;
+  .actions {
+    grid-template-columns: 1fr;
   }
 }

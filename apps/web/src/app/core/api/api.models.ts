@@ -62,6 +62,7 @@ export interface Faculty {
 
 export interface StudyProgram {
   id: string;
+  universityId?: string;
   facultyId?: string;
   facultyName?: string | null;
   name: string;
@@ -87,3 +88,19 @@ export interface UniversitySearchParams {
 export interface ProgramSearchParams {
   facultyId?: string;
 }
+
+export type UniversityPayload = Omit<
+  University,
+  'id' | 'facultyCount' | 'programCount' | 'faculties' | 'programs' | 'createdAt' | 'updatedAt'
+>;
+
+export type FacultyPayload = Omit<Faculty, 'id' | 'programCount' | 'programs' | 'createdAt' | 'updatedAt'> & {
+  universityId: string;
+};
+
+export type StudyProgramPayload = Omit<
+  StudyProgram,
+  'id' | 'universityId' | 'facultyName' | 'createdAt' | 'updatedAt'
+> & {
+  facultyId: string;
+};
