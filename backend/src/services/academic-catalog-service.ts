@@ -280,7 +280,7 @@ function validateFacultyMutation(input: unknown, partial: boolean): FacultyMutat
   const mutation: FacultyMutation = {};
 
   rejectUnknownFields(value, ["name", "description", "dean"], "faculty", errors);
-  readText(value, "name", { required: !partial, maxLength: 200 }, mutation, errors);
+  readText(value, "name", { required: !partial, rejectBlank: true, maxLength: 200 }, mutation, errors);
   readText(value, "description", { maxLength: 4000, nullable: true }, mutation, errors);
   readText(value, "dean", { maxLength: 200, nullable: true }, mutation, errors);
 
@@ -297,9 +297,9 @@ function validateProgramMutation(input: unknown, partial: boolean): ProgramMutat
   const mutation: ProgramMutation = {};
 
   rejectUnknownFields(value, ["facultyId", "name", "degree", "durationYears", "description"], "program", errors);
-  readText(value, "facultyId", { required: !partial, maxLength: 120 }, mutation, errors);
-  readText(value, "name", { required: !partial, maxLength: 200 }, mutation, errors);
-  readText(value, "degree", { required: !partial, maxLength: 120 }, mutation, errors);
+  readText(value, "facultyId", { required: !partial, rejectBlank: true, maxLength: 120 }, mutation, errors);
+  readText(value, "name", { required: !partial, rejectBlank: true, maxLength: 200 }, mutation, errors);
+  readText(value, "degree", { required: !partial, rejectBlank: true, maxLength: 120 }, mutation, errors);
   readDurationYears(value, partial, mutation, errors);
   readText(value, "description", { maxLength: 4000, nullable: true }, mutation, errors);
 
@@ -313,7 +313,7 @@ function validateProgramMutation(input: unknown, partial: boolean): ProgramMutat
 function readText<TMutation extends Record<string, unknown>>(
   input: Record<string, unknown>,
   key: string,
-  options: { required?: boolean; maxLength: number; nullable?: boolean },
+  options: { required?: boolean; rejectBlank?: boolean; maxLength: number; nullable?: boolean },
   output: TMutation,
   errors: string[]
 ) {
@@ -338,7 +338,7 @@ function readText<TMutation extends Record<string, unknown>>(
 
   const trimmed = value.trim();
 
-  if (options.required && trimmed.length === 0) {
+  if ((options.required || options.rejectBlank) && trimmed.length === 0) {
     errors.push(`${key} cannot be empty.`);
   }
 
