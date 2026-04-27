@@ -4,13 +4,17 @@
       "id": "faculty-engineering",
       "name": "Faculty of Engineering",
       "description": "Applied technical education across software, hardware, and systems disciplines.",
-      "dean": "Dr. Elena Kovalenko"
+      "dean": "Dr. Elena Kovalenko",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
     },
     {
       "id": "faculty-business",
       "name": "Faculty of Business",
       "description": "Programs focused on management, finance, entrepreneurship, and analytics.",
-      "dean": "Dr. Mark Peterson"
+      "dean": "Dr. Mark Peterson",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
     }
   ],
   "programs": [
@@ -20,7 +24,9 @@
       "name": "Software Engineering",
       "degree": "Bachelor",
       "durationYears": 4,
-      "description": "Software design, backend systems, databases, and product delivery."
+      "description": "Software design, backend systems, databases, and product delivery.",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
     },
     {
       "id": "program-computer-systems",
@@ -28,7 +34,9 @@
       "name": "Computer Systems",
       "degree": "Bachelor",
       "durationYears": 4,
-      "description": "Computer architecture, networking, operating systems, and embedded platforms."
+      "description": "Computer architecture, networking, operating systems, and embedded platforms.",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
     },
     {
       "id": "program-business-administration",
@@ -36,7 +44,9 @@
       "name": "Business Administration",
       "degree": "Bachelor",
       "durationYears": 4,
-      "description": "Management, economics, strategy, and organizational leadership."
+      "description": "Management, economics, strategy, and organizational leadership.",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
     }
   ]
 }
