@@ -1,156 +1,328 @@
 <main class="shell">
-  <section class="hero" aria-label="University detail overview">
-    <div class="hero__content">
+  <header class="topbar">
+    <div>
       <p class="eyebrow">University Overview</p>
-      <h1>University detail and academic structure</h1>
-      <p>
-        Review each university profile with nested faculties and programs from the Express API data model.
-      </p>
+      <h1>Academic catalog admin</h1>
     </div>
-    <div class="hero__actions">
-      <button uiButton="secondary" size="sm" type="button">Import catalog</button>
-      <button uiButton="primary" size="sm" type="button">New program</button>
+    <div class="status-strip" aria-live="polite">
+      <span>{{ notice() }}</span>
+      @if (saving()) {
+        <app-ui-badge tone="warning" label="Saving"></app-ui-badge>
+      } @else {
+        <app-ui-badge tone="success" label="Ready"></app-ui-badge>
+      }
     </div>
-  </section>
+  </header>
 
   @if (loading()) {
-    <app-ui-loading label="Loading university catalog"></app-ui-loading>
-  } @else if (error()) {
-    <app-ui-empty-state
-      title="Catalog unavailable"
-      [description]="error() ?? ''"
-      actionLabel="Retry"
-      (action)="loadUniversities()"
-    ></app-ui-empty-state>
+    <app-ui-loading label="Loading academic catalog"></app-ui-loading>
   } @else {
-    <section class="layout">
-      <aside class="directory" aria-label="Universities">
-        <header>
-          <p class="eyebrow">Directory</p>
-          <h2>Universities</h2>
-        </header>
+    @if (error()) {
+      <app-ui-empty-state
+        title="Request failed"
+        [description]="error() ?? ''"
+        actionLabel="Retry"
+        (action)="loadCatalog()"
+      ></app-ui-empty-state>
+    }
 
-        <div class="university-list">
-          @for (university of universities(); track university.id) {
-            <button
-              class="university-item"
-              [class.is-active]="selectedUniversity()?.id === university.id"
-              type="button"
-              (click)="selectUniversity(university.id)"
-            >
-              <span class="university-item__name">{{ university.shortName || university.name }}</span>
-              <span>{{ university.city }}, {{ university.country }}</span>
-              <span>{{ university.facultyCount ?? university.faculties?.length ?? 0 }} faculties</span>
-            </button>
-          }
-        </div>
+    <section class="admin-layout">
+      <aside class="sidebar" aria-label="Admin sections">
+        @for (section of sections; track section) {
+          <button
+            type="button"
+            class="section-tab"
+            [class.is-active]="activeSection() === section"
+            (click)="open(section)"
+          >
+            <span>{{ sectionLabel(section) }}</span>
+            <strong>
+              {{
+                section === 'universities'
+                  ? universities().length
+                  : section === 'faculties'
+                    ? faculties().length
+                    : programs().length
+              }}
+            </strong>
+          </button>
+        }
       </aside>
 
-      <section class="detail" aria-live="polite">
-        @if (selectedUniversity(); as university) {
-          <header class="detail__header">
-            <div>
-              <app-ui-badge [tone]="university.status === 'active' ? 'success' : 'warning'" [label]="university.status || 'draft'"></app-ui-badge>
-              <h2>{{ university.name }}</h2>
-              <p>{{ university.description }}</p>
+      <section class="workspace">
+        @if (activeSection() === 'universities') {
+          <section class="panel">
+            <header class="panel__header">
+              <div>
+                <p class="eyebrow">Universities</p>
+                <h2>Manage institutions</h2>
+              </div>
+              <button uiButton="secondary" size="sm" type="button" (click)="clearForm('universities')">New</button>
+            </header>
+
+            <div class="split">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>City</th>
+                      <th>Status</th>
+                      <th>Faculties</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (university of universities(); track university.id) {
+                      <tr [class.is-selected]="selectedId('universities') === university.id" (click)="selectUniversity(university)">
+                        <td>
+                          <strong>{{ university.shortName || university.name }}</strong>
+                          <span>{{ university.name }}</span>
+                        </td>
+                        <td>{{ university.city }}, {{ university.country }}</td>
+                        <td>{{ university.status }}</td>
+                        <td>{{ university.facultyCount ?? university.faculties?.length ?? 0 }}</td>
+                      </tr>
+                    } @empty {
+                      <tr>
+                        <td colspan="4">No universities in the catalog.</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <form class="editor" (ngSubmit)="saveUniversity()">
+                <h3>{{ selectedId('universities') ? 'Edit university' : 'New university' }}</h3>
+                <label>
+                  <span>Name</span>
+                  <input name="universityName" [(ngModel)]="universityForm.name" required />
+                </label>
+                <div class="form-grid">
+                  <label>
+                    <span>Short name</span>
+                    <input name="universityShortName" [(ngModel)]="universityForm.shortName" />
+                  </label>
+                  <label>
+                    <span>Status</span>
+                    <select name="universityStatus" [(ngModel)]="universityForm.status">
+                      @for (status of statuses; track status) {
+                        <option [value]="status">{{ status }}</option>
+                      }
+                    </select>
+                  </label>
+                </div>
+                <div class="form-grid">
+                  <label>
+                    <span>City</span>
+                    <input name="universityCity" [(ngModel)]="universityForm.city" required />
+                  </label>
+                  <label>
+                    <span>Country</span>
+                    <input name="universityCountry" [(ngModel)]="universityForm.country" />
+                  </label>
+                </div>
+                <label>
+                  <span>Website</span>
+                  <input name="universityWebsite" [(ngModel)]="universityForm.website" />
+                </label>
+                <label>
+                  <span>Description</span>
+                  <textarea name="universityDescription" rows="4" [(ngModel)]="universityForm.description"></textarea>
+                </label>
+                <div class="form-grid">
+                  <label>
+                    <span>Latitude</span>
+                    <input name="universityLatitude" type="number" step="0.0001" [(ngModel)]="universityForm.latitude" />
+                  </label>
+                  <label>
+                    <span>Longitude</span>
+                    <input name="universityLongitude" type="number" step="0.0001" [(ngModel)]="universityForm.longitude" />
+                  </label>
+                </div>
+                <div class="form-grid">
+                  <label>
+                    <span>Email</span>
+                    <input name="universityEmail" type="email" [(ngModel)]="universityForm.email" />
+                  </label>
+                  <label>
+                    <span>Phone</span>
+                    <input name="universityPhone" [(ngModel)]="universityForm.phone" />
+                  </label>
+                </div>
+                <div class="actions">
+                  <button uiButton="primary" size="sm" type="submit" [disabled]="saving()">Save</button>
+                  <button uiButton="secondary" size="sm" type="button" (click)="clearForm('universities')">Clear</button>
+                  <button class="danger-button" type="button" [disabled]="!selectedId('universities') || saving()" (click)="deleteSelected()">Delete</button>
+                </div>
+              </form>
             </div>
-            <a class="website-link" [href]="university.website" target="_blank" rel="noreferrer">Website</a>
-          </header>
-
-          @if (loadingDetail()) {
-            <app-ui-loading label="Refreshing university detail"></app-ui-loading>
-          }
-
-          <section class="metrics" aria-label="Selected university metrics">
-            @for (metric of metrics(); track metric.label) {
-              <app-ui-card [title]="metric.value" [subtitle]="metric.label">
-                <app-ui-badge [tone]="metric.tone" label="Current"></app-ui-badge>
-              </app-ui-card>
-            }
           </section>
+        }
 
-          <section class="profile-grid" aria-label="University profile">
-            <app-ui-card title="Location" [subtitle]="university.city + ', ' + university.country">
-              <dl class="definition-list">
-                <div>
-                  <dt>Latitude</dt>
-                  <dd>{{ university.coordinates?.latitude ?? 'Pending' }}</dd>
-                </div>
-                <div>
-                  <dt>Longitude</dt>
-                  <dd>{{ university.coordinates?.longitude ?? 'Pending' }}</dd>
-                </div>
-              </dl>
-            </app-ui-card>
+        @if (activeSection() === 'faculties') {
+          <section class="panel">
+            <header class="panel__header">
+              <div>
+                <p class="eyebrow">Faculties</p>
+                <h2>Manage faculty records</h2>
+              </div>
+              <button uiButton="secondary" size="sm" type="button" (click)="clearForm('faculties')">New</button>
+            </header>
 
-            <app-ui-card title="Admissions contact" [subtitle]="university.contacts?.email || 'Contact pending'">
-              <dl class="definition-list">
-                <div>
-                  <dt>Phone</dt>
-                  <dd>{{ university.contacts?.phone || 'Pending' }}</dd>
-                </div>
-              </dl>
-            </app-ui-card>
-          </section>
+            <div class="split">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>University</th>
+                      <th>Dean</th>
+                      <th>Programs</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (faculty of faculties(); track faculty.id) {
+                      <tr [class.is-selected]="selectedId('faculties') === faculty.id" (click)="selectFaculty(faculty)">
+                        <td><strong>{{ faculty.name }}</strong></td>
+                        <td>{{ universityName(faculty.universityId) }}</td>
+                        <td>{{ faculty.dean || 'Pending' }}</td>
+                        <td>{{ faculty.programCount ?? faculty.programs?.length ?? 0 }}</td>
+                      </tr>
+                    } @empty {
+                      <tr>
+                        <td colspan="4">No faculties in the catalog.</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
 
-          <section class="faculty-overview" aria-label="Faculties and programs">
-            <div class="section-heading">
-              <p class="eyebrow">Nested overview</p>
-              <h2>Faculties and programs</h2>
+              <form class="editor" (ngSubmit)="saveFaculty()">
+                <h3>{{ selectedId('faculties') ? 'Edit faculty' : 'New faculty' }}</h3>
+                <label>
+                  <span>University</span>
+                  <select name="facultyUniversity" [(ngModel)]="facultyForm.universityId" required>
+                    @for (university of universities(); track university.id) {
+                      <option [value]="university.id">{{ university.name }}</option>
+                    }
+                  </select>
+                </label>
+                <label>
+                  <span>Name</span>
+                  <input name="facultyName" [(ngModel)]="facultyForm.name" required />
+                </label>
+                <label>
+                  <span>Dean</span>
+                  <input name="facultyDean" [(ngModel)]="facultyForm.dean" />
+                </label>
+                <label>
+                  <span>Description</span>
+                  <textarea name="facultyDescription" rows="5" [(ngModel)]="facultyForm.description"></textarea>
+                </label>
+                <div class="actions">
+                  <button uiButton="primary" size="sm" type="submit" [disabled]="saving()">Save</button>
+                  <button uiButton="secondary" size="sm" type="button" (click)="clearForm('faculties')">Clear</button>
+                  <button class="danger-button" type="button" [disabled]="!selectedId('faculties') || saving()" (click)="deleteSelected()">Delete</button>
+                </div>
+              </form>
             </div>
-
-            @for (faculty of faculties(); track faculty.id) {
-              <article class="faculty-panel">
-                <header class="faculty-panel__header">
-                  <div>
-                    <h3>{{ faculty.name }}</h3>
-                    <p>{{ faculty.description }}</p>
-                  </div>
-                  <div class="faculty-meta">
-                    <span>{{ faculty.dean || 'Dean pending' }}</span>
-                    <app-ui-badge tone="info" [label]="facultyProgramCount(faculty) + ' programs'"></app-ui-badge>
-                  </div>
-                </header>
-
-                <div class="program-grid">
-                  @for (program of faculty.programs ?? []; track program.id) {
-                    <article class="program-card">
-                      <div>
-                        <h4>{{ program.name }}</h4>
-                        <p>{{ program.description }}</p>
-                      </div>
-                      <dl class="program-card__facts">
-                        <div>
-                          <dt>Track</dt>
-                          <dd>{{ programSummary(program) }}</dd>
-                        </div>
-                        <div>
-                          <dt>Language</dt>
-                          <dd>{{ program.language || 'Pending' }}</dd>
-                        </div>
-                        <div>
-                          <dt>Tuition</dt>
-                          <dd>{{ tuition(program) }} / year</dd>
-                        </div>
-                      </dl>
-                    </article>
-                  }
-                </div>
-              </article>
-            } @empty {
-              <app-ui-empty-state
-                title="No faculties yet"
-                description="This university has no faculties in the current catalog."
-                actionLabel="Add faculty"
-              ></app-ui-empty-state>
-            }
           </section>
-        } @else {
-          <app-ui-empty-state
-            title="No university selected"
-            description="Select a university from the directory to inspect its faculties and programs."
-            actionLabel="Select university"
-          ></app-ui-empty-state>
+        }
+
+        @if (activeSection() === 'programs') {
+          <section class="panel">
+            <header class="panel__header">
+              <div>
+                <p class="eyebrow">Programs</p>
+                <h2>Manage study programs</h2>
+              </div>
+              <button uiButton="secondary" size="sm" type="button" (click)="clearForm('programs')">New</button>
+            </header>
+
+            <div class="split">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Faculty</th>
+                      <th>University</th>
+                      <th>Degree</th>
+                      <th>Tuition</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (program of programs(); track program.id) {
+                      <tr [class.is-selected]="selectedId('programs') === program.id" (click)="selectProgram(program)">
+                        <td><strong>{{ program.name }}</strong></td>
+                        <td>{{ facultyName(program.facultyId) }}</td>
+                        <td>{{ facultyUniversity(program.facultyId) }}</td>
+                        <td>{{ program.degree }}</td>
+                        <td>{{ program.tuitionPerYear | number: '1.0-0' }} UAH</td>
+                      </tr>
+                    } @empty {
+                      <tr>
+                        <td colspan="5">No programs in the catalog.</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+              <form class="editor" (ngSubmit)="saveProgram()">
+                <h3>{{ selectedId('programs') ? 'Edit program' : 'New program' }}</h3>
+                <label>
+                  <span>Faculty</span>
+                  <select name="programFaculty" [(ngModel)]="programForm.facultyId" required>
+                    @for (faculty of faculties(); track faculty.id) {
+                      <option [value]="faculty.id">{{ faculty.name }} - {{ universityName(faculty.universityId) }}</option>
+                    }
+                  </select>
+                </label>
+                <label>
+                  <span>Name</span>
+                  <input name="programName" [(ngModel)]="programForm.name" required />
+                </label>
+                <div class="form-grid">
+                  <label>
+                    <span>Degree</span>
+                    <input name="programDegree" [(ngModel)]="programForm.degree" />
+                  </label>
+                  <label>
+                    <span>Mode</span>
+                    <select name="programMode" [(ngModel)]="programForm.mode">
+                      @for (mode of studyModes; track mode) {
+                        <option [value]="mode">{{ mode }}</option>
+                      }
+                    </select>
+                  </label>
+                </div>
+                <div class="form-grid">
+                  <label>
+                    <span>Years</span>
+                    <input name="programYears" type="number" min="0" [(ngModel)]="programForm.durationYears" />
+                  </label>
+                  <label>
+                    <span>Tuition</span>
+                    <input name="programTuition" type="number" min="0" step="100" [(ngModel)]="programForm.tuitionPerYear" />
+                  </label>
+                </div>
+                <label>
+                  <span>Language</span>
+                  <input name="programLanguage" [(ngModel)]="programForm.language" />
+                </label>
+                <label>
+                  <span>Description</span>
+                  <textarea name="programDescription" rows="5" [(ngModel)]="programForm.description"></textarea>
+                </label>
+                <div class="actions">
+                  <button uiButton="primary" size="sm" type="submit" [disabled]="saving()">Save</button>
+                  <button uiButton="secondary" size="sm" type="button" (click)="clearForm('programs')">Clear</button>
+                  <button class="danger-button" type="button" [disabled]="!selectedId('programs') || saving()" (click)="deleteSelected()">Delete</button>
+                </div>
+              </form>
+            </div>
+          </section>
         }
       </section>
     </section>
